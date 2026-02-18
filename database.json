@@ -1,0 +1,40 @@
+{
+  "collections": [
+    {
+      "amount": 100000000000000,
+      "timestamp": "2026-07-10T16:04:34.443Z",
+      "location": "Sector 7G - Riverbed"
+    },
+    {
+      "amount": 1.00000001e+98,
+      "timestamp": "2026-07-10T16:04:42.971Z",
+      "location": "Sector 7G - Riverbed"
+    },
+    {
+      "amount": 10,
+      "timestamp": "2026-07-10T16:07:41.240Z",
+      "location": "Sector 7G - Riverbed"
+    },
+    {
+      "amount": 10,
+      "timestamp": "2026-07-10T16:07:44.725Z",
+      "location": "Sector 7G - Riverbed"
+    },
+    {
+      "amount": -100000000000000000,
+      "timestamp": "2026-07-10T16:44:22.014Z",
+      "location": "Sector 7G - Riverbed"
+    },
+    {
+      "amount": -1e+57,
+      "timestamp": "2026-07-10T16:44:35.237Z",
+      "location": "Sector 7G - Riverbed"
+    },
+    {
+      "amount": -9.99999999e+218,
+      "timestamp": "2026-07-10T16:44:47.112Z",
+      "location": "Sector 7G - Riverbed"
+    }
+  ],
+  "totalPlastic": -9.99999999e+218
+}

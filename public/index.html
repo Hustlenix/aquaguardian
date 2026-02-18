@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AquaGuardian | Full-Stack Command</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">Aqua<span>Guardian</span> Full-Stack</div>
+    </nav>
+
+    <section class="hero">
+        <h1>Live <span class="highlight">Database</span> Command</h1>
+        <p>Connecting the Robot Hardware to the Cloud.</p>
+    </section>
+
+    <section class="dashboard">
+        <div class="dash-glass">
+            <div class="dash-grid">
+                <div class="dash-stat">
+                    <span class="label">Total Plastic (Saved in DB)</span>
+                    <span class="value" id="total-plastic">0</span>
+                    <span class="unit">Pieces</span>
+                </div>
+            </div>
+            
+            <div class="admin-panel">
+                <h3>Simulate Robot Upload</h3>
+                <div class="input-group">
+                    <input type="number" id="plastic-input" placeholder="Amount found...">
+                    <button onclick="sendData()">Upload to Server</button>
+                </div>
+            </div>
+
+            <div class="log-container">
+                <h3>Collection History (From Database)</h3>
+                <div id="history-log" class="dash-log">
+                    <!-- Data from server appears here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
