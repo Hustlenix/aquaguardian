@@ -1,7 +1,14 @@
 'use client'
 
-// Placeholder — implement in Phase 3
+import { ChevronDown } from 'lucide-react'
 
 export default function ScrollIndicator() {
-  return null
+  return (
+    <div className="scroll-indicator">
+      <span className="text-[0.65rem] tracking-[0.15em] font-medium">
+        SCROLL
+      </span>
+      <ChevronDown size={18} strokeWidth={1.5} />
+    </div>
+  )
 }

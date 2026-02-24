@@ -1,7 +1,21 @@
-'use client'
+interface GlassPanelProps {
+  children: React.ReactNode
+  className?: string
+  strong?: boolean
+}
 
-// Placeholder — implement in Phase 3
-
-export default function GlassPanel() {
-  return null
+export default function GlassPanel({
+  children,
+  className = '',
+  strong = false,
+}: GlassPanelProps) {
+  return (
+    <div
+      className={`${
+        strong ? 'glass-panel-strong' : 'glass-panel'
+      } p-6 md:p-8 ${className}`}
+    >
+      {children}
+    </div>
+  )
 }

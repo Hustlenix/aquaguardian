@@ -3,11 +3,40 @@
 import { useMemo } from 'react'
 import * as THREE from 'three'
 
-export default function Seabed() {
+interface SeabedProps {
+  debrisCount?: number
+}
+
+function Debris({ count }: { count: number }) {
+  const items = useMemo(() => {
+    const arr: { pos: [number, number, number]; rot: [number, number, number]; scale: number }[] = []
+    for (let i = 0; i < count; i++) {
+      arr.push({
+        pos: [(Math.random() - 0.5) * 20, -3.5 + Math.random() * 0.5, (Math.random() - 0.5) * 15],
+        rot: [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI],
+        scale: 0.05 + Math.random() * 0.15,
+      })
+    }
+    return arr
+  }, [count])
+
+  return (
+    <group>
+      {items.map((d, i) => (
+        <mesh key={i} position={d.pos} rotation={d.rot} scale={d.scale}>
+          <boxGeometry args={[0.2, 0.05, 0.15]} />
+          <meshStandardMaterial color="#5A4A3A" roughness={0.9} />
+        </mesh>
+      ))}
+    </group>
+  )
+}
+
+export default function Seabed({ debrisCount = 0 }: SeabedProps) {
   const geo = useMemo(() => {
-    const w = 40
-    const d = 30
-    const segments = 50
+    const w = 50
+    const d = 40
+    const segments = 40
     const positions = new Float32Array((segments + 1) * (segments + 1) * 3)
     const colors = new Float32Array((segments + 1) * (segments + 1) * 3)
     let idx = 0
@@ -48,13 +77,11 @@ export default function Seabed() {
   }, [])
 
   return (
-    <mesh geometry={geo} receiveShadow>
-      <meshStandardMaterial
-        vertexColors
-        roughness={0.9}
-        metalness={0.1}
-        flatShading
-      />
-    </mesh>
+    <group>
+      <mesh geometry={geo} receiveShadow>
+        <meshStandardMaterial vertexColors roughness={0.9} metalness={0.1} flatShading />
+      </mesh>
+      <Debris count={debrisCount} />
+    </group>
   )
 }
