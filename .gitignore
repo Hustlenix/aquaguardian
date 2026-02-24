@@ -41,5 +41,6 @@ Thumbs.db
 
 # development logs
 .dev-server.log
+.vercel-deploy.log
 
 .vercel
