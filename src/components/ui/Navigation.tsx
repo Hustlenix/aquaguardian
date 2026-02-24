@@ -62,7 +62,7 @@ export default function Navigation() {
 
         {/* Desktop CTA */}
         <div className="hidden md:block">
-          <Button variant="primary" href="#contact">
+          <Button variant="primary" href="#impact">
             Join the Mission
           </Button>
         </div>
@@ -93,7 +93,7 @@ export default function Navigation() {
               </li>
             ))}
             <li className="pt-4">
-              <Button variant="primary" href="#contact" onClick={handleNavClick}>
+              <Button variant="primary" href="#impact" onClick={handleNavClick}>
                 Join the Mission
               </Button>
             </li>
