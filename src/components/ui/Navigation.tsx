@@ -7,9 +7,14 @@ import Button from './Button'
 const NAV_LINKS = [
   { label: 'Mission', href: '#mission' },
   { label: 'Problem', href: '#problem' },
+  { label: 'How It Works', href: '#how-it-works' },
   { label: 'Technology', href: '#technology' },
+  { label: 'Prototype', href: '#prototype' },
   { label: 'Impact', href: '#impact' },
+  { label: 'Gallery', href: '#gallery' },
   { label: 'FAQ', href: '#faq' },
+  { label: 'Team', href: '#team' },
+  { label: 'Contact', href: '#contact' },
 ]
 
 export default function Navigation() {

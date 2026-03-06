@@ -1,20 +1,50 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
+import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
 interface SeabedProps {
   debrisCount?: number
 }
 
+function Rock({ x, z, scale }: { x: number; z: number; scale: number }) {
+  const ref = useRef<THREE.Mesh>(null)
+  useFrame((state) => {
+    if (ref.current) {
+      ref.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.02 + x) * 0.01
+    }
+  })
+  return (
+    <mesh ref={ref} position={[x, -4 + scale * 0.2, z]} rotation={[Math.random() * 0.5, Math.random() * Math.PI, Math.random() * 0.3]}>
+      <icosahedronGeometry args={[scale * 0.4, 0]} />
+      <meshStandardMaterial color="#3A4A4A" roughness={0.9} metalness={0.1} flatShading />
+    </mesh>
+  )
+}
+
 function Debris({ count }: { count: number }) {
   const items = useMemo(() => {
-    const arr: { pos: [number, number, number]; rot: [number, number, number]; scale: number }[] = []
+    const arr: {
+      pos: [number, number, number]
+      rot: [number, number, number]
+      scale: number
+      color: string
+      shape: 'box' | 'bottle' | 'bag'
+    }[] = []
+    const shapes: ('box' | 'bottle' | 'bag')[] = ['box', 'bottle', 'bag']
+    const cleanColors = ['#5A4A3A', '#6A5A4A', '#4A5A5A']
+    const pollutedColors = ['#7A5A3A', '#8A4A3A', '#6A4A4A', '#5A5A3A', '#8A6A3A']
+
     for (let i = 0; i < count; i++) {
+      const isPolluted = i > count * 0.3
+      const colorSet = isPolluted ? pollutedColors : cleanColors
       arr.push({
-        pos: [(Math.random() - 0.5) * 20, -3.5 + Math.random() * 0.5, (Math.random() - 0.5) * 15],
+        pos: [(Math.random() - 0.5) * 24, -3.5 + Math.random() * 0.5, (Math.random() - 0.5) * 18],
         rot: [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI],
         scale: 0.05 + Math.random() * 0.15,
+        color: colorSet[Math.floor(Math.random() * colorSet.length)],
+        shape: shapes[Math.floor(Math.random() * shapes.length)],
       })
     }
     return arr
@@ -24,8 +54,10 @@ function Debris({ count }: { count: number }) {
     <group>
       {items.map((d, i) => (
         <mesh key={i} position={d.pos} rotation={d.rot} scale={d.scale}>
-          <boxGeometry args={[0.2, 0.05, 0.15]} />
-          <meshStandardMaterial color="#5A4A3A" roughness={0.9} />
+          {d.shape === 'box' && <boxGeometry args={[0.2, 0.05, 0.15]} />}
+          {d.shape === 'bottle' && <cylinderGeometry args={[0.03, 0.05, 0.2, 5]} />}
+          {d.shape === 'bag' && <boxGeometry args={[0.15, 0.08, 0.12]} />}
+          <meshStandardMaterial color={d.color} roughness={0.9} />
         </mesh>
       ))}
     </group>
@@ -76,11 +108,26 @@ export default function Seabed({ debrisCount = 0 }: SeabedProps) {
     return g
   }, [])
 
+  const rocks = useMemo(() => {
+    const arr: { x: number; z: number; scale: number }[] = []
+    for (let i = 0; i < 6; i++) {
+      arr.push({
+        x: (Math.random() - 0.5) * 30,
+        z: -5 - Math.random() * 16,
+        scale: 0.5 + Math.random() * 1.2,
+      })
+    }
+    return arr
+  }, [])
+
   return (
     <group>
       <mesh geometry={geo} receiveShadow>
         <meshStandardMaterial vertexColors roughness={0.9} metalness={0.1} flatShading />
       </mesh>
+      {rocks.map((r, i) => (
+        <Rock key={i} x={r.x} z={r.z} scale={r.scale} />
+      ))}
       <Debris count={debrisCount} />
     </group>
   )
