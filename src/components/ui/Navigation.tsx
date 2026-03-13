@@ -20,12 +20,26 @@ const NAV_LINKS = [
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('')
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
+
+      // Determine active section based on scroll position
+      const sectionIds = NAV_LINKS.map((l) => l.href.slice(1))
+      const scrollPos = window.scrollY + 150
+
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sectionIds[i])
+        if (el && el.offsetTop <= scrollPos) {
+          setActiveSection(sectionIds[i])
+          break
+        }
+      }
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -35,7 +49,7 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
+      className={`fixed top-0 left-0 z-50 w-full transition-all duration-500 ${
         scrolled || mobileOpen
           ? 'nav-blur shadow-lg shadow-black/20'
           : 'bg-transparent'
@@ -53,16 +67,23 @@ export default function Navigation() {
 
         {/* Desktop nav links */}
         <ul className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="text-sm tracking-widest uppercase text-text-muted hover:text-white transition-colors duration-300"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const isActive = activeSection === link.href.slice(1)
+            return (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className={`text-sm tracking-widest uppercase transition-all duration-300 ${
+                    isActive
+                      ? 'text-gold-400'
+                      : 'text-text-muted hover:text-white'
+                  }`}
+                >
+                  {link.label}
+                </a>
+              </li>
+            )
+          })}
         </ul>
 
         {/* Desktop CTA */}
@@ -86,17 +107,24 @@ export default function Navigation() {
       {mobileOpen && (
         <div className="md:hidden nav-blur border-t border-white/5">
           <ul className="flex flex-col items-center gap-6 py-8">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={handleNavClick}
-                  className="text-sm tracking-widest uppercase text-text-muted hover:text-white transition-colors duration-300"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const isActive = activeSection === link.href.slice(1)
+              return (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    onClick={handleNavClick}
+                    className={`text-sm tracking-widest uppercase transition-colors duration-300 ${
+                      isActive
+                        ? 'text-gold-400'
+                        : 'text-text-muted hover:text-white'
+                    }`}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              )
+            })}
             <li className="pt-4">
               <Button variant="primary" href="#impact" onClick={handleNavClick}>
                 Join the Mission

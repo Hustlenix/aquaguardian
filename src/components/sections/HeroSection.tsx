@@ -1,50 +1,77 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import Button from '@/components/ui/Button'
 import ScrollIndicator from '@/components/ui/ScrollIndicator'
+import TextReveal from '@/components/animations/TextReveal'
 
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center section-padding overflow-hidden">
-      {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-ocean-900/60 via-transparent to-ocean-900/80 pointer-events-none" />
-
       {/* Content */}
       <div className="section-inner relative z-10 flex flex-col items-center text-center">
         {/* Eyebrow label */}
-        <span className="inline-block text-[0.6rem] md:text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-gold-400 mb-6">
+        <motion.span
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          className="inline-block text-[0.6rem] md:text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-gold-400 mb-6"
+        >
           Ocean Guardian Initiative
-        </span>
+        </motion.span>
 
-        {/* Main heading */}
-        <h1 className="heading-xl text-gradient-gold mb-6">
-          AQUAGUARDIAN
+        {/* Main heading - word-by-word reveal */}
+        <h1 className="heading-xl text-white mb-6">
+          <TextReveal as="span" wordDelay={0.06} delay={0.3}>
+            AQUAGUARDIAN
+          </TextReveal>
         </h1>
 
         {/* Elegant subtitle */}
-        <p className="text-elegant text-white/80 max-w-2xl mb-4">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+          className="text-elegant text-white/80 max-w-2xl mb-4"
+        >
           A new intelligence protects the depths
-        </p>
+        </motion.p>
 
         {/* Description */}
-        <p className="text-body max-w-xl mb-10">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
+          className="text-body max-w-xl mb-10"
+        >
           An AI-powered autonomous guardian monitoring and restoring ocean
           ecosystems. Combining advanced robotics with environmental science.
-        </p>
+        </motion.p>
 
         {/* Buttons */}
-        <div className="flex flex-col sm:flex-row items-center gap-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+          className="flex flex-col sm:flex-row items-center gap-4"
+        >
           <Button variant="primary" href="#mission">
             Explore the Depths
           </Button>
           <Button variant="secondary" href="#technology">
             See Technology
           </Button>
-        </div>
+        </motion.div>
       </div>
 
       {/* Scroll indicator at bottom */}
-      <ScrollIndicator />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 1.5 }}
+      >
+        <ScrollIndicator />
+      </motion.div>
     </section>
   )
 }

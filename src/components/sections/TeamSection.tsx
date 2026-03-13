@@ -11,35 +11,52 @@ const TEAM_MEMBERS = [
     role: 'Chief Executive Officer',
     bio: 'Marine biologist and AI researcher with 15+ years in ocean conservation. Former lead at NOAA\'s autonomous systems division.',
     initials: 'AS',
-    color: 'from-cyan-400/20 to-cyan-400/5',
+    color: 'bg-cyan-400/10',
   },
   {
     name: 'James Calloway',
     role: 'Chief Technology Officer',
     bio: 'Robotics engineer who led underwater drone development at NASA\'s Jet Propulsion Laboratory. Expert in autonomous navigation systems.',
     initials: 'JC',
-    color: 'from-gold-400/20 to-gold-400/5',
+    color: 'bg-gold-400/10',
   },
   {
     name: 'Dr. Mei-Lin Chen',
     role: 'Head of Environmental Science',
     bio: 'PhD in Marine Ecology from Stanford. Pioneered AI-driven coral reef assessment methodology used across the Indo-Pacific.',
     initials: 'MC',
-    color: 'from-cyan-400/20 to-cyan-400/5',
+    color: 'bg-cyan-400/10',
   },
   {
     name: 'Alex Rivera',
     role: 'VP of Engineering',
     bio: 'Full-stack robotics architect with expertise in embedded systems, sensor fusion, and edge AI deployment at scale.',
     initials: 'AR',
-    color: 'from-gold-400/20 to-gold-400/5',
+    color: 'bg-gold-400/10',
   },
 ]
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.1 },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, rotate: -2 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotate: 0,
+    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const },
+  },
+}
 
 export default function TeamSection() {
   return (
     <SectionWrapper id="team">
-      <h2 className="heading-lg text-gradient-gold text-center mb-4">
+      <h2 className="heading-lg text-gold-400 text-center mb-4">
         OUR TEAM
       </h2>
 
@@ -48,26 +65,31 @@ export default function TeamSection() {
         single mission — to restore the health of our oceans.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {TEAM_MEMBERS.map((member, index) => (
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-60px' }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+      >
+        {TEAM_MEMBERS.map((member) => (
           <motion.div
             key={member.name}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
+            variants={itemVariants}
+            whileHover={{
+              rotate: 0,
+              transition: { duration: 0.3 },
+            }}
           >
             <GlassPanel className="text-center h-full flex flex-col items-center">
-              {/* Avatar placeholder */}
               <div
-                className={`w-20 h-20 rounded-full bg-gradient-to-br ${member.color} border border-white/10 flex items-center justify-center mb-5`}
+                className={`w-20 h-20 rounded-full ${member.color} border border-white/10 flex items-center justify-center mb-5`}
               >
                 <span className="text-xl font-bold text-white/80" style={{ fontFamily: 'var(--font-display)' }}>
                   {member.initials}
                 </span>
               </div>
 
-              {/* Info */}
               <h3 className="text-base font-semibold text-white mb-1">
                 {member.name}
               </h3>
@@ -78,18 +100,17 @@ export default function TeamSection() {
                 {member.bio}
               </p>
 
-              {/* Social links */}
               <div className="flex items-center gap-3">
                 <a
                   href="#"
-                  className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+                  className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 hover:text-gold-400 transition-all duration-300"
                   aria-label={`${member.name} on LinkedIn`}
                 >
                   <Linkedin size={14} className="text-text-muted" strokeWidth={1.5} />
                 </a>
                 <a
                   href="#"
-                  className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+                  className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 hover:text-gold-400 transition-all duration-300"
                   aria-label={`${member.name} on Twitter`}
                 >
                   <Twitter size={14} className="text-text-muted" strokeWidth={1.5} />
@@ -98,7 +119,7 @@ export default function TeamSection() {
             </GlassPanel>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
     </SectionWrapper>
   )
 }

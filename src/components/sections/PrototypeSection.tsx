@@ -18,7 +18,7 @@ const SPECS = [
 export default function PrototypeSection() {
   return (
     <SectionWrapper id="prototype">
-      <h2 className="heading-lg text-gradient-gold text-center mb-4">
+      <h2 className="heading-lg text-gold-400 text-center mb-4">
         THE PROTOTYPE
       </h2>
 
@@ -33,17 +33,19 @@ export default function PrototypeSection() {
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <GlassPanel strong className="relative overflow-hidden min-h-[360px] lg:min-h-[480px] flex items-center justify-center">
-            {/* Ambient glow */}
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 via-transparent to-gold-400/5" />
-
             {/* Center content */}
             <div className="relative z-10 text-center">
-              <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-cyan-400/10 to-gold-400/10 border border-cyan-400/20 flex items-center justify-center">
+              <motion.div
+                className="w-32 h-32 mx-auto mb-6 rounded-full bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center"
+                whileInView={{ rotate: [0, 360] }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, ease: 'easeOut' }}
+              >
                 <Navigation size={52} className="text-cyan-400/60" strokeWidth={1} />
-              </div>
+              </motion.div>
               <p className="text-body text-xs uppercase tracking-widest text-gold-400/70">
                 AquaGuardian Series 1
               </p>
@@ -51,30 +53,37 @@ export default function PrototypeSection() {
                 Full 3D model coming soon
               </p>
             </div>
-
-            {/* Corner accents */}
-            <div className="absolute top-4 left-4 w-12 h-px bg-gradient-to-r from-gold-400/40 to-transparent" />
-            <div className="absolute top-4 left-4 h-12 w-px bg-gradient-to-b from-gold-400/40 to-transparent" />
-            <div className="absolute bottom-4 right-4 w-12 h-px bg-gradient-to-l from-gold-400/40 to-transparent" />
-            <div className="absolute bottom-4 right-4 h-12 w-px bg-gradient-to-t from-gold-400/40 to-transparent" />
           </GlassPanel>
         </motion.div>
 
         {/* Right: Spec sheet */}
         <div>
-          <h3 className="heading-md text-white mb-6">Technical Specifications</h3>
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="heading-md text-white mb-6"
+          >
+            Technical Specifications
+          </motion.h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-            {SPECS.map((spec) => {
+            {SPECS.map((spec, i) => {
               const Icon = spec.icon
               return (
                 <motion.div
                   key={spec.label}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{
+                    duration: 0.4,
+                    delay: i * 0.08,
+                    ease: [0.25, 0.1, 0.25, 1] as const,
+                  }}
                   className="glass-panel p-4 flex items-center gap-4"
+                  whileHover={{ translateY: -2, transition: { duration: 0.2 } }}
                 >
                   <div className="w-10 h-10 rounded-full bg-cyan-400/10 flex items-center justify-center flex-shrink-0">
                     <Icon size={18} className="text-cyan-400" strokeWidth={1.5} />
@@ -92,14 +101,20 @@ export default function PrototypeSection() {
             })}
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="flex flex-col sm:flex-row gap-4"
+          >
             <Button variant="primary" href="#contact">
               Request a Demo
             </Button>
             <Button variant="secondary" href="#technology">
               View Technical Specs
             </Button>
-          </div>
+          </motion.div>
         </div>
       </div>
     </SectionWrapper>

@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import SectionWrapper from './SectionWrapper'
 
 const MILESTONES = [
@@ -43,8 +44,8 @@ export default function TimelineSection() {
       </h2>
 
       <div className="relative max-w-3xl mx-auto">
-        {/* Vertical line */}
-        <div className="absolute left-[18px] md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-gold-400/40 via-cyan-400/20 to-transparent -translate-x-1/2" />
+        {/* Vertical line - solid color */}
+        <div className="absolute left-[18px] md:left-1/2 top-0 bottom-0 w-px bg-gold-400/20 -translate-x-1/2" />
 
         {/* Milestones */}
         <div className="space-y-16">
@@ -52,8 +53,16 @@ export default function TimelineSection() {
             const isLeft = index % 2 === 0
 
             return (
-              <div
+              <motion.div
                 key={milestone.period}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{
+                  duration: 0.6,
+                  delay: index * 0.12,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
                 className="relative flex items-start gap-6 md:gap-0"
               >
                 {/* Dot (always centered) */}
@@ -65,11 +74,7 @@ export default function TimelineSection() {
                     isLeft ? 'md:pr-12 md:text-right' : 'md:ml-auto md:pl-12'
                   }`}
                 >
-                  <div
-                    className={`glass-panel p-5 md:p-6 ${
-                      isLeft ? '' : ''
-                    }`}
-                  >
+                  <div className="glass-panel p-5 md:p-6">
                     <span className="inline-block text-[0.6rem] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-1">
                       {milestone.period}
                     </span>
@@ -84,7 +89,7 @@ export default function TimelineSection() {
 
                 {/* Spacer for alternating layout */}
                 {isLeft && <div className="hidden md:block md:w-1/2" />}
-              </div>
+              </motion.div>
             )
           })}
         </div>

@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import SectionWrapper from './SectionWrapper'
 import GlassPanel from '@/components/ui/GlassPanel'
 import { Droplets, Shield, RefreshCw } from 'lucide-react'
@@ -25,11 +26,26 @@ const MISSION_CARDS = [
   },
 ]
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.12 },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] as const },
+  },
+}
+
 export default function MissionSection() {
   return (
     <SectionWrapper id="mission">
-      {/* Heading */}
-      <h2 className="heading-lg text-gradient-cyan text-center mb-4">
+      <h2 className="heading-lg text-gold-400 text-center mb-4">
         OUR MISSION
       </h2>
 
@@ -39,23 +55,30 @@ export default function MissionSection() {
         at a scale never before possible.
       </p>
 
-      {/* Cards grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-60px' }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-6"
+      >
         {MISSION_CARDS.map((card) => {
           const Icon = card.icon
           return (
-            <GlassPanel key={card.title} className="text-center">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-400/10 text-gold-400 mb-5">
-                <Icon size={24} strokeWidth={1.5} />
-              </div>
-              <h3 className="heading-md text-white mb-3">{card.title}</h3>
-              <p className="text-body text-sm leading-relaxed">
-                {card.description}
-              </p>
-            </GlassPanel>
+            <motion.div key={card.title} variants={itemVariants}>
+              <GlassPanel className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-400/10 text-gold-400 mb-5">
+                  <Icon size={24} strokeWidth={1.5} />
+                </div>
+                <h3 className="heading-md text-white mb-3">{card.title}</h3>
+                <p className="text-body text-sm leading-relaxed">
+                  {card.description}
+                </p>
+              </GlassPanel>
+            </motion.div>
           )
         })}
-      </div>
+      </motion.div>
     </SectionWrapper>
   )
 }
