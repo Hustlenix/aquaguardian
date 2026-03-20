@@ -60,15 +60,15 @@ export default function MissionSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-60px' }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        className="grid grid-cols-1 md:grid-cols-3 gap-5"
       >
         {MISSION_CARDS.map((card) => {
           const Icon = card.icon
           return (
             <motion.div key={card.title} variants={itemVariants}>
-              <GlassPanel className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-400/10 text-gold-400 mb-5">
-                  <Icon size={24} strokeWidth={1.5} />
+              <GlassPanel className="text-center h-full hover-lift gold-glow">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gold-400/10 text-gold-400 mb-5 mx-auto transition-all duration-300 group-hover:bg-gold-400/20">
+                  <Icon size={26} strokeWidth={1.5} />
                 </div>
                 <h3 className="heading-md text-white mb-3">{card.title}</h3>
                 <p className="text-body text-sm leading-relaxed">
