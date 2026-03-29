@@ -56,7 +56,7 @@ export default function TimelineSection() {
     <SectionWrapper id="timeline" className="relative">
       <div ref={sectionRef}>
         <motion.h2
-          className="heading-lg text-center text-white mb-16"
+          className="heading-lg text-center text-gold-400 mb-16"
           style={{ opacity: headingOpacity }}
         >
           TIMELINE
@@ -260,7 +260,7 @@ function MilestoneCard({
             ]),
           }}
         >
-          <span className="inline-block text-[0.6rem] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-1">
+          <span className="inline-block text-xs font-semibold tracking-[0.2em] uppercase text-gold-400 mb-1">
             {milestone.period}
           </span>
           <h3 className="heading-md text-white mb-2">{milestone.title}</h3>

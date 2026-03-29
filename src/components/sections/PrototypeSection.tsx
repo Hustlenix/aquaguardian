@@ -74,7 +74,7 @@ export default function PrototypeSection() {
                     <Icon size={18} className="text-cyan-400" strokeWidth={1.5} />
                   </div>
                   <div>
-                    <span className="block text-[0.6rem] font-semibold tracking-[0.15em] uppercase text-text-muted">
+                    <span className="block text-xs font-semibold tracking-[0.15em] uppercase text-text-muted">
                       {spec.label}
                     </span>
                     <span className="text-sm font-semibold text-white">
@@ -101,7 +101,7 @@ export default function PrototypeSection() {
             </Button>
           </motion.div>
 
-          <p className="text-[0.55rem] text-text-muted/50 text-center mt-4">
+          <p className="text-xs text-text-muted/50 text-center mt-4">
             * Engineering targets — subject to testing validation
           </p>
         </div>

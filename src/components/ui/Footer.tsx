@@ -60,7 +60,7 @@ export default function Footer() {
           <p className="text-xs text-text-muted/60 tracking-wider">
             &copy; 2026 AquaGuardian. All rights reserved.
           </p>
-          <p className="text-[0.6rem] text-text-muted/40 tracking-widest uppercase">
+          <p className="text-xs text-text-muted/40 tracking-widest uppercase">
             Protecting our oceans with intelligent autonomy
           </p>
         </div>

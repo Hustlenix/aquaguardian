@@ -53,13 +53,14 @@
   }
 
   ::selection {
-    background: rgba(212, 175, 55, 0.3);
+    background: rgba(0, 229, 255, 0.25);
     color: #E8F0F0;
   }
 
   :focus-visible {
-    outline: 2px solid #D4AF37;
+    outline: 2px solid #00E5FF;
     outline-offset: 2px;
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
   }
 
   /* Custom scrollbar - thin, branded gold on ocean track */
@@ -73,19 +74,19 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(212, 175, 55, 0.3);
+    background: rgba(0, 229, 255, 0.25);
     border-radius: 3px;
     transition: background 0.3s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(212, 175, 55, 0.6);
+    background: rgba(0, 229, 255, 0.5);
   }
 
   /* Firefox */
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(212, 175, 55, 0.3) #010B13;
+    scrollbar-color: rgba(0, 229, 255, 0.25) #010B13;
   }
 }
 

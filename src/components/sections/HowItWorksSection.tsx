@@ -32,7 +32,7 @@ const STEPS = [
 export default function HowItWorksSection() {
   return (
     <SectionWrapper id="how-it-works">
-      <h2 className="heading-lg text-cyan-400 text-center mb-4">
+        <h2 className="heading-lg text-gold-400 text-center mb-4">
         HOW IT WORKS
       </h2>
 
@@ -67,7 +67,7 @@ export default function HowItWorksSection() {
                   <div className="flex items-center gap-4">
                     {index % 2 === 0 && (
                       <div className="text-right">
-                        <span className="block text-[0.6rem] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-1">
+                        <span className="block text-xs font-semibold tracking-[0.2em] uppercase text-gold-400 mb-1">
                           Step {step.step}
                         </span>
                         <h3 className="heading-md text-white">{step.title}</h3>
@@ -78,7 +78,7 @@ export default function HowItWorksSection() {
                     </div>
                     {index % 2 !== 0 && (
                       <div>
-                        <span className="block text-[0.6rem] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-1">
+                        <span className="block text-xs font-semibold tracking-[0.2em] uppercase text-gold-400 mb-1">
                           Step {step.step}
                         </span>
                         <h3 className="heading-md text-white">{step.title}</h3>
@@ -95,7 +95,7 @@ export default function HowItWorksSection() {
                       <Icon size={22} className="text-cyan-400" strokeWidth={1.5} />
                     </div>
                     <div>
-                      <span className="block text-[0.55rem] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-0.5">
+                      <span className="block text-xs font-semibold tracking-[0.2em] uppercase text-gold-400 mb-0.5">
                         Step {step.step}
                       </span>
                       <h3 className="text-base font-semibold text-white">

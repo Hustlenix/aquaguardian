@@ -46,9 +46,9 @@ const itemVariants = {
 export default function TechnologySection() {
   return (
     <SectionWrapper id="technology">
-      <h2 className="heading-lg text-cyan-400 text-center mb-12">
-        TECHNOLOGY
-      </h2>
+        <h2 className="heading-lg text-gold-400 text-center mb-12">
+          TECHNOLOGY
+        </h2>
 
       <motion.div
         variants={containerVariants}

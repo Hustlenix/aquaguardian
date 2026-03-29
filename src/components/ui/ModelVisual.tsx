@@ -49,7 +49,7 @@ export default function ModelVisual({
       </Canvas>
       {variant === 'prototype' && (
         <div className="absolute bottom-6 left-0 right-0 text-center pointer-events-none">
-          <p className="text-[0.55rem] font-semibold tracking-[0.2em] uppercase text-gold-400/70">
+          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-gold-400/70">
             AquaGuardian Series 1
           </p>
         </div>
