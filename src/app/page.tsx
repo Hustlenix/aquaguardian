@@ -17,6 +17,7 @@ import FAQSection from '@/components/sections/FAQSection'
 import TeamSection from '@/components/sections/TeamSection'
 import ContactSection from '@/components/sections/ContactSection'
 import Footer from '@/components/ui/Footer'
+import ScrollToTop from '@/components/ui/ScrollToTop'
 
 const World = dynamic(() => import('@/world/World'), { ssr: false })
 
@@ -56,6 +57,7 @@ export default function Home() {
           <ContactSection />
         </main>
         <Footer />
+        <ScrollToTop />
       </div>
     </>
   )

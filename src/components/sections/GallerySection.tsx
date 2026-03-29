@@ -9,31 +9,37 @@ const GALLERY_ITEMS = [
     icon: Ship,
     label: 'Deployment Vessel',
     description: 'Launch operations from the research ship',
+    gradient: 'from-blue-900/40 via-cyan-900/20 to-ocean-900/60',
   },
   {
     icon: Waves,
     label: 'Coastal Waters',
     description: 'Patrolling near-shore ecosystems',
+    gradient: 'from-teal-900/40 via-cyan-900/30 to-blue-900/60',
   },
   {
     icon: Fish,
     label: 'Marine Biodiversity',
     description: 'AI-driven species identification',
+    gradient: 'from-emerald-900/40 via-teal-900/20 to-cyan-900/60',
   },
   {
     icon: Satellite,
     label: 'Satellite Link',
     description: 'Global real-time data relay network',
+    gradient: 'from-indigo-900/40 via-blue-900/20 to-ocean-900/60',
   },
   {
     icon: Binoculars,
     label: 'Deep Survey',
     description: 'Deep-sea reconnaissance missions',
+    gradient: 'from-purple-900/40 via-indigo-900/20 to-blue-900/60',
   },
   {
     icon: Globe,
     label: 'Global Reach',
     description: 'Deploying across critical regions',
+    gradient: 'from-gold-900/30 via-amber-900/20 to-ocean-900/60',
   },
 ]
 
@@ -84,6 +90,13 @@ export default function GallerySection() {
               }}
               className="group relative glass-panel overflow-hidden cursor-pointer min-h-[220px] flex flex-col items-center justify-center text-center p-8"
             >
+              {/* Background gradient */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-60`} />
+              {/* Subtle ambient pulse */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,229,255,0.15)_0%,transparent_70%)] animate-pulse" />
+              </div>
+
               {/* Icon */}
               <motion.div
                 className="relative z-10 w-14 h-14 rounded-full bg-cyan-400/10 flex items-center justify-center mb-4"

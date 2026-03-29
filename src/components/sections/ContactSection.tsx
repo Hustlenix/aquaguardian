@@ -8,13 +8,28 @@ import { Send, CheckCircle } from 'lucide-react'
 export default function ContactSection() {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email.trim()) return
-    setSubmitted(true)
-    setEmail('')
-    // In production: send to API endpoint
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      if (!res.ok) throw new Error('Subscription failed')
+      setSubmitted(true)
+      setEmail('')
+    } catch {
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -46,10 +61,10 @@ export default function ContactSection() {
               <CheckCircle size={28} className="text-cyan-400" strokeWidth={1.5} />
             </div>
             <p className="text-sm font-medium text-white">
-              Thank you for joining the mission!
+              You&apos;re on the list!
             </p>
             <p className="text-xs text-text-muted">
-              We&apos;ll keep you updated on our progress.
+              We&apos;ll share pilot updates and ocean conservation news.
             </p>
           </motion.div>
         ) : (
@@ -75,7 +90,7 @@ export default function ContactSection() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
+                placeholder="Your email address"
                 required
                 className="w-full px-5 py-3 rounded-full bg-white/5 border border-white/10 text-white text-sm placeholder:text-text-muted/50 focus:outline-none focus:border-gold-400/50 transition-colors"
               />
@@ -91,11 +106,29 @@ export default function ContactSection() {
                 className="btn-primary whitespace-nowrap"
               >
                 <Send size={16} strokeWidth={1.5} />
-                Subscribe
+                {loading ? 'Sending...' : 'Get Early Access'}
               </button>
             </motion.div>
           </motion.form>
         )}
+        {error && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-xs text-red-400 mt-3"
+          >
+            {error}
+          </motion.p>
+        )}
+        <p className="text-[0.55rem] text-text-muted/50 mt-4">
+          We respect your privacy.{' '}
+          <a
+            href="/privacy"
+            className="underline hover:text-gold-400 transition-colors"
+          >
+            Privacy Policy
+          </a>
+        </p>
       </motion.div>
     </SectionWrapper>
   )
