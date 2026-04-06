@@ -19,13 +19,11 @@ const SPECS = [
 export default function PrototypeSection() {
   return (
     <SectionWrapper id="prototype">
-      <h2 className="heading-lg text-gold-400 text-center mb-4">
-        THE PROTOTYPE
-      </h2>
+      <h2 className="heading-lg text-gold-400 text-center mb-4">THE PROTOTYPE</h2>
 
       <p className="text-elegant text-center text-white/70 max-w-3xl mx-auto mb-16">
-        A marvel of marine engineering — designed to withstand the deepest
-        pressures while operating completely autonomously.
+        A marvel of marine engineering — designed to withstand the deepest pressures while operating
+        completely autonomously.
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
@@ -36,7 +34,10 @@ export default function PrototypeSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <GlassPanel strong className="relative overflow-hidden min-h-[360px] lg:min-h-[480px] flex items-center justify-center p-0">
+          <GlassPanel
+            strong
+            className="relative overflow-hidden min-h-[360px] lg:min-h-[480px] flex items-center justify-center p-0"
+          >
             <ModelVisual variant="prototype" />
           </GlassPanel>
         </motion.div>
@@ -77,9 +78,7 @@ export default function PrototypeSection() {
                     <span className="block text-xs font-semibold tracking-[0.15em] uppercase text-text-muted">
                       {spec.label}
                     </span>
-                    <span className="text-sm font-semibold text-white">
-                      {spec.value}
-                    </span>
+                    <span className="text-sm font-semibold text-white">{spec.value}</span>
                   </div>
                 </motion.div>
               )

@@ -36,13 +36,15 @@ export default function Bubbles({ count = 80 }: { count?: number }) {
         pos[i * 3 + 1] += speeds.current[i] * delta * 0.4
         const wobble = Math.sin(state.clock.elapsedTime * 0.5 + phases.current[i]) * delta * 0.15
         pos[i * 3] += wobble
-        pos[i * 3 + 2] += Math.cos(state.clock.elapsedTime * 0.4 + phases.current[i] * 1.3) * delta * 0.08
+        pos[i * 3 + 2] +=
+          Math.cos(state.clock.elapsedTime * 0.4 + phases.current[i] * 1.3) * delta * 0.08
         if (pos[i * 3 + 1] > 8) {
           pos[i * 3 + 1] = -3
           pos[i * 3] = (Math.random() - 0.5) * 18
           pos[i * 3 + 2] = (Math.random() - 0.5) * 14 - 3
         }
-        sizes[i] = (0.03 + Math.random() * 0.01) * (1 + Math.sin(state.clock.elapsedTime * 0.3 + i) * 0.2)
+        sizes[i] =
+          (0.03 + Math.random() * 0.01) * (1 + Math.sin(state.clock.elapsedTime * 0.3 + i) * 0.2)
       }
       ref.current.geometry.attributes.position.needsUpdate = true
       ref.current.geometry.attributes.size.needsUpdate = true

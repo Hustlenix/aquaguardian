@@ -37,8 +37,8 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
           className="text-body max-w-xl mb-10"
         >
-          An AI-powered autonomous guardian monitoring and restoring ocean
-          ecosystems. Combining advanced robotics with environmental science.
+          An AI-powered autonomous guardian monitoring and restoring ocean ecosystems. Combining
+          advanced robotics with environmental science.
         </motion.p>
 
         {/* Buttons */}

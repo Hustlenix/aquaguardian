@@ -96,14 +96,7 @@ export default function Chapter06_AI() {
       {/* Data dots around rings */}
       {Array.from({ length: 24 }).map((_, i) => {
         const angle = (i / 24) * Math.PI * 2
-        return (
-          <DataDot
-            key={i}
-            angle={angle}
-            radius={0.9}
-            index={i}
-          />
-        )
+        return <DataDot key={i} angle={angle} radius={0.9} index={i} />
       })}
 
       <pointLight color="#00E5FF" intensity={1.5} distance={6} decay={1.5} />
@@ -122,10 +115,7 @@ function DataDot({ angle, radius, index }: { angle: number; radius: number; inde
   })
 
   return (
-    <mesh
-      ref={ref}
-      position={[Math.cos(angle) * radius, Math.sin(angle) * radius, 0]}
-    >
+    <mesh ref={ref} position={[Math.cos(angle) * radius, Math.sin(angle) * radius, 0]}>
       <sphereGeometry args={[0.025, 8, 8]} />
       <meshBasicMaterial
         color="#75FFE8"

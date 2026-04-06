@@ -11,10 +11,15 @@ export default function Chapter01_Arrival() {
   const ref = useRef<THREE.Group>(null)
 
   const debris = useMemo(() => {
-    const items: { pos: [number, number, number], rot: [number, number, number], scale: number }[] = []
+    const items: { pos: [number, number, number]; rot: [number, number, number]; scale: number }[] =
+      []
     for (let i = 0; i < 15; i++) {
       items.push({
-        pos: [(Math.random() - 0.5) * 20, (Math.random() - 0.5) * 8 - 2, (Math.random() - 0.5) * 15],
+        pos: [
+          (Math.random() - 0.5) * 20,
+          (Math.random() - 0.5) * 8 - 2,
+          (Math.random() - 0.5) * 15,
+        ],
         rot: [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI],
         scale: 0.1 + Math.random() * 0.3,
       })

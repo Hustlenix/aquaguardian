@@ -50,12 +50,7 @@ function CausticPattern({ intensity = 0.3 }: { intensity?: number }) {
   if (intensity < 0.05) return null
 
   return (
-    <mesh
-      ref={ref}
-      position={[0, 8, -3]}
-      rotation={[-Math.PI / 2, 0, 0]}
-      scale={[25, 25, 1]}
-    >
+    <mesh ref={ref} position={[0, 8, -3]} rotation={[-Math.PI / 2, 0, 0]} scale={[25, 25, 1]}>
       <planeGeometry />
       <meshBasicMaterial
         map={texture}
@@ -107,11 +102,23 @@ export default function Lighting({
         color={dColor}
         castShadow={false}
       />
-      <pointLight position={[0, 5, 0]} intensity={pointIntensity} color={pColor} distance={20} decay={1.5} />
+      <pointLight
+        position={[0, 5, 0]}
+        intensity={pointIntensity}
+        color={pColor}
+        distance={20}
+        decay={1.5}
+      />
       <pointLight position={[-3, 0, 2]} intensity={0.3} color="#00E5FF" distance={12} decay={1} />
 
       {/* Rim backlight for silhouette definition */}
-      <pointLight position={[-8, -2, -12]} intensity={0.5} color="#4A8AAA" distance={15} decay={1} />
+      <pointLight
+        position={[-8, -2, -12]}
+        intensity={0.5}
+        color="#4A8AAA"
+        distance={15}
+        decay={1}
+      />
       <pointLight position={[8, -1, -10]} intensity={0.3} color="#6AA0B0" distance={12} decay={1} />
 
       {/* Caustic projection */}

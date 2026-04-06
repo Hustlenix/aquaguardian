@@ -49,7 +49,9 @@ export default function FAQSection() {
       })),
     })
     document.head.appendChild(script)
-    return () => { document.head.removeChild(script) }
+    return () => {
+      document.head.removeChild(script)
+    }
   }, [])
 
   return (
@@ -79,10 +81,7 @@ export default function FAQSection() {
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
                 className="shrink-0"
               >
-                <ChevronDown
-                  className="w-4 h-4 text-gold-400/70"
-                  strokeWidth={1.5}
-                />
+                <ChevronDown className="w-4 h-4 text-gold-400/70" strokeWidth={1.5} />
               </motion.div>
             </button>
             <AnimatePresence>
@@ -93,9 +92,7 @@ export default function FAQSection() {
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
                 >
-                  <div className="px-5 pb-5 text-sm text-text-muted leading-relaxed">
-                    {faq.a}
-                  </div>
+                  <div className="px-5 pb-5 text-sm text-text-muted leading-relaxed">{faq.a}</div>
                 </motion.div>
               )}
             </AnimatePresence>

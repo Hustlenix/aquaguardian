@@ -41,13 +41,11 @@ export default function ContactSection() {
         transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
         className="max-w-2xl mx-auto text-center glass-panel-strong p-8 md:p-12 rounded-2xl"
       >
-        <h2 className="heading-lg text-gold-400 mb-4">
-          JOIN THE MISSION
-        </h2>
+        <h2 className="heading-lg text-gold-400 mb-4">JOIN THE MISSION</h2>
 
         <p className="text-elegant text-white/70 max-w-xl mx-auto mb-8">
-          Be part of the movement to protect our oceans. Subscribe for updates
-          on our progress, pilot programs, and ways to get involved.
+          Be part of the movement to protect our oceans. Subscribe for updates on our progress,
+          pilot programs, and ways to get involved.
         </p>
 
         {submitted ? (
@@ -60,9 +58,7 @@ export default function ContactSection() {
             <div className="w-14 h-14 rounded-full bg-cyan-400/10 flex items-center justify-center">
               <CheckCircle size={28} className="text-cyan-400" strokeWidth={1.5} />
             </div>
-            <p className="text-sm font-medium text-white">
-              You&apos;re on the list!
-            </p>
+            <p className="text-sm font-medium text-white">You&apos;re on the list!</p>
             <p className="text-xs text-text-muted">
               We&apos;ll share pilot updates and ocean conservation news.
             </p>
@@ -101,10 +97,7 @@ export default function ContactSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <button
-                type="submit"
-                className="btn-primary whitespace-nowrap"
-              >
+              <button type="submit" className="btn-primary whitespace-nowrap">
                 <Send size={16} strokeWidth={1.5} />
                 {loading ? 'Sending...' : 'Join the Mission'}
               </button>
@@ -122,10 +115,7 @@ export default function ContactSection() {
         )}
         <p className="text-xs text-text-muted/50 mt-4">
           We respect your privacy.{' '}
-          <a
-            href="/privacy"
-            className="underline hover:text-gold-400 transition-colors"
-          >
+          <a href="/privacy" className="underline hover:text-gold-400 transition-colors">
             Privacy Policy
           </a>
         </p>

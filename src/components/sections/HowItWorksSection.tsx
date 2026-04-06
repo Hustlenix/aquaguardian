@@ -32,13 +32,11 @@ const STEPS = [
 export default function HowItWorksSection() {
   return (
     <SectionWrapper id="how-it-works">
-        <h2 className="heading-lg text-gold-400 text-center mb-4">
-        HOW IT WORKS
-      </h2>
+      <h2 className="heading-lg text-gold-400 text-center mb-4">HOW IT WORKS</h2>
 
       <p className="text-elegant text-center text-white/70 max-w-3xl mx-auto mb-16">
-        From deployment to restoration — a three-phase system that operates
-        continuously to protect our oceans.
+        From deployment to restoration — a three-phase system that operates continuously to protect
+        our oceans.
       </p>
 
       {/* Steps with connecting line */}
@@ -98,16 +96,12 @@ export default function HowItWorksSection() {
                       <span className="block text-xs font-semibold tracking-[0.2em] uppercase text-gold-400 mb-0.5">
                         Step {step.step}
                       </span>
-                      <h3 className="text-base font-semibold text-white">
-                        {step.title}
-                      </h3>
+                      <h3 className="text-base font-semibold text-white">{step.title}</h3>
                     </div>
                   </div>
 
                   <GlassPanel className="hover-lift">
-                    <p className="text-body text-sm leading-relaxed">
-                      {step.description}
-                    </p>
+                    <p className="text-body text-sm leading-relaxed">{step.description}</p>
                   </GlassPanel>
                 </div>
               </motion.div>

@@ -25,15 +25,9 @@ function SceneContent() {
 
   const fogColor = useMemo(() => new THREE.Color(lighting.fogColor), [lighting.fogColor])
 
-  const kelpDensity = useMemo(
-    () => environment.templeIntact * 0.8,
-    [environment.templeIntact]
-  )
+  const kelpDensity = useMemo(() => environment.templeIntact * 0.8, [environment.templeIntact])
 
-  const ruinsIntact = useMemo(
-    () => environment.templeIntact * 0.7,
-    [environment.templeIntact]
-  )
+  const ruinsIntact = useMemo(() => environment.templeIntact * 0.7, [environment.templeIntact])
 
   return (
     <>
@@ -46,7 +40,12 @@ function SceneContent() {
         <Coral intact={environment.templeIntact} />
         <Kelp density={kelpDensity} />
         <LightRays color={environment.lightRayColor} opacity={environment.lightRayOpacity} />
-        <Particles count={particleCfg.count} color={particleCfg.color} opacity={particleCfg.opacity} speed={particleCfg.speed} />
+        <Particles
+          count={particleCfg.count}
+          color={particleCfg.color}
+          opacity={particleCfg.opacity}
+          speed={particleCfg.speed}
+        />
         <Bubbles />
         <Fish visible={environment.fishVisible} />
         <Robot
@@ -76,7 +75,16 @@ export default function World() {
 
   return (
     <ErrorBoundary>
-      <div style={{ position: 'fixed', inset: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 0 }}>
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          width: '100vw',
+          height: '100vh',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      >
         <Canvas
           dpr={[1, 1.5]}
           camera={{ position: [0, 1, 8], fov: 60, near: 0.1, far: 40 }}

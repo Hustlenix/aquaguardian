@@ -3,7 +3,17 @@
 import { create } from 'zustand'
 import type { SceneState } from '@/types'
 
-export const SECTION_IDS = ['hero', 'mission', 'problem', 'solution', 'technology', 'timeline', 'impact', 'faq', 'footer'] as const
+export const SECTION_IDS = [
+  'hero',
+  'mission',
+  'problem',
+  'solution',
+  'technology',
+  'timeline',
+  'impact',
+  'faq',
+  'footer',
+] as const
 export type SectionId = (typeof SECTION_IDS)[number]
 
 interface Store {

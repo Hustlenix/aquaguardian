@@ -133,12 +133,13 @@ function RisingParticle({
     if (!ref.current) return
     const t = state.clock.elapsedTime
 
-    const dist = offset + (t * data.speed * 0.4) % 2.5
+    const dist = offset + ((t * data.speed * 0.4) % 2.5)
     const wobble = Math.sin(t * data.speed + data.phase) * 0.1
 
     ref.current.position.x = Math.cos(data.angle) * dist + wobble
     ref.current.position.z = Math.sin(data.angle) * dist * Math.cos(data.tilt) + wobble
-    ref.current.position.y = Math.sin(data.tilt) * dist * 0.5 + 0.2 + Math.sin(t * data.speed + data.phase) * 0.1
+    ref.current.position.y =
+      Math.sin(data.tilt) * dist * 0.5 + 0.2 + Math.sin(t * data.speed + data.phase) * 0.1
 
     const fade = Math.max(0, 1 - dist / 3)
     ref.current.scale.setScalar(data.size * (0.5 + fade * 0.5))

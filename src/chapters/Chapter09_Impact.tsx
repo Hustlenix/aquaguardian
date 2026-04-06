@@ -86,7 +86,7 @@ function AnimatedBar({
     const heightFactor = 0.5 + Math.sin(t * 0.8 + phase) * 0.4
     const height = Math.max(0.05, baseHeight * (1 + heightFactor))
     ref.current.scale.y = height / baseHeight
-    ref.current.position.y = (height / 2) - (baseHeight / 2)
+    ref.current.position.y = height / 2 - baseHeight / 2
 
     // Pulse emissive intensity
     const eIntensity = 0.15 + Math.sin(t * 1.2 + phase) * 0.15

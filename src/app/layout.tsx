@@ -36,7 +36,13 @@ export const metadata: Metadata = {
   title: 'AquaGuardian | AI-Powered Ocean Restoration',
   description:
     "An AI-powered autonomous guardian monitoring and restoring ocean ecosystems. Combining advanced robotics with environmental science to protect our planet's most vital resource.",
-  keywords: ['ocean cleanup', 'autonomous underwater vehicle', 'AI marine conservation', 'ocean restoration', 'aquatic robot'],
+  keywords: [
+    'ocean cleanup',
+    'autonomous underwater vehicle',
+    'AI marine conservation',
+    'ocean restoration',
+    'aquatic robot',
+  ],
   authors: [{ name: 'AquaGuardian' }],
   creator: 'AquaGuardian',
   publisher: 'AquaGuardian',
@@ -60,8 +66,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'AquaGuardian | AI-Powered Ocean Restoration',
-    description:
-      'An AI-powered autonomous guardian monitoring and restoring ocean ecosystems.',
+    description: 'An AI-powered autonomous guardian monitoring and restoring ocean ecosystems.',
     images: ['https://hustlenix.github.io/aquaguardian/og-image.png'],
   },
   robots: {
@@ -81,7 +86,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${cinzel.variable} ${cormorantGaramond.variable} ${inter.variable} ${spaceGrotesk.variable}`}>
+    <html
+      lang="en"
+      className={`${cinzel.variable} ${cormorantGaramond.variable} ${inter.variable} ${spaceGrotesk.variable}`}
+    >
       <body>
         <JsonLd />
         <SmoothScroll>{children}</SmoothScroll>

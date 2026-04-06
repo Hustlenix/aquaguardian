@@ -9,11 +9,7 @@ interface Props {
   delay?: number
 }
 
-export default function StaggerReveal({
-  children,
-  className = '',
-  delay = 0,
-}: Props) {
+export default function StaggerReveal({ children, className = '', delay = 0 }: Props) {
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -38,5 +34,3 @@ export default function StaggerReveal({
     </motion.div>
   )
 }
-
-

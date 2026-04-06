@@ -27,9 +27,9 @@ export default function Footer() {
               AQUAGUARDIAN
             </h3>
             <p className="text-body text-sm leading-relaxed max-w-xs text-text-muted/80">
-              An AI-powered autonomous guardian monitoring and restoring ocean
-              ecosystems. Combining advanced robotics with environmental science
-              to protect our planet&apos;s most vital resource.
+              An AI-powered autonomous guardian monitoring and restoring ocean ecosystems. Combining
+              advanced robotics with environmental science to protect our planet&apos;s most vital
+              resource.
             </p>
           </div>
 
@@ -51,7 +51,6 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-
         </div>
 
         {/* Bottom bar */}

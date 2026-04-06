@@ -24,7 +24,7 @@ export default function CounterAnimation({
 }: Props) {
   const count = useMotionValue(value)
   const rounded = useTransform(count, (latest) =>
-    formatter ? formatter(latest) : Math.round(latest).toLocaleString()
+    formatter ? formatter(latest) : Math.round(latest).toLocaleString(),
   )
   const ref = useRef<HTMLSpanElement>(null)
   const hasAnimated = useRef(false)
@@ -46,7 +46,7 @@ export default function CounterAnimation({
           return () => controls.stop()
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     )
 
     observer.observe(element)

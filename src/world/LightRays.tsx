@@ -13,17 +13,19 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
   const groupRef = useRef<THREE.Group>(null)
   const rayColor = useMemo(() => new THREE.Color(color), [color])
 
-  const configs = useMemo(() =>
-    Array.from({ length: 12 }, () => ({
-      x: (Math.random() - 0.5) * 22,
-      z: (Math.random() - 0.5) * 18 - 2,
-      width: 0.2 + Math.random() * 0.7,
-      height: 5 + Math.random() * 11,
-      rotOffset: (Math.random() - 0.5) * 0.2,
-      speed: 0.2 + Math.random() * 0.3,
-      phase: Math.random() * Math.PI * 2,
-    })),
-  [])
+  const configs = useMemo(
+    () =>
+      Array.from({ length: 12 }, () => ({
+        x: (Math.random() - 0.5) * 22,
+        z: (Math.random() - 0.5) * 18 - 2,
+        width: 0.2 + Math.random() * 0.7,
+        height: 5 + Math.random() * 11,
+        rotOffset: (Math.random() - 0.5) * 0.2,
+        speed: 0.2 + Math.random() * 0.3,
+        phase: Math.random() * Math.PI * 2,
+      })),
+    [],
+  )
 
   useFrame((state) => {
     if (!groupRef.current) return
@@ -43,11 +45,7 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
   return (
     <group ref={groupRef}>
       {configs.map((c, i) => (
-        <mesh
-          key={i}
-          position={[c.x, -1.5 + c.height / 2, c.z]}
-          rotation={[0, 0, c.rotOffset]}
-        >
+        <mesh key={i} position={[c.x, -1.5 + c.height / 2, c.z]} rotation={[0, 0, c.rotOffset]}>
           <planeGeometry args={[c.width, c.height]} />
           <meshBasicMaterial
             color={rayColor}

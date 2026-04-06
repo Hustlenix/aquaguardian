@@ -30,11 +30,7 @@ function AnimatedGeometry() {
   )
 }
 
-export default function ModelVisual({
-  variant = 'robot',
-}: {
-  variant?: 'robot' | 'prototype'
-}) {
+export default function ModelVisual({ variant = 'robot' }: { variant?: 'robot' | 'prototype' }) {
   return (
     <div className="w-full h-full min-h-[320px] lg:min-h-[400px] relative">
       <Canvas

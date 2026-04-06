@@ -33,7 +33,8 @@ function Arm({ side }: { side: 'left' | 'right' }) {
 
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.z = (side === 'left' ? -0.3 : 0.3) + Math.sin(state.clock.elapsedTime * 0.5 + sign) * 0.05
+      ref.current.rotation.z =
+        (side === 'left' ? -0.3 : 0.3) + Math.sin(state.clock.elapsedTime * 0.5 + sign) * 0.05
     }
   })
 
@@ -70,8 +71,18 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
 
   return (
     <group ref={groupRef} position={position} scale={scale}>
-      <pointLight position={[0, 0, 0]} intensity={activated ? 1 : 0.3} color="#00E5FF" distance={5} />
-      <pointLight position={[0, 0.5, 0]} intensity={activated ? 0.8 : 0.2} color="#D4AF37" distance={4} />
+      <pointLight
+        position={[0, 0, 0]}
+        intensity={activated ? 1 : 0.3}
+        color="#00E5FF"
+        distance={5}
+      />
+      <pointLight
+        position={[0, 0.5, 0]}
+        intensity={activated ? 0.8 : 0.2}
+        color="#D4AF37"
+        distance={4}
+      />
 
       {/* Body */}
       <mesh position={[0, 0, 0]}>
@@ -117,7 +128,13 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
       {scanBeam && (
         <mesh ref={scanRef} position={[0, 0.8, 0.5]} rotation={[Math.PI / 2, 0, 0]}>
           <ringGeometry args={[0.2, 1.2, 32]} />
-          <meshBasicMaterial color="#00E5FF" transparent opacity={0.2} side={THREE.DoubleSide} depthWrite={false} />
+          <meshBasicMaterial
+            color="#00E5FF"
+            transparent
+            opacity={0.2}
+            side={THREE.DoubleSide}
+            depthWrite={false}
+          />
         </mesh>
       )}
     </group>

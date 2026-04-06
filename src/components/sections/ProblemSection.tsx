@@ -50,13 +50,11 @@ const itemVariants = {
 export default function ProblemSection() {
   return (
     <SectionWrapper id="problem">
-        <h2 className="heading-lg text-center text-gold-400 mb-4">
-          THE CRISIS
-        </h2>
+      <h2 className="heading-lg text-center text-gold-400 mb-4">THE CRISIS</h2>
 
       <p className="text-elegant text-center text-white/70 max-w-3xl mx-auto mb-12">
-        Our oceans are in peril. Decades of neglect have pushed marine
-        ecosystems to the brink. The time for action is now.
+        Our oceans are in peril. Decades of neglect have pushed marine ecosystems to the brink. The
+        time for action is now.
       </p>
 
       <motion.div
@@ -70,20 +68,14 @@ export default function ProblemSection() {
           <motion.div key={stat.label} variants={itemVariants}>
             <GlassPanel className="text-center">
               <div className="mb-2">
-                <span
-                  className={`text-numeric ${stat.color} text-4xl md:text-5xl font-bold`}
-                >
+                <span className={`text-numeric ${stat.color} text-4xl md:text-5xl font-bold`}>
                   {stat.number}
                 </span>
                 {stat.unit && (
-                  <span className="text-numeric text-gold-400/70 text-lg ml-1">
-                    {stat.unit}
-                  </span>
+                  <span className="text-numeric text-gold-400/70 text-lg ml-1">{stat.unit}</span>
                 )}
               </div>
-              <p className="text-body text-xs uppercase tracking-widest">
-                {stat.label}
-              </p>
+              <p className="text-body text-xs uppercase tracking-widest">{stat.label}</p>
             </GlassPanel>
           </motion.div>
         ))}

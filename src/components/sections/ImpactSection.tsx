@@ -13,10 +13,34 @@ interface StatMapping {
 }
 
 const stats: StatMapping[] = [
-  { value: 125, label: 'Plastic Collected per Unit', sub: 'target tons per year', suffix: 'K', prefix: 'Goal: ' },
-  { value: 5000, label: 'Oceans Monitored', sub: 'target active stations', suffix: '+', prefix: 'Goal: ' },
-  { value: 850, label: 'Species Protected', sub: 'target marine habitats', suffix: '+', prefix: 'Goal: ' },
-  { value: 98, label: 'Detection Accuracy', sub: 'target AI-driven analysis', suffix: '%', prefix: 'Goal: ' },
+  {
+    value: 125,
+    label: 'Plastic Collected per Unit',
+    sub: 'target tons per year',
+    suffix: 'K',
+    prefix: 'Goal: ',
+  },
+  {
+    value: 5000,
+    label: 'Oceans Monitored',
+    sub: 'target active stations',
+    suffix: '+',
+    prefix: 'Goal: ',
+  },
+  {
+    value: 850,
+    label: 'Species Protected',
+    sub: 'target marine habitats',
+    suffix: '+',
+    prefix: 'Goal: ',
+  },
+  {
+    value: 98,
+    label: 'Detection Accuracy',
+    sub: 'target AI-driven analysis',
+    suffix: '%',
+    prefix: 'Goal: ',
+  },
 ]
 
 export default function ImpactSection() {
@@ -58,9 +82,7 @@ export default function ImpactSection() {
             <div className="text-sm font-medium tracking-wide text-text uppercase mb-1">
               {stat.label}
             </div>
-            <div className="text-xs text-text-muted">
-              {stat.sub}
-            </div>
+            <div className="text-xs text-text-muted">{stat.sub}</div>
           </motion.div>
         ))}
       </div>

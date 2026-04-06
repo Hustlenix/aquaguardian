@@ -13,7 +13,5 @@ export default function Effects() {
 
   if (!effects.bloom) return null
 
-  return (
-    <></>
-  )
+  return <></>
 }

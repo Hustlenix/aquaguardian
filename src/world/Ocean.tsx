@@ -38,7 +38,7 @@ export default function OceanSurface({ topColor = '#1A6B8A' }: { topColor?: stri
       const wave1 = Math.sin(x * 0.3 + t * 0.4) * 0.08
       const wave2 = Math.cos(z * 0.25 + t * 0.3) * 0.06
       const wave3 = Math.sin((x + z) * 0.15 + t * 0.2) * 0.04
-      positions[i + 1] = (wave1 + wave2 + wave3)
+      positions[i + 1] = wave1 + wave2 + wave3
     }
     ref.current.geometry.attributes.position.needsUpdate = true
     ref.current.geometry.computeVertexNormals()

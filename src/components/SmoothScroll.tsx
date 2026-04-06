@@ -5,11 +5,7 @@ import { createLenis, syncLenisWithGsap } from '@/lib/lenis'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { useStore } from '@/store/useStore'
 
-export default function SmoothScroll({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<ReturnType<typeof createLenis> | null>(null)
   const reducedMotion = useStore((s) => s.reducedMotion)
 
