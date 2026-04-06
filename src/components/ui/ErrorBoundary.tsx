@@ -17,12 +17,8 @@ export default class ErrorBoundary extends Component<Props, State> {
     this.state = { hasError: false, error: null }
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error }
-  }
-
-  componentDidCatch(error: Error, info: { componentStack?: string }) {
-    console.error('AquaGuardian error:', error, info.componentStack)
   }
 
   render() {
@@ -64,6 +60,7 @@ export default class ErrorBoundary extends Component<Props, State> {
         </div>
       )
     }
+
     return this.props.children
   }
 }

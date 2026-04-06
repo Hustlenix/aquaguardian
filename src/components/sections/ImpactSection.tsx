@@ -61,13 +61,14 @@ export default function ImpactSection() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, i) => (
-          <motion.div
+          <motion.a
             key={stat.label}
+            href={i === 0 ? '/dashboard' : i === 1 ? '/missions' : i === 2 ? '/learn' : '/assistant'}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.12, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-            className="glass-panel p-6 text-center"
+            className="glass-panel p-6 text-center block"
             whileHover={{ translateY: -4, transition: { duration: 0.2 } }}
           >
             <div className="text-4xl md:text-5xl font-bold text-numeric text-gold-400 mb-2">
@@ -82,8 +83,15 @@ export default function ImpactSection() {
             <div className="text-sm font-medium tracking-wide text-text uppercase mb-1">
               {stat.label}
             </div>
+<<<<<<< HEAD
             <div className="text-xs text-text-muted">{stat.sub}</div>
           </motion.div>
+=======
+            <div className="text-xs text-text-muted">
+              {stat.sub}
+            </div>
+          </motion.a>
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
         ))}
       </div>
     </SectionWrapper>

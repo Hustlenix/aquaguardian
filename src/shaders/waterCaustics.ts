@@ -1,7 +1,3 @@
-// Animated procedural water caustics projected onto the seabed.
-// Sum-of-sines filament pattern (classic water-caustic trick) with two
-// offset layers, raised to a power for sharp lens-shaped highlights.
-
 export const waterCausticsVertexShader = `
   varying vec2 vUv;
   void main() {

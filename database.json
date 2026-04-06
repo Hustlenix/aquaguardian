@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "collections": [
     {
@@ -38,3 +39,6 @@
   ],
   "totalPlastic": -9.99999999e218
 }
+=======
+{}
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)

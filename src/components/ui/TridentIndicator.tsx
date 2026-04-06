@@ -289,7 +289,6 @@ export default function TridentIndicator() {
           {/* Spiral narwhal tusk grooves */}
           {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19].map((i) => {
             const y1 = 35 + i * 3
-            const y2 = 36.5 + i * 3
             return (
               <g key={`groove-${i}`}>
                 <line

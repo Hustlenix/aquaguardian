@@ -52,7 +52,7 @@ export default function Navigation() {
         {/* Logo */}
         <a
           href="#"
-          className="text-base md:text-lg font-bold tracking-[0.15em] text-white"
+          className="text-base md:text-lg font-bold tracking-[0.18em] text-white transition-colors duration-300 hover:text-gold-400"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           AQUAGUARDIAN

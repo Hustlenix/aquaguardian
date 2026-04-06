@@ -73,8 +73,21 @@ function SceneContent() {
 export default function World() {
   const { setQuality } = useStore()
 
+  const canvasWrapperStyle = useMemo(
+    () => ({
+      position: 'fixed' as const,
+      inset: 0,
+      width: '100vw',
+      height: '100vh',
+      pointerEvents: 'none' as const,
+      zIndex: 0,
+    }),
+    []
+  )
+
   return (
     <ErrorBoundary>
+<<<<<<< HEAD
       <div
         style={{
           position: 'fixed',
@@ -85,6 +98,9 @@ export default function World() {
           zIndex: 0,
         }}
       >
+=======
+      <div style={canvasWrapperStyle}>
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
         <Canvas
           dpr={[1, 1.5]}
           camera={{ position: [0, 1, 8], fov: 60, near: 0.1, far: 40 }}
@@ -92,7 +108,6 @@ export default function World() {
           onCreated={(state) => {
             state.gl.setClearColor('#010B13')
           }}
-          onError={(err) => console.error('Canvas error:', err)}
         >
           <AdaptiveDpr pixelated />
           <PerformanceMonitor

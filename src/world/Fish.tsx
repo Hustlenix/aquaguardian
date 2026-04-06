@@ -3,6 +3,7 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { useStore } from '@/store/useStore'
 
 interface FishProps {
   visible?: boolean
@@ -32,43 +33,64 @@ function FishSchool({ count = 20 }: { count?: number }) {
     return arr
   }, [count])
 
+  const colors = useMemo(() => {
+    const arr: THREE.Color[] = []
+    for (let i = 0; i < count; i++) {
+      arr.push(new THREE.Color(FISH_COLORS[Math.floor(Math.random() * FISH_COLORS.length)]))
+    }
+    return arr
+  }, [count])
+
   useFrame((state) => {
     if (!ref.current) return
     const t = state.clock.elapsedTime
     for (let i = 0; i < data.length; i++) {
       const d = data[i]
+      const turnX = Math.sin(t * d.speed + d.phase)
+      const turnZ = Math.cos(t * d.speed + d.phase)
+
       dummy.position.set(
-        d.pos[0] + Math.sin(t * d.speed + d.phase) * d.radius,
+        d.pos[0] + turnX * d.radius,
         d.pos[1] + Math.sin(t * d.speed * 0.7 + d.phase * 1.2) * d.radius * 0.3,
-        d.pos[2] + Math.cos(t * d.speed + d.phase) * d.radius,
+        d.pos[2] + turnZ * d.radius,
       )
-      dummy.rotation.y = Math.atan2(
-        Math.cos(t * d.speed + d.phase) * d.radius,
-        -Math.sin(t * d.speed + d.phase) * d.radius,
-      )
-      dummy.rotation.z = Math.sin(t * d.speed * 0.5 + d.phase) * 0.1
+
+      // Face the direction of travel.
+      dummy.rotation.y = Math.atan2(turnZ * d.radius, -turnX * d.radius)
+      // Natural banking into turns + gentle pitch.
+      dummy.rotation.z = Math.sin(t * d.speed * 0.5 + d.phase) * 0.18
+      dummy.rotation.x = Math.sin(t * d.speed * 0.8 + d.phase * 1.1) * 0.08
+
       dummy.updateMatrix()
       ref.current.setMatrixAt(i, dummy.matrix)
+      ref.current.setColorAt(i, colors[i])
     }
     ref.current.instanceMatrix.needsUpdate = true
+    if (ref.current.instanceColor) ref.current.instanceColor.needsUpdate = true
   })
 
+<<<<<<< HEAD
   const color = useMemo(() => FISH_COLORS[Math.floor(Math.random() * FISH_COLORS.length)], [])
 
+=======
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
   return (
     <instancedMesh ref={ref} args={[undefined, undefined, count]}>
       <coneGeometry args={[0.08, 0.2, 3]} />
-      <meshStandardMaterial color={color} roughness={0.4} metalness={0.3} />
+      <meshStandardMaterial color="#FFFFFF" roughness={0.4} metalness={0.3} />
     </instancedMesh>
   )
 }
 
 export default function Fish({ visible = false }: FishProps) {
+  const quality = useStore((s) => s.quality)
   if (!visible) return null
+  // ~40 fish at high quality, fewer on mobile/medium.
+  const high = quality > 0.75
   return (
     <group>
-      <FishSchool count={25} />
-      <FishSchool count={15} />
+      <FishSchool count={high ? 25 : 14} />
+      <FishSchool count={high ? 15 : 8} />
     </group>
   )
 }

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#010B13"/>
+      <stop offset="40%" stop-color="#041525"/>
+      <stop offset="80%" stop-color="#071A2F"/>
+      <stop offset="100%" stop-color="#041525"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E8C84A"/>
+      <stop offset="50%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#B8962A"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00E5FF"/>
+      <stop offset="100%" stop-color="#00B8D4"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#00E5FF" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#00E5FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <!-- Subtle wave lines -->
+  <path d="M0 400 Q150 370 300 400 Q450 430 600 400 Q750 370 900 400 Q1050 430 1200 400 L1200 630 L0 630 Z" fill="#00E5FF" opacity="0.03"/>
+  <path d="M0 450 Q200 420 400 450 Q600 480 800 450 Q1000 420 1200 450 L1200 630 L0 630 Z" fill="#D4AF37" opacity="0.02"/>
+  <!-- AquaGuardian logo mark -->
+  <g transform="translate(600, 280)">
+    <!-- Trident icon simplified -->
+    <path d="M0-60 L-4-30 L-2-20 L0-18 L2-20 L4-30 Z" fill="url(#gold)"/>
+    <path d="M-8-40 L-6-25 L-4-35 Z" fill="url(#gold)" opacity="0.7"/>
+    <path d="M8-40 L6-25 L4-35 Z" fill="url(#gold)" opacity="0.7"/>
+    <rect x="-3" y="-18" width="6" height="40" rx="1.5" fill="url(#gold)"/>
+    <circle cx="0" cy="28" r="4" fill="url(#gold)"/>
+    <!-- Cyan accent dot -->
+    <circle cx="0" cy="-45" r="3" fill="url(#cyan)"/>
+  </g>
+  <!-- Title -->
+  <text x="600" y="370" text-anchor="middle" font-family="'Cinzel', 'Georgia', serif" font-size="64" font-weight="700" fill="url(#gold)" letter-spacing="8">AQUAGUARDIAN</text>
+  <!-- Tagline -->
+  <text x="600" y="410" text-anchor="middle" font-family="'Cormorant Garamond', 'Georgia', serif" font-size="26" fill="#8A9AA0" letter-spacing="3">Protecting Our Oceans Through Innovation</text>
+  <!-- Bottom bar -->
+  <rect x="480" y="440" width="240" height="2" fill="url(#gold)" opacity="0.4"/>
+  <!-- Small decorative dots -->
+  <circle cx="400" cy="500" r="2" fill="#00E5FF" opacity="0.15"/>
+  <circle cx="800" cy="520" r="2" fill="#00E5FF" opacity="0.15"/>
+  <circle cx="350" cy="200" r="1.5" fill="#D4AF37" opacity="0.1"/>
+  <circle cx="850" cy="180" r="1.5" fill="#D4AF37" opacity="0.1"/>
+  <circle cx="500" cy="550" r="1" fill="#00E5FF" opacity="0.2"/>
+  <circle cx="700" cy="150" r="1" fill="#00E5FF" opacity="0.2"/>
+</svg>

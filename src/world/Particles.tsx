@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -10,6 +10,36 @@ interface ParticlesProps {
   opacity?: number
   speed?: number
 }
+
+// Per-particle twinkle: sinusoidal opacity pulse with phase offset (plankton shimmer).
+const twinkleVertexShader = `
+  attribute float aPhase;
+  attribute float aSize;
+
+  uniform float uTime;
+
+  varying float vTwinkle;
+
+  void main() {
+    vTwinkle = 0.55 + 0.45 * sin(uTime * 1.4 + aPhase * 6.2831853);
+    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    gl_PointSize = clamp(aSize * (280.0 / max(0.1, -mvPosition.z)), 1.0, 56.0);
+    gl_Position = projectionMatrix * mvPosition;
+  }
+`
+
+const twinkleFragmentShader = `
+  uniform vec3 uColor;
+  uniform float uOpacity;
+
+  varying float vTwinkle;
+
+  void main() {
+    float d = length(gl_PointCoord - 0.5);
+    float alpha = smoothstep(0.5, 0.08, d);
+    gl_FragColor = vec4(uColor, alpha * uOpacity * vTwinkle);
+  }
+`
 
 function ParticleLayer({
   count,
@@ -27,52 +57,86 @@ function ParticleLayer({
   yOffset: number
 }) {
   const ref = useRef<THREE.Points>(null)
-  const offsetsRef = useRef<Float32Array>(new Float32Array(count!))
+  const safeCount = Math.max(1, count ?? 200)
+  const safeOpacity = opacity ?? 0.4
+  const safeSpeed = Math.max(0.001, speed ?? 0.3)
+  const offsetsRef = useRef<Float32Array>(new Float32Array(safeCount))
 
   const geometry = useMemo(() => {
-    offsetsRef.current = new Float32Array(count!)
-    const pos = new Float32Array(count! * 3)
-    const sizes = new Float32Array(count!)
-    for (let i = 0; i < count!; i++) {
+    offsetsRef.current = new Float32Array(safeCount)
+    const pos = new Float32Array(safeCount * 3)
+    const sizes = new Float32Array(safeCount)
+    const phases = new Float32Array(safeCount)
+
+    for (let i = 0; i < safeCount; i++) {
       pos[i * 3] = (Math.random() - 0.5) * 50 * spreadMul
       pos[i * 3 + 1] = yRange[0] + Math.random() * (yRange[1] - yRange[0]) + yOffset
       pos[i * 3 + 2] = (Math.random() - 0.5) * 40 * spreadMul - 5
       offsetsRef.current[i] = Math.random() * Math.PI * 2
       sizes[i] = sizeBase * (0.5 + Math.random() * 1)
+      phases[i] = Math.random()
     }
+
     const geo = new THREE.BufferGeometry()
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3))
-    geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1))
+    geo.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1))
+    geo.setAttribute('aPhase', new THREE.BufferAttribute(phases, 1))
     return geo
-  }, [count, sizeBase, spreadMul, yRange, yOffset])
+  }, [safeCount, sizeBase, spreadMul, yRange, yOffset])
 
-  const colorObj = useMemo(() => new THREE.Color(color), [color])
+  const material = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        vertexShader: twinkleVertexShader,
+        fragmentShader: twinkleFragmentShader,
+        uniforms: {
+          uTime: { value: 0 },
+          uColor: { value: new THREE.Color(color ?? '#88BBDD') },
+          uOpacity: { value: safeOpacity },
+        },
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      }),
+    [color, safeOpacity]
+  )
+
+  useEffect(() => {
+    ;(material.uniforms.uColor.value as THREE.Color).set(color ?? '#88BBDD')
+  }, [material, color])
+
+  useEffect(() => {
+    material.uniforms.uOpacity.value = safeOpacity
+  }, [material, safeOpacity])
 
   useFrame((state) => {
+    material.uniforms.uTime.value = state.clock.elapsedTime
     if (ref.current) {
       const pos = ref.current.geometry.attributes.position.array as Float32Array
+<<<<<<< HEAD
       const s = speed! * 0.003
       for (let i = 0; i < count!; i++) {
         pos[i * 3 + 1] += Math.sin(state.clock.elapsedTime * speed! + offsetsRef.current[i]) * s
         pos[i * 3] +=
           Math.cos(state.clock.elapsedTime * speed! * 0.7 + offsetsRef.current[i] * 0.5) * s * 0.5
+=======
+      const s = safeSpeed * 0.003
+
+      for (let i = 0; i < safeCount; i++) {
+        pos[i * 3 + 1] += Math.sin(state.clock.elapsedTime * safeSpeed + offsetsRef.current[i]) * s
+        pos[i * 3] +=
+          Math.cos(state.clock.elapsedTime * safeSpeed * 0.7 + offsetsRef.current[i] * 0.5) *
+          s *
+          0.5
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
       }
+
       ref.current.geometry.attributes.position.needsUpdate = true
     }
   })
 
   return (
-    <points ref={ref} geometry={geometry}>
-      <pointsMaterial
-        size={sizeBase}
-        transparent
-        blending={THREE.AdditiveBlending}
-        depthWrite={false}
-        color={colorObj}
-        opacity={opacity}
-        sizeAttenuation
-      />
-    </points>
+    <points ref={ref} geometry={geometry} material={material} />
   )
 }
 

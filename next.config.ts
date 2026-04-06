@@ -9,8 +9,10 @@ const nextConfig: NextConfig = {
   assetPrefix: isStatic ? '/aquaguardian/' : undefined,
   trailingSlash: isStatic ? true : undefined,
   images: {
-    unoptimized: isStatic ? true : undefined,
-    formats: isStatic ? undefined : ['image/avif', 'image/webp'],
+    unoptimized: true,
+    remotePatterns: [
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+    ],
   },
 }
 

@@ -9,7 +9,6 @@ export default function Chapter07_Mission() {
   const activeChapter = useStore((s) => s.activeChapter)
   const isActive = activeChapter === 6
   const groupRef = useRef<THREE.Group>(null)
-  const lineRef = useRef<THREE.LineSegments>(null)
 
   const waypoints = useMemo(() => {
     const points: { pos: [number, number, number]; phase: number }[] = []

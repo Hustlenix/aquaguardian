@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🌊 AquaGuardian: AI-Powered Ocean Restoration & Storytelling
 
 > **An interactive, cinematic 3D storytelling and digital command center experience that merges deep-sea mystery with autonomous environmental engineering.**
@@ -94,25 +95,154 @@ We respect the user's system preferences. Our custom React hooks (`useReducedMot
 - **npm** or **bun** / **yarn**
 
 ### 1. Install Dependencies
+=======
+# AquaGuardian
+
+A cinematic, interactive underwater storytelling experience designed to raise awareness around ocean conservation through immersive 3D visuals, narrative-driven content, and polished web animation.
+
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Three.js](https://img.shields.io/badge/Three.js-R3F-000000?style=flat-square&logo=three.js)](https://threejs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+
+Live demo: [https://hustlenix.github.io/aquaguardian/](https://hustlenix.github.io/aquaguardian/)
+
+---
+
+## Overview
+
+AquaGuardian combines storytelling, interactive design, and 3D web development into a single immersive product experience. The project was built to feel less like a traditional landing page and more like a cinematic journey through an underwater world, where the visual environment reinforces the message of marine conservation.
+
+The experience blends:
+- narrative-driven content sections
+- scroll-based scene progression
+- a real-time 3D ocean environment
+- animated effects and shader work
+- responsive behavior for different device tiers
+
+### AI usage declaration
+This project was developed as part of a creative, product-focused build where AI tools were used to accelerate prototyping, UI iteration, content structuring, and implementation support. The final product direction, technical decisions, and presentation choices were reviewed and refined by the human author to keep the experience grounded, coherent, and credible.
+
+---
+
+## Thought Process
+
+This project was approached as both a creative experience and a technical challenge.
+
+### Design intent
+The core idea was to make environmental storytelling feel tangible and memorable. Instead of relying on static content alone, the experience uses motion, atmosphere, and interactivity to help users emotionally connect with the message.
+
+### Technical approach
+The build focused on a modular structure that separates:
+- narrative content
+- scene state and interaction logic
+- 3D world rendering
+- animation and UI polish
+
+That structure makes the project easier to scale, maintain, and extend with new scenes, content, or interactions.
+
+---
+
+## What This Project Demonstrates
+
+This repository showcases a strong mix of modern frontend and interactive development skills, including:
+
+- Next.js app architecture and route organization
+- React and TypeScript for maintainable component-driven UI
+- Three.js and React Three Fiber for real-time 3D scenes
+- shader-based visuals for ocean, lighting, and caustic effects
+- smooth scrolling and motion design with GSAP, Lenis, and Framer Motion
+- state management with Zustand
+- responsive experience tuning for performance and device awareness
+- deployment readiness for static hosting and GitHub Pages
+
+---
+
+## Key Features
+
+- Immersive underwater 3D environment
+- Scroll-driven narrative progression
+- Cinematic lighting, particles, and post-processing effects
+- Responsive quality adaptation for mobile, tablet, and desktop
+- Optimized static export support for deployment
+- Structured content sections for mission, impact, technology, and call-to-action
+
+## Future Directions
+
+AquaGuardian is already strong as a storytelling experience, but it also has the potential to grow into a broader platform concept. A few compelling directions include:
+
+- a live dashboard for ocean cleanup metrics and impact reporting
+- a mission-tracker experience showing real-time conservation progress
+- a gamified community challenge mode for users to participate in sustainability actions
+- a multi-scene educational mode that explains marine ecosystems in a more interactive way
+- a mobile-first companion experience for field teams and marine researchers
+- a deeper AI assistant layer that explains the world, the robotics, and the mission context in real time
+
+---
+
+## Project Structure
+
+```text
+AquaGuardian_FullStack/
+├── public/                # Static assets and metadata
+├── src/
+│   ├── app/               # App Router pages, layouts, and API routes
+│   ├── chapters/          # Chapter-based scene content
+│   ├── components/        # Reusable UI, sections, and animation components
+│   ├── data/              # Scene and narrative data
+│   ├── hooks/             # Custom hooks for scene and device behavior
+│   ├── lib/               # Shared utilities and constants
+│   ├── shaders/           # GLSL shader modules
+│   ├── store/             # Zustand store
+│   ├── tokens/            # Design tokens
+│   ├── types/             # TypeScript types
+│   └── world/             # 3D world components and scene objects
+├── assets/                # Media assets such as audio, models, and textures
+└── package.json           # Project scripts and dependencies
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18 or newer
+- npm
+
+### Installation
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
 
 ```bash
 npm install
 ```
 
+<<<<<<< HEAD
 ### 2. Start Development Server
+=======
+### Development
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
 
 ```bash
 npm run dev
 ```
 
+<<<<<<< HEAD
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
 ### 3. Create a Production Build
+=======
+Then open [http://localhost:3000](http://localhost:3000).
+
+### Production build
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
 
 ```bash
 npm run build
 ```
 
+<<<<<<< HEAD
 ### 4. Code Quality & Formatting
 
 We maintain standard linting and formatting across our entire codebase:
@@ -120,10 +250,17 @@ We maintain standard linting and formatting across our entire codebase:
 ```bash
 npm run lint    # Run ESLint rules
 npm run format  # Format codebase using Prettier
+=======
+### Linting
+
+```bash
+npm run lint
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
 ```
 
 ---
 
+<<<<<<< HEAD
 ## 🌌 Repository Structure
 
 ```bash
@@ -144,10 +281,21 @@ npm run format  # Format codebase using Prettier
 ├── package.json          # Main manifest
 ├── tsconfig.json         # TypeScript configuration
 └── tailwind.config.ts    # Tailwind styling tokens
+=======
+## Deployment
+
+The project is configured for modern static deployment and can be exported for hosting platforms such as GitHub Pages.
+
+To build for static export:
+
+```bash
+STATIC_EXPORT=true npm run build
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
 ```
 
 ---
 
+<<<<<<< HEAD
 ## 🌐 Deployments & Production Readyness
 
 - **Self-Healing Error Boundaries:** The R3F Canvas is wrapped inside an `<ErrorBoundary />`. If a WebGL context is lost, the layout automatically falls back to an elegant static high-fidelity CSS representation, guaranteeing 100% uptime.
@@ -158,3 +306,42 @@ npm run format  # Format codebase using Prettier
 _“The sea, once it casts its spell, holds one in its net of wonder forever.”_ — **Jacques Yves Cousteau**
 
 Developed with 💙 by **Jules** and the **AquaGuardian Team**.
+=======
+## Tech Stack
+
+- Next.js
+- React
+- TypeScript
+- Three.js
+- React Three Fiber
+- Tailwind CSS
+- GSAP
+- Framer Motion
+- Lenis
+- Zustand
+- ESLint and Prettier
+
+---
+
+## License
+
+This project is created for demonstration, storytelling, and environmental awareness purposes.
+
+---
+
+## Acknowledgements
+
+Built as a polished showcase of interactive web experience design, 3D storytelling, and frontend engineering craftsmanship.
+
+---
+
+## Suggested Next Moves
+
+If this project continues to evolve, these would make it even stronger:
+
+1. Add a live data layer for ocean restoration metrics and mission updates.
+2. Introduce a richer interactive dashboard with analysis and impact timelines.
+3. Expand the narrative into a full multi-episode experience.
+4. Add voice-guided storytelling and ambient sound design for a more cinematic feel.
+5. Build a community or educational portal around conservation awareness and robotics education.
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)

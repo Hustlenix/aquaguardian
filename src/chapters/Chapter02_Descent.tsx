@@ -23,7 +23,7 @@ export default function Chapter02_Descent() {
     return geo
   }).current()
 
-  useFrame((state) => {
+  useFrame((_state) => {
     if (particlesRef.current && isActive) {
       const pos = particlesRef.current.geometry.attributes.position.array as Float32Array
       for (let i = 0; i < count; i++) {

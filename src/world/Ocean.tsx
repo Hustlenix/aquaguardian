@@ -1,33 +1,50 @@
 'use client'
 
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { useStore } from '@/store/useStore'
+import {
+  oceanGradientVertexShader,
+  oceanGradientFragmentShader,
+} from '@/shaders/oceanGradient'
 
 export default function OceanSurface({ topColor = '#1A6B8A' }: { topColor?: string }) {
-  const ref = useRef<THREE.Mesh>(null)
-  const timeRef = useRef(0)
+  const quality = useStore((s) => s.quality)
 
-  const texture = useMemo(() => {
-    const canvas = document.createElement('canvas')
-    canvas.width = 4
-    canvas.height = 512
-    const ctx = canvas.getContext('2d')!
-    const gradient = ctx.createLinearGradient(0, 0, 0, 512)
-    gradient.addColorStop(0, topColor)
-    gradient.addColorStop(0.1, '#0F4A6B')
-    gradient.addColorStop(0.3, '#082A40')
-    gradient.addColorStop(0.5, '#041525')
-    gradient.addColorStop(1, '#010B13')
-    ctx.fillStyle = gradient
-    ctx.fillRect(0, 0, 4, 512)
-    const tex = new THREE.CanvasTexture(canvas)
-    tex.magFilter = THREE.LinearFilter
-    tex.minFilter = THREE.LinearFilter
-    return tex
+  // High segment count only at high quality; lower on mobile/medium.
+  const segments = useMemo(() => (quality > 0.75 ? 96 : 48), [quality])
+
+  const geometry = useMemo(
+    () => new THREE.PlaneGeometry(120, 120, segments, segments),
+    [segments]
+  )
+
+  const material = useMemo(() => {
+    const m = new THREE.ShaderMaterial({
+      vertexShader: oceanGradientVertexShader,
+      fragmentShader: oceanGradientFragmentShader,
+      uniforms: {
+        uTime: { value: 0 },
+        uAmplitude: { value: 1 },
+        uTopColor: { value: new THREE.Color(topColor) },
+        uDeepColor: { value: new THREE.Color('#010B13') },
+        uLightDir: { value: new THREE.Vector3(0.4, 0.9, -0.25).normalize() },
+      },
+      transparent: true,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    })
+    return m
   }, [topColor])
 
+  // Keep the surface color in sync with scene-state driven color changes.
+  useEffect(() => {
+    ;(material.uniforms.uTopColor.value as THREE.Color).set(topColor)
+  }, [material, topColor])
+
   useFrame((state) => {
+<<<<<<< HEAD
     if (!ref.current) return
     timeRef.current += state.clock.getDelta()
     const t = timeRef.current
@@ -42,12 +59,17 @@ export default function OceanSurface({ topColor = '#1A6B8A' }: { topColor?: stri
     }
     ref.current.geometry.attributes.position.needsUpdate = true
     ref.current.geometry.computeVertexNormals()
+=======
+    material.uniforms.uTime.value = state.clock.elapsedTime
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
   })
 
   return (
-    <mesh ref={ref} position={[0, 0.5, 0]}>
-      <planeGeometry args={[120, 120, 80, 80]} />
-      <meshBasicMaterial map={texture} side={THREE.DoubleSide} depthWrite={false} />
-    </mesh>
+    <mesh
+      position={[0, 0.5, 0]}
+      geometry={geometry}
+      material={material}
+      renderOrder={-1}
+    />
   )
 }

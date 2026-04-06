@@ -49,6 +49,36 @@ export default function Footer() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a href="/dashboard" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                  Dashboard
+                </a>
+              </li>
+              <li>
+                <a href="/missions" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                  Missions
+                </a>
+              </li>
+              <li>
+                <a href="/challenges" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                  Challenges
+                </a>
+              </li>
+              <li>
+                <a href="/learn" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                  Education
+                </a>
+              </li>
+              <li>
+                <a href="/assistant" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                  Assistant
+                </a>
+              </li>
+              <li>
+                <a href="/mobile" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                  Mobile
+                </a>
+              </li>
             </ul>
           </div>
         </div>

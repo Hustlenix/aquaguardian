@@ -1,8 +1,9 @@
 'use client'
 
 import { useMemo, useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
+import { useStore } from '@/store/useStore'
 
 interface LightingProps {
   ambientIntensity?: number
@@ -14,6 +15,7 @@ interface LightingProps {
   pointColor?: string
 }
 
+<<<<<<< HEAD
 function CausticPattern({ intensity = 0.3 }: { intensity?: number }) {
   const ref = useRef<THREE.Mesh>(null)
 
@@ -63,6 +65,8 @@ function CausticPattern({ intensity = 0.3 }: { intensity?: number }) {
   )
 }
 
+=======
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
 export default function Lighting({
   ambientIntensity = 0.4,
   ambientColor = '#B8D4E3',
@@ -73,17 +77,56 @@ export default function Lighting({
   pointColor = '#D4AF37',
 }: LightingProps) {
   const dirRef = useRef<THREE.DirectionalLight>(null)
+  const robotSpotRef = useRef<THREE.PointLight>(null)
+  const rimRef = useRef<THREE.PointLight>(null)
+  const { camera } = useThree()
+  const robotActivated = useStore((s) => s.sceneState.robot.activated)
+  const activeSection = useStore((s) => s.activeSection)
+
   const dColor = useMemo(() => new THREE.Color(directionalColor), [directionalColor])
   const aColor = useMemo(() => new THREE.Color(ambientColor), [ambientColor])
   const pColor = useMemo(() => new THREE.Color(pointColor), [pointColor])
   const skyColor = useMemo(() => new THREE.Color(ambientColor), [ambientColor])
   const groundColor = useMemo(() => new THREE.Color('#010B13'), [])
+  const gold = useMemo(() => new THREE.Color('#FFD9A0'), [])
+  const cool = useMemo(() => new THREE.Color('#3A7A9A'), [])
+  const scratch = useMemo(() => new THREE.Color(), [])
+  const rimOffset = useMemo(() => new THREE.Vector3(-2.2, 1.6, 2.6), [])
+  const robotSpotTarget = useRef(0.35)
 
-  useFrame((state) => {
+  // Warmer gold near the surface (hero/footer), cooler in the depths (problem).
+  const warmth = useMemo(() => {
+    if (activeSection === 'hero' || activeSection === 'footer') return 0.15
+    if (activeSection === 'problem') return -0.08
+    return 0.04
+  }, [activeSection])
+
+  useFrame((state, delta) => {
+    const t = state.clock.elapsedTime
+
     if (dirRef.current) {
-      const t = state.clock.elapsedTime
       dirRef.current.position.x = directionalPosition[0] + Math.sin(t * 0.05) * 1.5
       dirRef.current.position.z = directionalPosition[2] + Math.cos(t * 0.04) * 1.5
+
+      // Gentle animated intensity pulse (1-3% variation).
+      dirRef.current.intensity = directionalIntensity * (1 + Math.sin(t * 0.6) * 0.02)
+
+      // Warm/cool tint driven by the current section.
+      scratch.copy(dColor).lerp(warmth >= 0 ? gold : cool, Math.abs(warmth))
+      dirRef.current.color.copy(scratch)
+    }
+
+    // Cyan spotlight above the seabed center; brightens smoothly when the
+    // robot section is active (solution/technology).
+    if (robotSpotRef.current) {
+      const target = robotActivated ? 2.4 : 0.35
+      robotSpotTarget.current += (target - robotSpotTarget.current) * (1 - Math.exp(-3 * delta))
+      robotSpotRef.current.intensity = robotSpotTarget.current
+    }
+
+    // Rim light that follows the camera for constant silhouette definition.
+    if (rimRef.current) {
+      rimRef.current.position.copy(camera.position).add(rimOffset)
     }
   })
 
@@ -111,6 +154,7 @@ export default function Lighting({
       />
       <pointLight position={[-3, 0, 2]} intensity={0.3} color="#00E5FF" distance={12} decay={1} />
 
+<<<<<<< HEAD
       {/* Rim backlight for silhouette definition */}
       <pointLight
         position={[-8, -2, -12]}
@@ -119,10 +163,24 @@ export default function Lighting({
         distance={15}
         decay={1}
       />
+=======
+      {/* Robot spotlight — brightens when the robot section is active */}
+      <pointLight
+        ref={robotSpotRef}
+        position={[0, -3.2, -5]}
+        intensity={0.35}
+        color="#00E5FF"
+        distance={14}
+        decay={1.5}
+      />
+
+      {/* Rim backlights for silhouette definition */}
+      <pointLight position={[-8, -2, -12]} intensity={0.5} color="#4A8AAA" distance={15} decay={1} />
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
       <pointLight position={[8, -1, -10]} intensity={0.3} color="#6AA0B0" distance={12} decay={1} />
 
-      {/* Caustic projection */}
-      <CausticPattern intensity={directionalIntensity * 0.15} />
+      {/* Camera-following rim light */}
+      <pointLight ref={rimRef} position={[-2, 2, 10]} intensity={0.45} color="#6AB8D8" distance={18} decay={1.2} />
     </>
   )
 }

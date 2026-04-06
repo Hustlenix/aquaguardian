@@ -1,9 +1,3 @@
-// Ocean gradient + layered Gerstner-style wave shader.
-// Vertex: 3 octaves of directional swell with analytic wave normals.
-// Fragment: fresnel-based transparency (more transparent straight-on,
-// solid at grazing angles) blended with a depth-based color gradient
-// (light surface color at the top -> deep navy below).
-
 export const oceanGradientVertexShader = `
   uniform float uTime;
   uniform float uAmplitude;
@@ -27,11 +21,8 @@ export const oceanGradientVertexShader = `
     vec2 grad = vec2(0.0);
     float y = 0.0;
 
-    // Octave 1 — broad primary swell
     y += waveY(p, t, normalize(vec2(1.0, 0.35)), 0.24, 0.32, 1.1, 0.0, grad);
-    // Octave 2 — secondary diagonal swell
     y += waveY(p, t, normalize(vec2(-0.6, 0.8)), 0.15, 0.55, 1.6, 1.9, grad);
-    // Octave 3 — fine chop detail
     y += waveY(p, t, normalize(vec2(0.25, -0.9)), 0.08, 0.95, 2.3, 4.1, grad);
 
     vec3 pos = position;
@@ -60,19 +51,15 @@ export const oceanGradientFragmentShader = `
     float ndv = abs(dot(normal, viewDir));
     float fresnel = pow(1.0 - ndv, 2.2);
 
-    // Depth-based gradient: light near the surface (top), deep navy below.
     float depthFactor = clamp((vWorldPos.y + 4.0) / 32.0, 0.0, 1.0);
     vec3 base = mix(uDeepColor, uTopColor, depthFactor);
 
-    // Fresnel blend — grazing angles show the lit surface, straight-on shows depth.
     vec3 color = mix(base, uTopColor, fresnel * 0.85);
 
-    // Subtle sun glint on wave crests for sparkle.
     vec3 lDir = normalize(uLightDir);
     float spec = pow(max(dot(reflect(-viewDir, normal), lDir), 0.0), 48.0);
     color += uTopColor * spec * 0.35 * (0.35 + depthFactor);
 
-    // Slightly translucent straight-on so mid-water shapes read through the depths.
     float alpha = mix(0.72, 0.96, fresnel);
 
     gl_FragColor = vec4(color, alpha);

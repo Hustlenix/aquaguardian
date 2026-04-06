@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import SectionWrapper from './SectionWrapper'
 
@@ -78,11 +79,12 @@ export default function GallerySection() {
             }}
             className="group relative glass-panel overflow-hidden cursor-pointer min-h-[240px] flex flex-col items-end justify-end text-left p-0"
           >
-            <img
+            <Image
               src={item.src}
               alt={item.label}
-              loading="lazy"
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#010B13]/90 via-[#010B13]/30 to-transparent" />
             <div className="relative z-10 p-5 w-full">

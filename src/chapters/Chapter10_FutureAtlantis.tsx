@@ -38,7 +38,7 @@ export default function Chapter10_FutureAtlantis() {
       }
     }
     return items
-  }, [])
+  }, [gridSize, spacing, offset])
 
   useFrame((state) => {
     if (!groupRef.current || !isActive) return

@@ -36,6 +36,7 @@ export const metadata: Metadata = {
   title: 'AquaGuardian | AI-Powered Ocean Restoration',
   description:
     "An AI-powered autonomous guardian monitoring and restoring ocean ecosystems. Combining advanced robotics with environmental science to protect our planet's most vital resource.",
+<<<<<<< HEAD
   keywords: [
     'ocean cleanup',
     'autonomous underwater vehicle',
@@ -43,13 +44,16 @@ export const metadata: Metadata = {
     'ocean restoration',
     'aquatic robot',
   ],
+=======
+  keywords: ['ocean cleanup', 'autonomous underwater vehicle', 'AI marine conservation', 'ocean restoration', 'aquatic robot', 'underwater storytelling', '3d web experience'],
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
   authors: [{ name: 'AquaGuardian' }],
   creator: 'AquaGuardian',
   publisher: 'AquaGuardian',
   openGraph: {
     title: 'AquaGuardian | AI-Powered Ocean Restoration',
     description:
-      'An AI-powered autonomous guardian monitoring and restoring ocean ecosystems. Combining advanced robotics with environmental science.',
+      'An immersive underwater storytelling experience where AI robotics and conservation meet cinematic web design.',
     url: 'https://hustlenix.github.io/aquaguardian',
     siteName: 'AquaGuardian',
     images: [
@@ -66,7 +70,12 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'AquaGuardian | AI-Powered Ocean Restoration',
+<<<<<<< HEAD
     description: 'An AI-powered autonomous guardian monitoring and restoring ocean ecosystems.',
+=======
+    description:
+      'An immersive underwater storytelling experience where AI robotics and conservation meet cinematic web design.',
+>>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
     images: ['https://hustlenix.github.io/aquaguardian/og-image.png'],
   },
   robots: {
@@ -76,8 +85,10 @@ export const metadata: Metadata = {
   icons: {
     icon: '/aquaguardian/favicon.svg',
     shortcut: '/aquaguardian/favicon.svg',
+    apple: '/aquaguardian/favicon.svg',
   },
   manifest: '/aquaguardian/site.webmanifest',
+  category: 'technology',
 }
 
 export default function RootLayout({

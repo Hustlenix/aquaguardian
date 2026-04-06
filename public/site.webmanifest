@@ -1,0 +1,19 @@
+{
+  "name": "AquaGuardian",
+  "short_name": "AquaGuardian",
+  "description": "An immersive underwater storytelling experience focused on ocean restoration and AI-powered conservation.",
+  "start_url": "/aquaguardian/",
+  "scope": "/aquaguardian/",
+  "display": "standalone",
+  "background_color": "#010B13",
+  "theme_color": "#010B13",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/aquaguardian/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

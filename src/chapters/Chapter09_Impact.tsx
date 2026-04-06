@@ -23,7 +23,7 @@ export default function Chapter09_Impact() {
       color: i < barCount / 2 ? '#00B8A0' : '#D4AF37',
       baseHeight: 0.2 + Math.random() * 0.3,
     }))
-  }, [])
+  }, [barCount, barWidth, gap, startX])
 
   useFrame((state) => {
     if (!groupRef.current || !isActive) return

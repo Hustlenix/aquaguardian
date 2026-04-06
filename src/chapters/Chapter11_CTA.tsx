@@ -114,7 +114,7 @@ export default function Chapter11_CTA() {
 
 function RisingParticle({
   data,
-  index,
+  index: _index,
 }: {
   data: {
     angle: number

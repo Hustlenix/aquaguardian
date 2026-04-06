@@ -31,9 +31,13 @@ function KelpStalk({
     const children = ref.current.children
     for (let i = 0; i < segments; i++) {
       const mesh = children[i] as THREE.Mesh
-      const sway = Math.sin(t * 0.4 + phase + i * 0.5) * 0.08 * (i / segments)
-      mesh.position.x = sway * (i * 0.3)
-      mesh.rotation.z = sway * 0.5
+      // Pendulum-style: amplitude grows quadratically toward the top.
+      const k = i / segments
+      const sway = Math.sin(t * 0.5 + phase + i * 0.45) * (0.1 + 0.12 * k * k)
+      mesh.position.x = sway * k * 0.8
+      mesh.position.z = Math.cos(t * 0.4 + phase + i * 0.3) * 0.03 * k * k
+      mesh.rotation.z = sway * 0.55 * (0.4 + k)
+      mesh.rotation.x = Math.cos(t * 0.35 + phase * 1.3 + i * 0.2) * 0.06 * k
     }
   })
 
