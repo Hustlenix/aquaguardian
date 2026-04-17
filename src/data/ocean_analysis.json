@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-08-01T03:10:24.471053Z",
+  "metrics": {
+    "totalItemsCollected": 0,
+    "totalWeightKg": 0.0,
+    "estimatedCo2SavedKg": 0.0,
+    "totalCollectionEvents": 0,
+    "topCollectionZone": "N/A"
+  },
+  "locationBreakdown": {},
+  "scientificReferences": [
+    {
+      "source": "UN Environment Programme (UNEP)",
+      "topic": "Global Marine Litter and Microplastics Assessment",
+      "link": "https://www.unep.org/resources/report/from-pollution-to-solution"
+    },
+    {
+      "source": "The Ocean Cleanup Scientific Studies",
+      "topic": "River Plastic Emissions & Ocean Accumulation Zones",
+      "link": "https://theoceancleanup.com/scientific-publications/"
+    },
+    {
+      "source": "National Oceanic and Atmospheric Administration (NOAA)",
+      "topic": "Marine Debris Program Data",
+      "link": "https://marinedebris.noaa.gov/"
+    }
+  ]
+}
