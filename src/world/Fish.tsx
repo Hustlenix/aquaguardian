@@ -55,9 +55,7 @@ function FishSchool({ count = 20 }: { count?: number }) {
         d.pos[2] + turnZ * d.radius,
       )
 
-      // Face the direction of travel.
       dummy.rotation.y = Math.atan2(turnZ * d.radius, -turnX * d.radius)
-      // Natural banking into turns + gentle pitch.
       dummy.rotation.z = Math.sin(t * d.speed * 0.5 + d.phase) * 0.18
       dummy.rotation.x = Math.sin(t * d.speed * 0.8 + d.phase * 1.1) * 0.08
 
@@ -69,11 +67,6 @@ function FishSchool({ count = 20 }: { count?: number }) {
     if (ref.current.instanceColor) ref.current.instanceColor.needsUpdate = true
   })
 
-<<<<<<< HEAD
-  const color = useMemo(() => FISH_COLORS[Math.floor(Math.random() * FISH_COLORS.length)], [])
-
-=======
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
   return (
     <instancedMesh ref={ref} args={[undefined, undefined, count]}>
       <coneGeometry args={[0.08, 0.2, 3]} />
@@ -85,7 +78,6 @@ function FishSchool({ count = 20 }: { count?: number }) {
 export default function Fish({ visible = false }: FishProps) {
   const quality = useStore((s) => s.quality)
   if (!visible) return null
-  // ~40 fish at high quality, fewer on mobile/medium.
   const high = quality > 0.75
   return (
     <group>

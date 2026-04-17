@@ -2,13 +2,7 @@
 
 import { useMemo } from 'react'
 import { useStore } from '@/store/useStore'
-import {
-  EffectComposer,
-  Bloom,
-  Vignette,
-  Noise,
-  ChromaticAberration,
-} from '@react-three/postprocessing'
+import { EffectComposer, Bloom, Vignette, Noise, ChromaticAberration } from '@react-three/postprocessing'
 
 export default function Effects() {
   const quality = useStore((s) => s.quality)
@@ -22,11 +16,6 @@ export default function Effects() {
     }
   }, [quality])
 
-<<<<<<< HEAD
-  if (!effects.bloom) return null
-
-  return <></>
-=======
   return (
     <EffectComposer multisampling={cfg.multisampling}>
       <Bloom
@@ -38,11 +27,8 @@ export default function Effects() {
       />
       {cfg.isHigh ? (
         <>
-          {/* Darkened edges for a cinematic frame */}
           <Vignette eskil={false} offset={0.24} darkness={0.72} />
-          {/* Subtle film grain */}
           <Noise premultiply opacity={0.032} />
-          {/* Very subtle color fringing on high-quality desktops */}
           <ChromaticAberration offset={[0.0015, 0.0012]} />
         </>
       ) : (
@@ -50,5 +36,4 @@ export default function Effects() {
       )}
     </EffectComposer>
   )
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
 }

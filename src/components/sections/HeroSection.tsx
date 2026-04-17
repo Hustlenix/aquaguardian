@@ -45,12 +45,8 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
           className="text-body max-w-xl mb-10"
         >
-<<<<<<< HEAD
           An AI-powered autonomous guardian monitoring and restoring ocean ecosystems. Combining
           advanced robotics with environmental science.
-=======
-          An AI-powered autonomous guardian monitoring and restoring ocean ecosystems with cinematic precision, regenerative technology, and compassionate design.
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
         </motion.p>
 
         <motion.div

@@ -35,7 +35,6 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
     return [make(), make()]
   }, [])
 
-<<<<<<< HEAD
   const configs = useMemo(
     () =>
       Array.from({ length: 12 }, () => ({
@@ -47,21 +46,8 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
         speed: 0.2 + Math.random() * 0.3,
         phase: Math.random() * Math.PI * 2,
       })),
-    [],
+    []
   )
-=======
-  const configs = useMemo(() =>
-    Array.from({ length: 6 }, () => ({
-      x: (Math.random() - 0.5) * 20,
-      z: (Math.random() - 0.5) * 16 - 2,
-      width: 0.25 + Math.random() * 0.55,
-      height: 6 + Math.random() * 7,
-      rotOffset: (Math.random() - 0.5) * 0.15,
-      speed: 0.15 + Math.random() * 0.2,
-      phase: Math.random() * Math.PI * 2,
-    })),
-  [])
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
 
   useFrame((state) => {
     if (!groupRef.current) return
@@ -84,18 +70,8 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
   return (
     <group ref={groupRef}>
       {configs.map((c, i) => (
-<<<<<<< HEAD
         <mesh key={i} position={[c.x, -1.5 + c.height / 2, c.z]} rotation={[0, 0, c.rotOffset]}>
           <planeGeometry args={[c.width, c.height]} />
-=======
-        <mesh
-          key={i}
-          position={[c.x, -1.2 + c.height / 2, c.z]}
-          rotation={[0, 0, c.rotOffset]}
-        >
-          {/* Tapered shaft: narrow at the surface, spreading downward */}
-          <coneGeometry args={[c.width, c.height, 12, 1, true]} />
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
           <meshBasicMaterial
             map={textures[i % 2]}
             color={rayColor}

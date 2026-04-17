@@ -113,22 +113,11 @@ function ParticleLayer({
     material.uniforms.uTime.value = state.clock.elapsedTime
     if (ref.current) {
       const pos = ref.current.geometry.attributes.position.array as Float32Array
-<<<<<<< HEAD
-      const s = speed! * 0.003
-      for (let i = 0; i < count!; i++) {
-        pos[i * 3 + 1] += Math.sin(state.clock.elapsedTime * speed! + offsetsRef.current[i]) * s
-        pos[i * 3] +=
-          Math.cos(state.clock.elapsedTime * speed! * 0.7 + offsetsRef.current[i] * 0.5) * s * 0.5
-=======
       const s = safeSpeed * 0.003
 
       for (let i = 0; i < safeCount; i++) {
         pos[i * 3 + 1] += Math.sin(state.clock.elapsedTime * safeSpeed + offsetsRef.current[i]) * s
-        pos[i * 3] +=
-          Math.cos(state.clock.elapsedTime * safeSpeed * 0.7 + offsetsRef.current[i] * 0.5) *
-          s *
-          0.5
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
+        pos[i * 3] += Math.cos(state.clock.elapsedTime * safeSpeed * 0.7 + offsetsRef.current[i] * 0.5) * s * 0.5
       }
 
       ref.current.geometry.attributes.position.needsUpdate = true

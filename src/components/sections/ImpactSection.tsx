@@ -83,15 +83,10 @@ export default function ImpactSection() {
             <div className="text-sm font-medium tracking-wide text-text uppercase mb-1">
               {stat.label}
             </div>
-<<<<<<< HEAD
-            <div className="text-xs text-text-muted">{stat.sub}</div>
-          </motion.div>
-=======
             <div className="text-xs text-text-muted">
               {stat.sub}
             </div>
           </motion.a>
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
         ))}
       </div>
     </SectionWrapper>

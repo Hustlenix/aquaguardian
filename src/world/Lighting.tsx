@@ -15,58 +15,6 @@ interface LightingProps {
   pointColor?: string
 }
 
-<<<<<<< HEAD
-function CausticPattern({ intensity = 0.3 }: { intensity?: number }) {
-  const ref = useRef<THREE.Mesh>(null)
-
-  const texture = useMemo(() => {
-    const canvas = document.createElement('canvas')
-    canvas.width = 256
-    canvas.height = 256
-    const ctx = canvas.getContext('2d')!
-
-    for (let i = 0; i < 60; i++) {
-      const x = Math.random() * 256
-      const y = Math.random() * 256
-      const r = 8 + Math.random() * 24
-      const alpha = 0.02 + Math.random() * 0.06
-      ctx.beginPath()
-      ctx.arc(x, y, r, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(200, 240, 255, ${alpha})`
-      ctx.fill()
-    }
-
-    const tex = new THREE.CanvasTexture(canvas)
-    tex.wrapS = tex.wrapT = THREE.RepeatWrapping
-    tex.repeat.set(8, 4)
-    return tex
-  }, [])
-
-  useFrame((state) => {
-    if (ref.current) {
-      texture.offset.x += Math.sin(state.clock.elapsedTime * 0.08) * 0.002
-      texture.offset.y += Math.cos(state.clock.elapsedTime * 0.06) * 0.002
-    }
-  })
-
-  if (intensity < 0.05) return null
-
-  return (
-    <mesh ref={ref} position={[0, 8, -3]} rotation={[-Math.PI / 2, 0, 0]} scale={[25, 25, 1]}>
-      <planeGeometry />
-      <meshBasicMaterial
-        map={texture}
-        transparent
-        opacity={intensity * 0.6}
-        blending={THREE.AdditiveBlending}
-        depthWrite={false}
-      />
-    </mesh>
-  )
-}
-
-=======
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
 export default function Lighting({
   ambientIntensity = 0.4,
   ambientColor = '#B8D4E3',
@@ -154,17 +102,6 @@ export default function Lighting({
       />
       <pointLight position={[-3, 0, 2]} intensity={0.3} color="#00E5FF" distance={12} decay={1} />
 
-<<<<<<< HEAD
-      {/* Rim backlight for silhouette definition */}
-      <pointLight
-        position={[-8, -2, -12]}
-        intensity={0.5}
-        color="#4A8AAA"
-        distance={15}
-        decay={1}
-      />
-=======
-      {/* Robot spotlight — brightens when the robot section is active */}
       <pointLight
         ref={robotSpotRef}
         position={[0, -3.2, -5]}
@@ -173,13 +110,9 @@ export default function Lighting({
         distance={14}
         decay={1.5}
       />
-
-      {/* Rim backlights for silhouette definition */}
       <pointLight position={[-8, -2, -12]} intensity={0.5} color="#4A8AAA" distance={15} decay={1} />
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
       <pointLight position={[8, -1, -10]} intensity={0.3} color="#6AA0B0" distance={12} decay={1} />
 
-      {/* Camera-following rim light */}
       <pointLight ref={rimRef} position={[-2, 2, 10]} intensity={0.45} color="#6AB8D8" distance={18} decay={1.2} />
     </>
   )
