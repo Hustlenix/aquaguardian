@@ -40,12 +40,19 @@ jobs:
         run: npm run lint
 
       - name: Remove legacy API routes (incompatible with static export)
-        run: mv src/app/api /tmp/api-backup
+        run: |
+          if [ -d src/app/api ]; then mv src/app/api /tmp/api-backup; fi
 
       - name: Build static export
         run: npm run build
         env:
           STATIC_EXPORT: true
+          NEXT_PUBLIC_BASE_PATH: /aquaguardian
+
+      - name: Ensure Pages artifact exists
+        run: |
+          if [ ! -d out ]; then echo 'out directory missing'; exit 1; fi
+          find out -maxdepth 2 -type f | head
 
       - name: Setup Pages
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
