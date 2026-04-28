@@ -18,6 +18,7 @@ export default function StaggerReveal({ children, className = '', delay = 0 }: P
       transition: {
         staggerChildren: 0.08,
         delayChildren: delay,
+        ease: [0.25, 0.1, 0.25, 1] as const,
       },
     },
   }
@@ -27,7 +28,7 @@ export default function StaggerReveal({ children, className = '', delay = 0 }: P
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-60px' }}
+      viewport={{ once: true, margin: '-40px' }}
       className={className}
     >
       {children}
