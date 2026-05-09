@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Cinzel, Cormorant_Garamond, Inter, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 import SmoothScroll from '@/components/SmoothScroll'
@@ -76,12 +76,22 @@ export const metadata: Metadata = {
     follow: true,
   },
   icons: {
-    icon: '/aquaguardian/favicon.svg',
-    shortcut: '/aquaguardian/favicon.svg',
-    apple: '/aquaguardian/favicon.svg',
+    icon: [
+      { url: '/aquaguardian/favicon.ico', sizes: 'any' },
+      { url: '/aquaguardian/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/aquaguardian/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/aquaguardian/favicon.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/aquaguardian/favicon.ico',
+    apple: '/aquaguardian/apple-touch-icon.png',
   },
   manifest: '/aquaguardian/site.webmanifest',
   category: 'technology',
+}
+
+export const viewport: Viewport = {
+  themeColor: '#010B13',
+  colorScheme: 'dark',
 }
 
 export default function RootLayout({

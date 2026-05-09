@@ -1,4 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" rx="20" fill="#010B13"/>
-  <text x="50" y="68" font-family="serif" font-size="52" font-weight="bold" fill="#D4AF37" text-anchor="middle">A</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="aq-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#041525"/>
+      <stop offset="100%" stop-color="#010B13"/>
+    </linearGradient>
+    <linearGradient id="aq-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E8C84A"/>
+      <stop offset="50%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#B8962A"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="62" height="62" rx="14" fill="url(#aq-bg)" stroke="#00E5FF" stroke-opacity="0.4" stroke-width="2"/>
+  <circle cx="32" cy="32" r="20" fill="none" stroke="#00E5FF" stroke-opacity="0.55" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="63 63" transform="rotate(-45 32 32)"/>
+  <circle cx="32" cy="32" r="14" fill="none" stroke="#00E5FF" stroke-opacity="0.22" stroke-width="1"/>
+  <g transform="translate(32 32) scale(0.4)">
+    <path d="M0-60 L-4-30 L-2-20 L0-18 L2-20 L4-30 Z" fill="url(#aq-gold)"/>
+    <path d="M-8-40 L-6-25 L-4-35 Z" fill="url(#aq-gold)" opacity="0.7"/>
+    <path d="M8-40 L6-25 L4-35 Z" fill="url(#aq-gold)" opacity="0.7"/>
+    <rect x="-3" y="-18" width="6" height="40" rx="1.5" fill="url(#aq-gold)"/>
+    <circle cx="0" cy="28" r="4" fill="url(#aq-gold)"/>
+    <circle cx="0" cy="-45" r="3" fill="#00E5FF"/>
+  </g>
 </svg>
