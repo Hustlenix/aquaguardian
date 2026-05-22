@@ -1,347 +1,157 @@
-<<<<<<< HEAD
-# 🌊 AquaGuardian: AI-Powered Ocean Restoration & Storytelling
+# 🌊 AquaGuardian — AI-Powered Ocean Restoration & Storytelling
 
-> **An interactive, cinematic 3D storytelling and digital command center experience that merges deep-sea mystery with autonomous environmental engineering.**
+> **A cinematic, immersive underwater experience where deep-sea mystery meets autonomous environmental engineering.** Explore a living 3D ocean, follow an AI guardian's mission, and discover the data behind ocean restoration — built as a premium web experience, not a brochure.
 
-[![Next.js](https://img.shields.io/badge/Next.js-15.x-black?style=flat-flat&logo=next.js)](https://nextjs.org/)
-[![React Three Fiber](https://img.shields.io/badge/Three.js-R3F-blue?style=flat-flat&logo=three.js)](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction)
-[![GSAP](https://img.shields.io/badge/Animations-GSAP%20%26%20Framer-green?style=flat-flat)](https://gsap.com/)
-[![TailwindCSS](https://img.shields.io/badge/Styling-TailwindCSS-06B6D4?style=flat-flat&logo=tailwind-css)](https://tailwindcss.com/)
-[![TypeScript](https://img.shields.io/badge/Language-TypeScript-blue?style=flat-flat&logo=typescript)](https://www.typescriptlang.org/)
-
----
-
-## 🧭 Creative North Star: "The Sovereign Vault" & Atlantean Bioluminescence
-
-The design system of **AquaGuardian** is engineered to transcend typical environmental or web interfaces. Its creative concept, **"The Sovereign Vault,"** mirrors a high-tech underwater command facility where ancient, regal oceanic majesty meets cutting-edge autonomous AI engineering.
-
-We avoid flat, generic components by establishing a disciplined darkroom canvas:
-
-- **Matte Abyssal Depth:** The backdrop is a rich, near-black foundation (`#020817`) that mimics the fading light of the ocean floor, preventing visual noise.
-- **Bioluminescent Overlays:** Light, color, and glowing indicators serve as active signals. Neon primary glows (`#0EA5E9`) and cyan details represent system pulses and active AI tracking.
-- **Atlantean Gold Accents:** Sophisticated chiseled borders and metallic trim (`#D4AF37`) are reserved for high-value details and critical navigation anchors.
-- **Organic Glassmorphism:** Instead of traditional drop shadows or hard dividers, sections are defined through backdrop-blurred translucent panels that stack seamlessly on top of each other, allowing Three.js light rays to bleed through organically.
-
----
-
-## 🛠 Technical Stack & Engineering Philosophy
-
-This project is built as an elite, high-performance web experience. The architecture balances rich 3D graphics with lightweight, accessible frontend components:
-
-### 1. 3D Underworld Rendering (WebGL/Three.js/Fiber)
-
-- **`@react-three/fiber` & `@react-three/drei`:** Power the immersive real-time 3D underwater simulation including the seabed, ruins, coral reefs, kelp forests, light rays, bubbling particles, swimming fish, and the autonomous guardian robot.
-- **Volumetric & Caustic Shaders:** Custom GLSL shaders render high-fidelity water caustics and volumetric light shafts, simulating underwater light scattering with minimal CPU/GPU overhead.
-- **`PerformanceMonitor` & `AdaptiveDpr`:** Dynamically adapt pixel ratios and scene detail levels (`0.5x` to `1.5x` dpr) in real-time, protecting frame rates on lower-end mobile devices and thermal throttling laptops.
-
-### 2. Kinetic Animation & Cinematic Scroll-Triggering
-
-- **Zustand State Mainframe:** Houses the global narrative state, linking the active scroll position to discrete environmental properties (e.g., debris count, lighting intensity, robot scan-beams).
-- **GSAP & Framer Motion:** Synchronize UI panel overlays with R3F camera movements. Scroll-linked path interpolation guides the virtual camera through 11 cinematic chapters: Descent, Crisis, Discovery, Robot Reveal, AI, and more.
-- **Lenis Smooth Scroll:** Provides hardware-accelerated, unified smooth momentum scrolling across all browsers, removing stutter during rapid navigation.
-
-### 3. Structural Design & Styling System
-
-- **TailwindCSS (v4):** Utilized with strict CSS variables to maintain design token integrity across layout padding, border roundedness, and typography.
-- **High-Contrast Typography Scale:**
-  - **Display & Headlines:** _Cinzel_ & _Cormorant Garamond_ project an authoritative, chiseled, and regal tone.
-  - **Interface & Specs:** _Space Grotesk_ & _Inter_ are utilized for high-density telemetry readouts, status indicators, and numeric data to reinforce the precision AI theme.
-- **Semantic Accessibility (WCAG):** Integrated high-contrast foreground values and reduced-motion hook detection (`useReducedMotion`) to automatically bypass heavy 3D rotations or rapid flashes for users with vestibular sensitivities.
-
----
-
-## 📖 Guided Chapters: The Narrative Flow
-
-The platform tells an interactive story structured into **11 distinct chapters**, as mapped within `src/data/chapters.ts`:
-
-1. **Arrival:** Approaching the deep ocean's threshold.
-2. **Descent:** Descending into the deep abyss with fading surface light.
-3. **Crisis:** Witnessing the catastrophic impact of plastic pollution and reef decay.
-4. **Discovery:** Finding ancient Atlantean architectural ruins.
-5. **Robot Reveal:** Unleashing the **AquaGuardian Autonomous Robot**.
-6. **AI Command:** Establishing the neural telemetry and monitoring channels.
-7. **Mission:** Outlining the core task of deep-sea cleaning.
-8. **Technology Stations:** Interacting with sonar, micro-filtration, and navigation modules.
-9. **Impact Metrics:** Reviewing projections (tons extracted, coral regrowth, species protected).
-10. **Future Atlantis:** Imagining a restored, fully bioluminescent marine ecosystem.
-11. **Call to Action (CTA):** Inviting users to register, support, and join the restoration fleet.
-
----
-
-## 🔬 Behind the Scenes: Core Engineering Decisions
-
-### 🌲 Modular Scene & State Isolation
-
-By coupling Zustand with React-Three-Fiber, we achieve **unidirectional data-flow** that avoids re-rendering the entire canvas. Individual mesh items (like kelp or particles) subscribe _only_ to the specific slice of state they require. For example, when the robot scan-beam is activated, only the `<Robot />` component triggers a redraw.
-
-### 🔍 Custom Shaders vs. Mesh Density
-
-To create rich underwater atmosphere without dropping frames, we substituted heavy 3D geometry with custom GLSL shaders:
-
-- **Volumetric Light Rays:** Rather than rendering heavy spotlights with shadow maps, we used a single procedural volumetric light ray shader applied to a cone geometry.
-- **Water Caustics:** The undulating light reflection on the seabed is animated via a procedural noise fragment shader, mimicking caustics mathematically at the GPU level.
-
-### ♿ Accessibility and Inclusivity
-
-We respect the user's system preferences. Our custom React hooks (`useReducedMotion`) dynamically scale back the speed of camera movements and animations. For users who prefer minimal stimulation, heavy cinematic camera transitions are smoothed out or replaced with immediate cross-fades, ensuring that everyone can experience the story of ocean restoration.
-
----
-
-## 🚀 Getting Started & Local Development
-
-### Prerequisites
-
-- **Node.js:** `v18.x` or higher
-- **npm** or **bun** / **yarn**
-
-### 1. Install Dependencies
-=======
-# AquaGuardian
-
-A cinematic, interactive underwater storytelling experience designed to raise awareness around ocean conservation through immersive 3D visuals, narrative-driven content, and polished web animation.
-
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-00E5FF?style=flat-square&logo=github)](https://hustlenix.github.io/aquaguardian/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Three.js](https://img.shields.io/badge/Three.js-R3F-000000?style=flat-square&logo=three.js)](https://threejs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-
-Live demo: [https://hustlenix.github.io/aquaguardian/](https://hustlenix.github.io/aquaguardian/)
+[![GSAP](https://img.shields.io/badge/GSAP-Framer%20Motion-88CE02?style=flat-square&logo=greensock)](https://gsap.com/)
+[![Zustand](https://img.shields.io/badge/Zustand-State-764ABC?style=flat-square)](https://zustand.docs.pmnd.rs/)
 
 ---
 
-## Overview
+## 🖼️ Screenshots
 
-AquaGuardian combines storytelling, interactive design, and 3D web development into a single immersive product experience. The project was built to feel less like a traditional landing page and more like a cinematic journey through an underwater world, where the visual environment reinforces the message of marine conservation.
+| Cinematic hero | Impact dashboard |
+|---|---|
+| ![AquaGuardian hero](assets/screenshots/hero.png) | ![Impact dashboard](assets/screenshots/dashboard.png) |
+
+| Mission tracking | Educational mode |
+|---|---|
+| ![Mission tracking](assets/screenshots/missions.png) | ![Educational mode](assets/screenshots/learn.png) |
+
+---
+
+## 🐚 What Is AquaGuardian?
+
+AquaGuardian is an interactive, narrative-driven storytelling experience built around a fictional-but-grounded vision of autonomous ocean restoration. It feels less like a landing page and more like a cinematic journey: as you scroll, a real-time 3D underwater world responds — light shafts bend, fish scatter, the AquaGuardian robot scans the seabed, and an AI command narrative unfolds in chapters.
 
 The experience blends:
-- narrative-driven content sections
-- scroll-based scene progression
-- a real-time 3D ocean environment
-- animated effects and shader work
-- responsive behavior for different device tiers
 
-### AI usage declaration
-This project was developed as part of a creative, product-focused build where AI tools were used to accelerate prototyping, UI iteration, content structuring, and implementation support. The final product direction, technical decisions, and presentation choices were reviewed and refined by the human author to keep the experience grounded, coherent, and credible.
+- **A real-time 3D ocean environment** — custom GLSL shaders for water caustics, volumetric light rays, and bioluminescent atmosphere, rendered with Three.js + React Three Fiber
+- **Scroll-driven cinematic narrative** — a chaptered story arc from surface descent to ocean restoration, choreographed with GSAP and Framer Motion
+- **A digital command center** — a full set of product-style routes: live dashboard, mission tracking, community challenges, educational content, an AI assistant, and a mobile companion view
+- **Performance-aware rendering** — adaptive DPR, device-tier detection, and reduced-motion support so the experience stays smooth and accessible everywhere
 
 ---
 
-## Thought Process
+## 🧭 The Narrative Arc
 
-This project was approached as both a creative experience and a technical challenge.
-
-### Design intent
-The core idea was to make environmental storytelling feel tangible and memorable. Instead of relying on static content alone, the experience uses motion, atmosphere, and interactivity to help users emotionally connect with the message.
-
-### Technical approach
-The build focused on a modular structure that separates:
-- narrative content
-- scene state and interaction logic
-- 3D world rendering
-- animation and UI polish
-
-That structure makes the project easier to scale, maintain, and extend with new scenes, content, or interactions.
+The homepage tells an 11-chapter story (mapped in `src/data/chapters.ts`): **Arrival** at the ocean's edge, **Descent** through the fading light, the **Crisis** of pollution and reef decay, the **Discovery** of ancient ruins, the **Robot Reveal**, **AI Command** telemetry, the **Mission**, **Technology Stations**, **Impact Metrics**, the vision of a restored **Future Atlantis**, and the final **Call to Action**.
 
 ---
 
-## What This Project Demonstrates
+## ✨ Key Features & Routes
 
-This repository showcases a strong mix of modern frontend and interactive development skills, including:
-
-- Next.js app architecture and route organization
-- React and TypeScript for maintainable component-driven UI
-- Three.js and React Three Fiber for real-time 3D scenes
-- shader-based visuals for ocean, lighting, and caustic effects
-- smooth scrolling and motion design with GSAP, Lenis, and Framer Motion
-- state management with Zustand
-- responsive experience tuning for performance and device awareness
-- deployment readiness for static hosting and GitHub Pages
-
----
-
-## Key Features
-
-- Immersive underwater 3D environment
-- Scroll-driven narrative progression
-- Cinematic lighting, particles, and post-processing effects
-- Responsive quality adaptation for mobile, tablet, and desktop
-- Optimized static export support for deployment
-- Structured content sections for mission, impact, technology, and call-to-action
-
-## Future Directions
-
-AquaGuardian is already strong as a storytelling experience, but it also has the potential to grow into a broader platform concept. A few compelling directions include:
-
-- a live dashboard for ocean cleanup metrics and impact reporting
-- a mission-tracker experience showing real-time conservation progress
-- a gamified community challenge mode for users to participate in sustainability actions
-- a multi-scene educational mode that explains marine ecosystems in a more interactive way
-- a mobile-first companion experience for field teams and marine researchers
-- a deeper AI assistant layer that explains the world, the robotics, and the mission context in real time
+| Route | Purpose |
+|---|---|
+| `/` | Cinematic 3D hero + scroll-driven narrative sections (Mission, Technology, Impact, Team, Contact) |
+| `/dashboard` | Impact dashboard with live-style telemetry and ocean-health metrics |
+| `/missions` | Conservation mission tracker |
+| `/challenges` | Community challenge mode |
+| `/learn` | Educational content about marine ecosystems and restoration science |
+| `/assistant` | AI assistant layer explaining the world, robotics, and mission context |
+| `/mobile` | Mobile-first companion experience for field teams |
+| `/privacy` | Privacy policy |
 
 ---
 
-## Project Structure
+## 🛠️ Tech Stack
+
+| Layer | Tools |
+|---|---|
+| Framework | Next.js 15 (App Router, static export), React 19, TypeScript |
+| Styling | Tailwind CSS 4 with a strict design-token system (`src/tokens/`) |
+| 3D | Three.js, React Three Fiber, custom GLSL shaders (`src/shaders/`) |
+| Motion | GSAP, Framer Motion, Lenis smooth scroll |
+| State | Zustand (`src/store/`) |
+| Quality | ESLint + Prettier, typed components, reduced-motion hooks |
+
+**Engineering highlights**
+
+- **Custom shaders over heavy geometry** — volumetric light rays and water caustics are computed procedurally on the GPU instead of rendering expensive spotlights and geometry.
+- **Modular scene isolation** — individual meshes (kelp, fish, particles) subscribe only to the Zustand slices they need, avoiding full-canvas re-renders.
+- **Unidirectional narrative state** — scroll position drives discrete environmental properties (debris count, lighting, robot scan-beams) through a single store.
+- **Accessibility first** — `prefers-reduced-motion` is respected by JS motion and CSS animation alike; high-contrast foreground values throughout.
+
+---
+
+## 📁 Project Structure
 
 ```text
 AquaGuardian_FullStack/
-├── public/                # Static assets and metadata
+├── .github/workflows/      # GitHub Pages CI/CD
+├── assets/                 # Models, textures, HDRs, audio, screenshots
+├── public/                 # Favicon set, manifest, OG image, robots, sitemap
+├── scripts/                # Asset-generation helpers
 ├── src/
-│   ├── app/               # App Router pages, layouts, and API routes
-│   ├── chapters/          # Chapter-based scene content
-│   ├── components/        # Reusable UI, sections, and animation components
-│   ├── data/              # Scene and narrative data
-│   ├── hooks/             # Custom hooks for scene and device behavior
-│   ├── lib/               # Shared utilities and constants
-│   ├── shaders/           # GLSL shader modules
-│   ├── store/             # Zustand store
-│   ├── tokens/            # Design tokens
-│   ├── types/             # TypeScript types
-│   └── world/             # 3D world components and scene objects
-├── assets/                # Media assets such as audio, models, and textures
-└── package.json           # Project scripts and dependencies
+│   ├── app/                # App Router pages, layouts, metadata, loading/template
+│   ├── components/
+│   │   ├── animations/     # Text reveals, stagger, counter animations
+│   │   ├── sections/       # Hero, Mission, Impact, Technology, Timeline, FAQ…
+│   │   └── ui/             # Navigation, buttons, glass panels, dashboard widgets
+│   ├── data/               # Chapters, impact data, scene states
+│   ├── hooks/              # useReducedMotion, useDeviceTier, useSceneManager
+│   ├── lib/                # GSAP/Lenis configuration, constants
+│   ├── shaders/            # GLSL fragment & vertex shaders
+│   ├── store/              # Zustand global state
+│   ├── tokens/             # Colors, motion, spacing, typography, elevation
+│   └── world/              # R3F canvas: World, Lighting, Seabed, Robot, Fish…
+├── package.json
+└── next.config.ts          # Static export + basePath handling
 ```
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
 - Node.js 18 or newer
 - npm
 
-### Installation
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
+### Install & develop
 
 ```bash
 npm install
+npm run dev        # http://localhost:3000
 ```
 
-<<<<<<< HEAD
-### 2. Start Development Server
-=======
-### Development
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
+### Build & lint
 
 ```bash
-npm run dev
+npm run build      # production build
+npm run lint       # ESLint
+npm run format     # Prettier
 ```
 
-<<<<<<< HEAD
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+### Static export (GitHub Pages)
 
-### 3. Create a Production Build
-=======
-Then open [http://localhost:3000](http://localhost:3000).
-
-### Production build
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
-
-```bash
-npm run build
-```
-
-<<<<<<< HEAD
-### 4. Code Quality & Formatting
-
-We maintain standard linting and formatting across our entire codebase:
-
-```bash
-npm run lint    # Run ESLint rules
-npm run format  # Format codebase using Prettier
-=======
-### Linting
-
-```bash
-npm run lint
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
-```
-
----
-
-<<<<<<< HEAD
-## 🌌 Repository Structure
-
-```bash
-├── public/               # Favicons, Webmanifest, static assets
-├── src/
-│   ├── app/              # Next.js App Router (Layouts, API endpoints, Pages)
-│   ├── chapters/         # Story chapters (Chapter01 to Chapter11 layouts)
-│   ├── components/
-│   │   ├── animations/   # Text reveals, counter animations, float behaviors
-│   │   ├── sections/     # Core narrative sections (Hero, Problem, Team, FAQ)
-│   │   └── ui/           # Navigation, loading, dashboards, and glass panels
-│   ├── data/             # Cinematic camera paths, scene state tables, chapters list
-│   ├── hooks/            # useReducedMotion, useScrollProgress, useDeviceTier
-│   ├── lib/              # Core libraries configuration (GSAP, Lenis, utils)
-│   ├── shaders/          # Custom GLSL fragment and vertex shaders
-│   ├── store/            # Zustand global state (useStore)
-│   └── world/            # R3F Canvas components (World, Lighting, Seabed, Robot, Kelp, Fish)
-├── package.json          # Main manifest
-├── tsconfig.json         # TypeScript configuration
-└── tailwind.config.ts    # Tailwind styling tokens
-=======
-## Deployment
-
-The project is configured for modern static deployment and can be exported for hosting platforms such as GitHub Pages.
-
-To build for static export:
+The project is configured for fully static hosting:
 
 ```bash
 STATIC_EXPORT=true npm run build
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
 ```
 
----
-
-<<<<<<< HEAD
-## 🌐 Deployments & Production Readyness
-
-- **Self-Healing Error Boundaries:** The R3F Canvas is wrapped inside an `<ErrorBoundary />`. If a WebGL context is lost, the layout automatically falls back to an elegant static high-fidelity CSS representation, guaranteeing 100% uptime.
-- **Serverless Subscriptions:** Includes built-in Next.js App Router API routes under `src/app/api` for subscribing users and collecting anonymous telemetry.
+The export lands in `out/`. The GitHub Actions workflow (`.github/workflows/gh-pages.yml`) runs exactly this, then deploys to **https://hustlenix.github.io/aquaguardian/**.
 
 ---
 
-_“The sea, once it casts its spell, holds one in its net of wonder forever.”_ — **Jacques Yves Cousteau**
+## ♿ Accessibility
 
-Developed with 💙 by **Jules** and the **AquaGuardian Team**.
-=======
-## Tech Stack
-
-- Next.js
-- React
-- TypeScript
-- Three.js
-- React Three Fiber
-- Tailwind CSS
-- GSAP
-- Framer Motion
-- Lenis
-- Zustand
-- ESLint and Prettier
+Motion is a core part of the experience — but so is respecting the user. `useReducedMotion` detects `prefers-reduced-motion` and scales back camera movement, reveals, and the loader; a global CSS guard collapses CSS animations as well. Keyboard navigation is supported with high-visibility cyan focus rings, and text meets high-contrast thresholds against the abyssal palette.
 
 ---
 
-## License
+## 📜 Credits & Notes
 
-This project is created for demonstration, storytelling, and environmental awareness purposes.
+- Built as a polished showcase of interactive web experience design, 3D storytelling, and frontend engineering.
+- AI tools were used to accelerate prototyping, UI iteration, and implementation support; final product direction and technical decisions were reviewed and refined by the human author.
+- Ocean conservation content is framed as an informed, evidence-aware vision — no fabricated metrics.
 
----
+> *"The sea, once it casts its spell, holds one in its net of wonder forever."* — Jacques Yves Cousteau
 
-## Acknowledgements
-
-Built as a polished showcase of interactive web experience design, 3D storytelling, and frontend engineering craftsmanship.
-
----
-
-## Suggested Next Moves
-
-If this project continues to evolve, these would make it even stronger:
-
-1. Add a live data layer for ocean restoration metrics and mission updates.
-2. Introduce a richer interactive dashboard with analysis and impact timelines.
-3. Expand the narrative into a full multi-episode experience.
-4. Add voice-guided storytelling and ambient sound design for a more cinematic feel.
-5. Build a community or educational portal around conservation awareness and robotics education.
->>>>>>> 2c79eb6 (Polish README and document AI-assisted build)
+Developed with 💙 by the AquaGuardian team.
