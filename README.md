@@ -25,6 +25,8 @@
 |---|---|
 | ![Mission tracking](assets/screenshots/missions.png) | ![Educational mode](assets/screenshots/learn.png) |
 
+**Also, proof that this stack isn't a one-language cult:** [`public/splash.html`](public/splash.html) is a completely framework-free page — raw HTML, CSS, and vanilla JS (canvas sonar sweep and all). See it live at <https://hustlenix.github.io/aquaguardian/splash.html> or just open the file locally.
+
 ---
 
 ## 🐚 What Is AquaGuardian?
