@@ -142,6 +142,19 @@ STATIC_EXPORT=true npm run build
 
 The export lands in `out/`. The GitHub Actions workflow (`.github/workflows/gh-pages.yml`) runs exactly this, then deploys to **https://hustlenix.github.io/aquaguardian/**. Push to `main`, grab a snack, come back to a live deploy. It's like magic, but with YAML.
 
+### Scripts (Python build tooling)
+
+Yes, we speak other languages here too — Python does the boring-but-important build-time work so the site never lies to you:
+
+```bash
+python scripts/screenshot_check.py    # fail if a screenshot rotted into a blank image
+python scripts/validate_assets.py     # fail if any referenced asset went missing
+python scripts/analyze_ocean_data.py  # database.json -> src/data/ocean_analysis.json
+python scripts/generate_social_banner.py  # renders public/social-banner.svg
+```
+
+Zero npm dependencies. Just Python 3 and your sense of wonder.
+
 ---
 
 ## ♿ Accessibility
