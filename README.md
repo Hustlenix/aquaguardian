@@ -83,6 +83,22 @@ The homepage tells an 11-chapter story (mapped in `src/data/chapters.ts`): **Arr
 
 ---
 
+## 🧬 Language Footprint (yes, we speak more than one)
+
+Real talk: browsers only run **HTML, CSS, and JavaScript**. That's it. TypeScript is just JavaScript with a type-system safety net — it compiles down to the exact same JS the browser already understands, so the app core being TypeScript isn't a "one language" thing, it's "the language the web actually runs, with training wheels on." But this repo is genuinely multilingual where it matters:
+
+| Language | Where it lives | What it does |
+|---|---|---|
+| **TypeScript / JS** | `src/` (React, Next.js, R3F scene) | The app itself — UI, 3D world, motion, state |
+| **HTML + CSS** | `public/splash.html`, Tailwind design tokens | Zero-framework page + the whole visual system |
+| **GLSL** | `src/shaders/` | Custom GPU shaders — caustics, light rays, atmosphere |
+| **Python** | `scripts/*.py` | Build-time data & asset gates (see below) |
+| **C** | `scripts/native/ocean_metrics.c` | Native, deterministic data generator (C99, zero deps) |
+
+C can't run in a browser (WebAssembly would need a whole Emscripten toolchain — we keep it lean), so it plays a build-time role instead: it generates `database.json`, the Python analyzer turns that into `src/data/ocean_analysis.json`, and the dashboard renders it. Compile and run it with `gcc scripts/native/ocean_metrics.c -o scripts/native/ocean_metrics && ./scripts/native/ocean_metrics --seed 20260701` — same seed, byte-identical output, every time. That's engineering you can set your watch to.
+
+---
+
 ## 📁 Project Structure
 
 ```text

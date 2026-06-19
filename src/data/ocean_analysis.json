@@ -1,13 +1,23 @@
 {
-  "generatedAt": "2026-08-01T03:10:24.471053Z",
+  "generatedAt": "2026-08-01T11:05:51.683135Z",
   "metrics": {
-    "totalItemsCollected": 0,
-    "totalWeightKg": 0.0,
-    "estimatedCo2SavedKg": 0.0,
-    "totalCollectionEvents": 0,
-    "topCollectionZone": "N/A"
+    "totalItemsCollected": 1804,
+    "totalWeightKg": 45.1,
+    "estimatedCo2SavedKg": 67.65,
+    "totalCollectionEvents": 24,
+    "topCollectionZone": "Persian Gulf"
   },
-  "locationBreakdown": {},
+  "locationBreakdown": {
+    "Gulf of Mexico": 106,
+    "Persian Gulf": 363,
+    "Great Pacific Garbage Patch": 222,
+    "Coral Triangle": 333,
+    "Mediterranean Sea": 145,
+    "Caribbean Sea": 193,
+    "North Atlantic Gyre": 138,
+    "South China Sea": 205,
+    "Baltic Sea": 99
+  },
   "scientificReferences": [
     {
       "source": "UN Environment Programme (UNEP)",

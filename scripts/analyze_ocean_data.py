@@ -8,7 +8,7 @@ real ocean plastic collection metrics and environmental impact data.
 import json
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any, List
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,7 +37,7 @@ def analyze_impact(data: Dict[str, Any]) -> Dict[str, Any]:
         location_summary[loc] = location_summary.get(loc, 0) + entry.get("amount", 0)
 
     summary = {
-        "generatedAt": datetime.utcnow().isoformat() + "Z",
+        "generatedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "metrics": {
             "totalItemsCollected": total_items,
             "totalWeightKg": total_weight_kg,
