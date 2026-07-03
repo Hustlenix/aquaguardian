@@ -1,21 +1,20 @@
-# 🌊 AquaGuardian — AI-Powered Ocean Restoration & Storytelling
+# 🌊 AquaGuardian
 
-> **Yo, hey!** This is AquaGuardian — a cinematic underwater experience where deep-sea mystery meets some seriously overengineered web tech. Dive into a living 3D ocean, watch an AI guardian do its thing, and get the real data behind ocean restoration. It's a premium experience, not a brochure. Trust me, I was *this close* to just making another landing page. (I didn't.)
+AquaGuardian is an interactive 3D ocean-restoration experience built with Next.js, Three.js, and React Three Fiber. As you scroll, a real-time underwater world renders in the browser — light shafts, caustics, and fish — while an autonomous guardian robot surveys the seabed and an eleven-chapter story arc unfolds from surface descent to a restored future ocean. The site is a fully static export, deployed on GitHub Pages with no server runtime.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-00E5FF?style=flat-square&logo=github)](https://hustlenix.github.io/aquaguardian/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Three.js](https://img.shields.io/badge/Three.js-R3F-000000?style=flat-square&logo=three.js)](https://threejs.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-[![GSAP](https://img.shields.io/badge/GSAP-Framer%20Motion-88CE02?style=flat-square&logo=greensock)](https://gsap.com/)
-[![Zustand](https://img.shields.io/badge/Zustand-State-764ABC?style=flat-square)](https://zustand.docs.pmnd.rs/)
+[![Three.js](https://img.shields.io/badge/Three.js-000000?style=flat-square&logo=three.js)](https://threejs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![GSAP](https://img.shields.io/badge/GSAP-3-88CE02?style=flat-square&logo=greensock)](https://gsap.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer%20Motion-12-0055FF?style=flat-square&logo=framer)](https://motion.dev/)
+[![Zustand](https://img.shields.io/badge/Zustand-5-764ABC?style=flat-square&logo=zustand)](https://zustand.docs.pmnd.rs/)
 
 ---
 
-## 🖼️ Screenshots
-
-*(It looks way cooler when you actually scroll it, but here's the proof)*
+## Screenshots
 
 | Cinematic hero | Impact dashboard |
 |---|---|
@@ -25,168 +24,184 @@
 |---|---|
 | ![Mission tracking](assets/screenshots/missions.png) | ![Educational mode](assets/screenshots/learn.png) |
 
-**Also, proof that this stack isn't a one-language cult:** [`public/splash.html`](public/splash.html) is a completely framework-free page — raw HTML, CSS, and vanilla JS (canvas sonar sweep and all). See it live at <https://hustlenix.github.io/aquaguardian/splash.html> or just open the file locally.
+The repo also includes a framework-free companion page — [`public/splash.html`](public/splash.html) is plain HTML, CSS, and vanilla JS (canvas sonar sweep included). It ships with the static export and is served from GitHub Pages at <https://hustlenix.github.io/aquaguardian/splash.html>.
 
 ---
 
-## 🐚 What Is AquaGuardian?
+## What Is AquaGuardian?
 
-Okay, real talk: this is an interactive, story-driven experience built around a fictional-but-grounded vision of autonomous ocean restoration. It's *not* a landing page — I repeat, NOT a landing page. As you scroll, a real-time 3D underwater world comes alive: light shafts bend, fish scatter like they've seen me approach (they're just like that), the AquaGuardian robot scans the seabed, and an AI command story unfolds chapter by chapter. Lowkey feels like a movie you get to control.
+The project started as an experiment in what a product site can be when the background is a real-time 3D scene instead of a static image. The theme is a fictional-but-grounded vision of autonomous ocean restoration: an AI-operated guardian robot that collects debris, monitors reef health, and reports its impact. The storytelling is optimistic and educational rather than documentary — the goal is to make ocean-conservation concepts tangible through a visual narrative.
 
-Here's what's packed in:
+The experience itself is a mix of two things:
 
-- **A real-time 3D ocean environment** — custom GLSL shaders for water caustics, volumetric light rays, and bioluminescent atmosphere, rendered with Three.js + React Three Fiber. I wrote actual shaders for this. That's basically magic with math.
-- **Scroll-driven cinematic narrative** — an 11-chapter story arc from surface descent to ocean restoration, choreographed with GSAP and Framer Motion. It's the kind of scroll experience that makes you go "whoa" and then screenshot it to send your friends.
-- **A digital command center** — full product-style routes: live dashboard, mission tracking, community challenges, educational content, an AI assistant, and a mobile companion view. It's a whole ecosystem, fr.
-- **Performance-aware rendering** — adaptive DPR, device-tier detection, and reduced-motion support so the experience stays smooth everywhere. Even on that one laptop with 3 tabs of Chrome open. You know the one.
+- **A cinematic scroll experience.** The homepage is an eleven-chapter narrative rendered over a live 3D ocean. The scene responds to scroll position — lighting changes as you descend, debris appears during the crisis chapters, and the robot's scan beams sweep the seabed during the reveal.
+- **A small product ecosystem.** Beyond the homepage, there are real routes: an impact dashboard, a mission tracker, community challenges, a learning section, an AI assistant page, and a mobile companion view. They share one design system and one data pipeline.
 
 ---
 
-## 🧭 The Narrative Arc
+## The Narrative Arc
 
-The homepage tells an 11-chapter story (mapped in `src/data/chapters.ts`): **Arrival** at the ocean's edge, **Descent** through the fading light, the **Crisis** of pollution and reef decay, the **Discovery** of ancient ruins, the **Robot Reveal** (this is the good part), **AI Command** telemetry, the **Mission**, **Technology Stations**, **Impact Metrics**, the vision of a restored **Future Atlantis**, and the final **Call to Action**. It's basically an underwater hero's journey, and you're the protagonist. No pressure.
+The homepage story is defined in [`src/data/chapters.ts`](src/data/chapters.ts) and rendered as eleven scroll-driven chapters:
+
+| # | Chapter | # | Chapter |
+|---|---|---|---|
+| 1 | Arrival | 7 | Mission |
+| 2 | Descent | 8 | Technology |
+| 3 | Crisis | 9 | Impact |
+| 4 | Discovery | 10 | Future Atlantis |
+| 5 | Robot Reveal | 11 | Call to Action |
+| 6 | AI | | |
+
+Each chapter has its own visual state in the scene — lighting, fog, fish behavior, and robot activity are all driven by a single scroll-tracked store, so the world and the story stay in sync.
 
 ---
 
-## ✨ Key Features & Routes
+## Routes
 
 | Route | Purpose |
 |---|---|
-| `/` | Cinematic 3D hero + scroll-driven narrative sections (Mission, Technology, Impact, Team, Contact) |
-| `/dashboard` | Impact dashboard with live-style telemetry and ocean-health metrics |
+| `/` | Cinematic 3D hero plus narrative sections: Mission, Problem, Solution, How It Works, Technology, Prototype, Experience Modes, Impact, Timeline, Gallery, FAQ, Team, Contact |
+| `/dashboard` | Impact dashboard with ocean-health metrics from the generated dataset |
 | `/missions` | Conservation mission tracker |
 | `/challenges` | Community challenge mode |
 | `/learn` | Educational content about marine ecosystems and restoration science |
 | `/assistant` | AI assistant layer explaining the world, robotics, and mission context |
 | `/mobile` | Mobile-first companion experience for field teams |
-| `/privacy` | Privacy policy (I won't sell your data, promise) |
+| `/privacy` | Privacy policy |
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Tools |
 |---|---|
 | Framework | Next.js 15 (App Router, static export), React 19, TypeScript |
-| Styling | Tailwind CSS 4 with a strict design-token system (`src/tokens/`) |
-| 3D | Three.js, React Three Fiber, custom GLSL shaders (`src/shaders/`) |
+| Styling | Tailwind CSS 4 with a design-token system in `src/tokens/` |
+| 3D | Three.js, React Three Fiber, custom GLSL shaders in `src/shaders/` |
 | Motion | GSAP, Framer Motion, Lenis smooth scroll |
 | State | Zustand (`src/store/`) |
-| Quality | ESLint + Prettier, typed components, reduced-motion hooks |
+| Quality | ESLint, Prettier, typed components, reduced-motion hooks |
 
-**Engineering highlights** *(okay let me flex for a sec)*
+A few implementation details worth noting:
 
-- **Custom shaders over heavy geometry** — volumetric light rays and water caustics are computed procedurally on the GPU instead of rendering expensive spotlights and geometry. Translation: it looks expensive but it's secretly efficient. Like me in school.
-- **Modular scene isolation** — individual meshes (kelp, fish, particles) subscribe only to the Zustand slices they need, avoiding full-canvas re-renders. Each fish minding its own business. Respect.
-- **Unidirectional narrative state** — scroll position drives discrete environmental properties (debris count, lighting, robot scan-beams) through a single store. One source of truth, zero drama.
-- **Accessibility first** — `prefers-reduced-motion` is respected by JS motion and CSS animation alike; high-contrast foreground values throughout. Because cool animations shouldn't come at the cost of making the internet unusable for people. Great power, great responsibility, all that.
+- **Shaders instead of light sources.** Water caustics, volumetric light rays, and the gradient atmosphere are computed procedurally on the GPU rather than rendered with expensive spotlights and geometry. The scene looks heavy but stays light.
+- **Scene components subscribe narrowly to state.** Individual meshes (kelp, fish, particles, robot) subscribe only to the Zustand slices they read, which avoids full-canvas re-renders when the scroll position updates.
+- **Unidirectional narrative state.** Scroll position drives discrete scene properties (debris count, lighting, scan-beam activity) through a single store — one source of truth for both the story and the world.
+- **Deterministic data pipeline.** The dashboard dataset is generated by a native C tool and aggregated by a Python script (details below), so the numbers are reproducible on any machine.
 
 ---
 
-## 🧬 Language Footprint (yes, we speak more than one)
+## Language Footprint
 
-Real talk: browsers only run **HTML, CSS, and JavaScript**. That's it. TypeScript is just JavaScript with a type-system safety net — it compiles down to the exact same JS the browser already understands, so the app core being TypeScript isn't a "one language" thing, it's "the language the web actually runs, with training wheels on." But this repo is genuinely multilingual where it matters:
+Browsers only execute HTML, CSS, and JavaScript, so TypeScript compiles down to the JavaScript the app ships. The rest of the repo is genuinely multilingual where it matters:
 
 | Language | Where it lives | What it does |
 |---|---|---|
-| **TypeScript / JS** | `src/` (React, Next.js, R3F scene) | The app itself — UI, 3D world, motion, state |
-| **HTML + CSS** | `public/splash.html`, Tailwind design tokens | Zero-framework page + the whole visual system |
-| **GLSL** | `src/shaders/` | Custom GPU shaders — caustics, light rays, atmosphere |
-| **Python** | `scripts/*.py` | Build-time data & asset gates (see below) |
-| **C** | `scripts/native/ocean_metrics.c` | Native, deterministic data generator (C99, zero deps) |
+| TypeScript / JavaScript | `src/` (React, Next.js, R3F scene) | The app itself — UI, 3D world, motion, state |
+| HTML + CSS | `public/splash.html`, Tailwind design tokens | Framework-free page plus the visual system |
+| GLSL | `src/shaders/` | Custom GPU shaders — caustics, light rays, atmosphere |
+| Python | `scripts/*.py` | Build-time data and asset gates |
+| C | `scripts/native/ocean_metrics.c` | Deterministic native data generator (C99, zero dependencies) |
 
-C can't run in a browser (WebAssembly would need a whole Emscripten toolchain — we keep it lean), so it plays a build-time role instead: it generates `database.json`, the Python analyzer turns that into `src/data/ocean_analysis.json`, and the dashboard renders it. Compile and run it with `gcc scripts/native/ocean_metrics.c -o scripts/native/ocean_metrics && ./scripts/native/ocean_metrics --seed 20260701` — same seed, byte-identical output, every time. That's engineering you can set your watch to.
+The C tool cannot run in the browser, so it works at build time: `ocean_metrics.c` generates `database.json`, the Python analyzer turns that into `src/data/ocean_analysis.json`, and the dashboard renders it. The dataset is seeded — the default seed (`20260701`) produces byte-identical output on every run, which keeps builds and CI stable. It is intentionally demo data: the metrics illustrate the dashboard's behavior, not real collection records.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 AquaGuardian_FullStack/
-├── .github/workflows/      # GitHub Pages CI/CD
-├── assets/                 # Models, textures, HDRs, audio, screenshots
-├── public/                 # Favicon set, manifest, OG image, robots, sitemap
-├── scripts/                # Asset-generation helpers
+├── .github/workflows/      # GitHub Pages CI/CD (lint + static export + deploy)
+├── assets/screenshots/     # README gallery images
+├── public/                 # Favicon set, manifest, OG image, robots, sitemap, splash page
+├── scripts/                # Python build tooling + native C generator
 ├── src/
-│   ├── app/                # App Router pages, layouts, metadata, loading/template
+│   ├── app/                # App Router pages, layout, metadata, loading/template
+│   ├── chapters/           # Eleven story chapters (Chapter01…Chapter11)
 │   ├── components/
 │   │   ├── animations/     # Text reveals, stagger, counter animations
 │   │   ├── sections/       # Hero, Mission, Impact, Technology, Timeline, FAQ…
 │   │   └── ui/             # Navigation, buttons, glass panels, dashboard widgets
-│   ├── data/               # Chapters, impact data, scene states
+│   ├── data/               # Chapters, impact data, scene states, generated analysis
 │   ├── hooks/              # useReducedMotion, useDeviceTier, useSceneManager
 │   ├── lib/                # GSAP/Lenis configuration, constants
-│   ├── shaders/            # GLSL fragment & vertex shaders
+│   ├── shaders/            # GLSL fragment and vertex shaders
 │   ├── store/              # Zustand global state
 │   ├── tokens/             # Colors, motion, spacing, typography, elevation
+│   ├── types/              # Shared TypeScript types
 │   └── world/              # R3F canvas: World, Lighting, Seabed, Robot, Fish…
+├── database.json           # Committed demo dataset (regenerated by the C tool)
 ├── package.json
 └── next.config.ts          # Static export + basePath handling
 ```
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- Node.js 18 or newer
-- npm (or pnpm, or bun, I don't judge)
+- Node.js 18.18 or newer (the CI workflow uses Node 22)
+- npm
 
-### Install & develop
+### Install and develop
 
 ```bash
 npm install
 npm run dev        # http://localhost:3000
 ```
 
-Boom. It's running. You're welcome.
-
-### Build & lint
+### Build, lint, and format
 
 ```bash
 npm run build      # production build
-npm run lint       # ESLint — we keep this at zero problems, fr
+npm run lint       # ESLint
 npm run format     # Prettier
 ```
 
 ### Static export (GitHub Pages)
 
-The project is configured for fully static hosting (no server needed — it's a ghost ship in the best way):
+The project is configured for fully static hosting:
 
 ```bash
 STATIC_EXPORT=true npm run build
 ```
 
-The export lands in `out/`. The GitHub Actions workflow (`.github/workflows/gh-pages.yml`) runs exactly this, then deploys to **https://hustlenix.github.io/aquaguardian/**. Push to `main`, grab a snack, come back to a live deploy. It's like magic, but with YAML.
+(PowerShell: `$env:STATIC_EXPORT = "true"; npm run build`)
 
-### Scripts (Python build tooling)
+The export lands in `out/` with the `/aquaguardian` base path applied. The workflow in `.github/workflows/gh-pages.yml` runs lint plus this exact build, then deploys to <https://hustlenix.github.io/aquaguardian/> on every push to `main`. The dev-only API route under `src/app/api` is set aside during the static build, since Pages has no server runtime.
 
-Yes, we speak other languages here too — Python does the boring-but-important build-time work so the site never lies to you:
+### Build-time scripts
+
+The Python tooling runs at build time and fails loudly when something is off:
 
 ```bash
 python scripts/screenshot_check.py    # fail if a screenshot rotted into a blank image
-python scripts/validate_assets.py     # fail if any referenced asset went missing
+python scripts/validate_assets.py     # fail if a referenced asset went missing
 python scripts/analyze_ocean_data.py  # database.json -> src/data/ocean_analysis.json
 python scripts/generate_social_banner.py  # renders public/social-banner.svg
 ```
 
-Zero npm dependencies. Just Python 3 and your sense of wonder.
+The C data generator is optional — the committed `database.json` already matches the default seed. To regenerate it:
+
+```bash
+gcc -O2 -std=c99 scripts/native/ocean_metrics.c -o scripts/native/ocean_metrics
+./scripts/native/ocean_metrics             # default seed 20260701, 24 events
+./scripts/native/ocean_metrics --seed 42 --events 100
+```
 
 ---
 
-## ♿ Accessibility
+## Accessibility
 
-Motion is a core part of the experience — but so is respecting the user. `useReducedMotion` detects `prefers-reduced-motion` and scales back camera movement, reveals, and the loader; a global CSS guard collapses CSS animations as well. Keyboard navigation is supported with high-visibility cyan focus rings, and text meets high-contrast thresholds against the abyssal palette. Because an ocean experience shouldn't be a barrier to anyone. (Also because Aunt May would be proud.)
+Motion is central to the experience, so it is also the first thing we scale back for users who ask for it. `useReducedMotion` detects `prefers-reduced-motion` and reduces camera movement, reveals, and the loader; a global CSS guard collapses CSS animations as well. Keyboard navigation is supported with high-visibility focus rings, and text is set at high-contrast values against the dark palette.
 
 ---
 
-## 📜 Credits & Notes
+## Credits and Notes
 
-- Built as a polished showcase of interactive web experience design, 3D storytelling, and frontend engineering. Lots of late nights, one existential crisis about fish AI, worth it.
-- AI tools were used to accelerate prototyping, UI iteration, and implementation support; final product direction and technical decisions were reviewed and refined by the human author. So yeah, some of us are robots too. Very on-theme.
-- Ocean conservation content is framed as an informed, evidence-aware vision — no fabricated metrics. The ocean deserves better than made-up numbers.
+AquaGuardian is a personal showcase project exploring interactive 3D storytelling, design systems, and frontend engineering. The conservation content is an educational vision built from public sources — the dashboard dataset is generated demo data, not real collection records, and we have deliberately avoided fabricating metrics.
 
-> *"The sea, once it casts its spell, holds one in its net of wonder forever."* — Jacques Yves Cousteau
+> "The sea, once it casts its spell, holds one in its net of wonder forever." — Jacques-Yves Cousteau
 
-Developed with 💙 by the AquaGuardian team. The ocean's counting on us — no pressure, but also, all the pressure.
+No license is attached to this repository at the moment.
