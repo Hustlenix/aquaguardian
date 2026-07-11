@@ -1,14 +1,13 @@
 'use client'
 
-import { useMemo, useRef, useEffect } from 'react'
+import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
 export default function Particles({ count = 200 }) {
   const ref = useRef<THREE.Points>(null)
-  const geoRef = useRef<THREE.BufferGeometry>(null)
 
-  const { positions, sizes, geometry } = useMemo(() => {
+  const { geometry } = useMemo(() => {
     const pos = new Float32Array(count * 3)
     const size = new Float32Array(count)
     for (let i = 0; i < count; i++) {

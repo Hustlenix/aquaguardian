@@ -1,7 +1,6 @@
 'use client'
 
 import { useMemo } from 'react'
-import * as THREE from 'three'
 
 function Pillar({ position, height, radius, color }: {
   position: [number, number, number]
