@@ -28,13 +28,12 @@ function Tube({ points, radius, color, intact }: {
   )
 }
 
-function CoralCluster({ x, z, scale, color, intact, index }: {
+function CoralCluster({ x, z, scale, color, intact }: {
   x: number
   z: number
   scale: number
   color: string
   intact: number
-  index: number
 }) {
   const offset = useMemo(() => Math.random() * Math.PI * 2, [])
   const groupRef = useRef<THREE.Group>(null)
@@ -81,7 +80,7 @@ export default function Coral({ intact = 1 }: CoralProps) {
   return (
     <group>
       {clusters.map((c, i) => (
-        <CoralCluster key={i} x={c.x} z={c.z} scale={c.scale} color={c.color} intact={intact} index={i} />
+        <CoralCluster key={i} x={c.x} z={c.z} scale={c.scale} color={c.color} intact={intact} />
       ))}
     </group>
   )
