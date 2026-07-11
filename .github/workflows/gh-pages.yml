@@ -2,8 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -35,6 +36,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Lint
+        run: npm run lint
+
       - name: Remove legacy API routes (incompatible with static export)
         run: mv src/app/api /tmp/api-backup
 
@@ -44,13 +48,16 @@ jobs:
           STATIC_EXPORT: true
 
       - name: Setup Pages
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: out
 
       - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         id: deployment
         uses: actions/deploy-pages@v4
