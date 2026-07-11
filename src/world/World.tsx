@@ -13,6 +13,9 @@ import Coral from './Coral'
 import Seabed from './Seabed'
 import LightRays from './LightRays'
 import Robot from './Robot'
+import Kelp from './Kelp'
+import Fish from './Fish'
+import Ruins from './Ruins'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import { useStore } from '@/store/useStore'
 
@@ -22,6 +25,16 @@ function SceneContent() {
 
   const fogColor = useMemo(() => new THREE.Color(lighting.fogColor), [lighting.fogColor])
 
+  const kelpDensity = useMemo(
+    () => environment.templeIntact * 0.8,
+    [environment.templeIntact]
+  )
+
+  const ruinsIntact = useMemo(
+    () => environment.templeIntact * 0.7,
+    [environment.templeIntact]
+  )
+
   return (
     <>
       <color attach="background" args={[water.topColor]} />
@@ -29,10 +42,13 @@ function SceneContent() {
       <Suspense fallback={null}>
         <OceanSurface topColor={water.topColor} />
         <Seabed debrisCount={environment.debrisCount} />
+        <Ruins intact={ruinsIntact} />
         <Coral intact={environment.templeIntact} />
+        <Kelp density={kelpDensity} />
         <LightRays color={environment.lightRayColor} opacity={environment.lightRayOpacity} />
         <Particles count={particleCfg.count} color={particleCfg.color} opacity={particleCfg.opacity} speed={particleCfg.speed} />
         <Bubbles />
+        <Fish visible={environment.fishVisible} />
         <Robot
           visible={sceneState.robot.visible}
           activated={sceneState.robot.activated}

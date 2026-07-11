@@ -10,6 +10,7 @@ export interface CameraTarget {
   position: [number, number, number]
   lookAt: [number, number, number]
   fov?: number
+  lerpSpeed?: number
 }
 
 export interface SceneState {
