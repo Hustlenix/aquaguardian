@@ -3,18 +3,22 @@
 import { Canvas } from '@react-three/fiber'
 import { AdaptiveDpr, PerformanceMonitor } from '@react-three/drei'
 import { Suspense } from 'react'
-import Ocean from './Ocean'
+import OceanSurface from './Ocean'
 import CameraRig from './Camera'
 import Lighting from './Lighting'
+import Particles from './Particles'
+import Coral from './Coral'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import { useStore } from '@/store/useStore'
 
 function SceneContent() {
   return (
     <Suspense fallback={null}>
-      <Ocean />
+      <OceanSurface />
       <CameraRig />
       <Lighting />
+      <Particles />
+      <Coral />
     </Suspense>
   )
 }
@@ -31,7 +35,6 @@ export default function World() {
           gl={{ antialias: true, alpha: false }}
           onCreated={(state) => {
             state.gl.setClearColor('#010B13')
-            console.log('Canvas created successfully')
           }}
           onError={(err) => console.error('Canvas error:', err)}
         >

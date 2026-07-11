@@ -26,7 +26,7 @@ yarn-error.log*
 .env*.local
 
 # vercel
-.vercel
+.vercel/
 
 # typescript
 *.tsbuildinfo
@@ -41,3 +41,5 @@ Thumbs.db
 
 # development logs
 .dev-server.log
+
+.vercel
