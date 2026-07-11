@@ -4,29 +4,31 @@ import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
-export default function Particles({ count = 300 }) {
+export default function Bubbles({ count = 40 }) {
   const ref = useRef<THREE.Points>(null)
+  const speeds = useRef<number[]>([])
 
-  const { geometry, offsets } = useMemo(() => {
+  const geometry = useMemo(() => {
     const pos = new Float32Array(count * 3)
-    const offsetsData = new Float32Array(count)
+    speeds.current = []
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 40
-      pos[i * 3 + 1] = Math.random() * 16 - 2
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 30 - 5
-      offsetsData[i] = Math.random() * Math.PI * 2
+      pos[i * 3] = (Math.random() - 0.5) * 12
+      pos[i * 3 + 1] = Math.random() * 10 - 4
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 10 - 3
+      speeds.current.push(0.5 + Math.random() * 1.5)
     }
     const geo = new THREE.BufferGeometry()
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3))
-    return { geometry: geo, offsets: offsetsData }
+    return geo
   }, [count])
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (ref.current) {
       const pos = ref.current.geometry.attributes.position.array as Float32Array
       for (let i = 0; i < count; i++) {
-        pos[i * 3 + 1] += Math.sin(state.clock.elapsedTime * 0.3 + offsets[i]) * 0.001
-        pos[i * 3] += Math.cos(state.clock.elapsedTime * 0.2 + offsets[i] * 0.5) * 0.0005
+        pos[i * 3 + 1] += speeds.current[i] * delta * 0.5
+        pos[i * 3] += Math.sin(state.clock.elapsedTime + i) * delta * 0.1
+        if (pos[i * 3 + 1] > 8) pos[i * 3 + 1] = -3
       }
       ref.current.geometry.attributes.position.needsUpdate = true
     }
@@ -35,12 +37,12 @@ export default function Particles({ count = 300 }) {
   return (
     <points ref={ref} geometry={geometry}>
       <pointsMaterial
-        size={0.25}
+        size={0.08}
         transparent
         blending={THREE.AdditiveBlending}
         depthWrite={false}
-        color="#88CCFF"
-        opacity={0.5}
+        color="#AAE0FF"
+        opacity={0.4}
         sizeAttenuation
       />
     </points>

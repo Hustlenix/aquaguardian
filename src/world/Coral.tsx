@@ -1,72 +1,128 @@
 'use client'
 
 import { useMemo } from 'react'
+import * as THREE from 'three'
 
-function Pillar({ position, height, radius, color }: {
-  position: [number, number, number]
-  height: number
+function Tube({ points, radius, color }: {
+  points: [number, number, number][]
   radius: number
   color: string
 }) {
+  const curve = useMemo(() => {
+    return new THREE.CatmullRomCurve3(
+      points.map((p) => new THREE.Vector3(p[0], p[1], p[2]))
+    )
+  }, [points])
+
   return (
-    <mesh position={position}>
-      <cylinderGeometry args={[radius * 0.6, radius, height, 8, 3]} />
+    <mesh>
+      <tubeGeometry args={[curve, 12, radius, 6, false]} />
       <meshStandardMaterial
         color={color}
         roughness={0.8}
-        metalness={0.2}
+        metalness={0.1}
         flatShading
       />
     </mesh>
   )
 }
 
-function Branch({ position, rotation: [rx, ry, rz], length, color }: {
-  position: [number, number, number]
-  rotation: [number, number, number]
-  length: number
+function Kelp({ x, z, height, color }: {
+  x: number
+  z: number
+  height: number
   color: string
 }) {
+  const points = useMemo(() => {
+    const pts: [number, number, number][] = []
+    const segments = 8
+    for (let i = 0; i <= segments; i++) {
+      const t = i / segments
+      const sway = Math.sin(t * Math.PI * 2) * 0.4 * t
+      pts.push([sway, -3.5 + t * height, 0])
+    }
+    return pts
+  }, [height])
+
   return (
-    <mesh position={position} rotation={[rx, ry, rz]}>
-      <cylinderGeometry args={[0.05, 0.1, length, 5, 2]} />
-      <meshStandardMaterial color={color} roughness={0.9} flatShading />
-    </mesh>
+    <group position={[x, 0, z]}>
+      <Tube points={points} radius={0.04 + height * 0.01} color={color} />
+    </group>
+  )
+}
+
+function CoralHead({ x, y, z, scale, color }: {
+  x: number
+  y: number
+  z: number
+  scale: number
+  color: string
+}) {
+  const branches = useMemo(() => {
+    const b = []
+    const count = 3 + Math.floor(Math.random() * 3)
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2 + Math.random() * 0.5
+      const len = 0.3 + Math.random() * 0.5
+      b.push({
+        rx: Math.sin(angle) * len,
+        ry: Math.random() * 0.3 + 0.4,
+        rz: Math.cos(angle) * len,
+        radius: 0.04 + Math.random() * 0.04,
+      })
+    }
+    return b
+  }, [])
+
+  return (
+    <group position={[x, y, z]} scale={scale}>
+      <mesh>
+        <sphereGeometry args={[0.2, 6, 6]} />
+        <meshStandardMaterial color={color} roughness={0.7} flatShading />
+      </mesh>
+      {branches.map((b, i) => (
+        <Tube
+          key={i}
+          points={[[0, -0.2, 0], [b.rx * 0.5, b.ry * 0.5, b.rz * 0.5], [b.rx, b.ry, b.rz]]}
+          radius={b.radius}
+          color={color}
+        />
+      ))}
+    </group>
   )
 }
 
 export default function Coral() {
-  const configs = useMemo(() => [
-    { x: -12, scale: 1 },
-    { x: -5, scale: 0.7 },
-    { x: 8, scale: 1.2 },
-    { x: 15, scale: 0.8 },
+  const clusters = useMemo(() => [
+    { x: -6, z: -4, scale: 1.5 },
+    { x: -3, z: -6, scale: 1 },
+    { x: 4, z: -3, scale: 1.8 },
+    { x: 7, z: -7, scale: 1.2 },
+    { x: 0, z: -8, scale: 1.4 },
   ], [])
 
   return (
-    <group position={[0, 0, -15]}>
-      {configs.map((c, i) => (
-        <group key={i} position={[c.x, 0, 0]} scale={c.scale}>
-          <Pillar
-            position={[0, -5 + 2.5, 0]}
-            height={5 + Math.random() * 3}
-            radius={0.8 + Math.random() * 0.5}
-            color={i % 2 === 0 ? '#5A7A8A' : '#7A6A5A'}
-          />
-          <Branch
-            position={[0.3, -1, 0.2]}
-            rotation={[0.3, 0.5, 0.2]}
-            length={1.5}
-            color="#8A9A7A"
-          />
-          <Branch
-            position={[-0.2, 0, -0.1]}
-            rotation={[-0.2, -0.3, 0.4]}
-            length={1.2}
-            color="#8A7A5A"
-          />
-        </group>
-      ))}
+    <group>
+      {clusters.map((c, i) => {
+        const baseColor = i % 2 === 0 ? '#6B8E8A' : '#8A6B5A'
+        const headColor = i % 3 === 0 ? '#D4856A' : i % 3 === 1 ? '#6A9AB5' : '#C4A55A'
+        const kelpColor = i % 2 === 0 ? '#4A7A5A' : '#5A7A4A'
+        return (
+          <group key={i} position={[c.x, 0, c.z]} scale={c.scale}>
+            <CoralHead x={0} y={-2.5} z={0} scale={1} color={headColor} />
+            <CoralHead x={0.4} y={-2.8} z={0.3} scale={0.7} color={headColor} />
+            {Array.from({ length: 3 }, (_, j) => (
+              <Kelp
+                key={j}
+                x={-0.3 + j * 0.3}
+                z={0.2 + j * 0.15}
+                height={1 + Math.random() * 0.5}
+                color={kelpColor}
+              />
+            ))}
+          </group>
+        )
+      })}
     </group>
   )
 }
