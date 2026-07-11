@@ -2,7 +2,7 @@
 
 import { Canvas } from '@react-three/fiber'
 import { AdaptiveDpr, PerformanceMonitor } from '@react-three/drei'
-import { Suspense } from 'react'
+import { Suspense, useMemo } from 'react'
 import * as THREE from 'three'
 import OceanSurface from './Ocean'
 import CameraRig from './Camera'
@@ -12,23 +12,44 @@ import Bubbles from './Bubbles'
 import Coral from './Coral'
 import Seabed from './Seabed'
 import LightRays from './LightRays'
+import Robot from './Robot'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import { useStore } from '@/store/useStore'
 
 function SceneContent() {
+  const sceneState = useStore((s) => s.sceneState)
+  const { lighting, water, environment, particles: particleCfg } = sceneState
+
+  const fogColor = useMemo(() => new THREE.Color(lighting.fogColor), [lighting.fogColor])
+
   return (
     <>
-      <color attach="background" args={['#010B13']} />
-      <fog attach="fog" args={['#041525', 8, 25]} />
+      <color attach="background" args={[water.topColor]} />
+      <fog attach="fog" args={[fogColor, lighting.fogNear, lighting.fogFar]} />
       <Suspense fallback={null}>
-        <OceanSurface />
-        <Seabed />
-        <Coral />
-        <LightRays />
-        <Particles />
+        <OceanSurface topColor={water.topColor} />
+        <Seabed debrisCount={environment.debrisCount} />
+        <Coral intact={environment.templeIntact} />
+        <LightRays color={environment.lightRayColor} opacity={environment.lightRayOpacity} />
+        <Particles count={particleCfg.count} color={particleCfg.color} opacity={particleCfg.opacity} speed={particleCfg.speed} />
         <Bubbles />
+        <Robot
+          visible={sceneState.robot.visible}
+          activated={sceneState.robot.activated}
+          scale={sceneState.robot.scale}
+          position={sceneState.robot.position}
+          scanBeam={sceneState.robot.scanBeam}
+        />
         <CameraRig />
-        <Lighting />
+        <Lighting
+          ambientIntensity={lighting.ambientIntensity}
+          ambientColor={lighting.ambientColor}
+          directionalIntensity={lighting.directionalIntensity}
+          directionalColor={lighting.directionalColor}
+          directionalPosition={lighting.directionalPosition}
+          pointIntensity={lighting.pointIntensity}
+          pointColor={lighting.pointColor}
+        />
       </Suspense>
     </>
   )
@@ -39,7 +60,7 @@ export default function World() {
 
   return (
     <ErrorBoundary>
-      <div style={{ position: 'fixed', inset: 0, width: '100vw', height: '100vh' }}>
+      <div style={{ position: 'fixed', inset: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 0 }}>
         <Canvas
           dpr={[1, 1.5]}
           camera={{ position: [0, 1, 8], fov: 60, near: 0.1, far: 40 }}

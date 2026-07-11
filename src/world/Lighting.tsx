@@ -1,15 +1,40 @@
 'use client'
 
-export default function Lighting() {
+import { useMemo } from 'react'
+import * as THREE from 'three'
+
+interface LightingProps {
+  ambientIntensity?: number
+  ambientColor?: string
+  directionalIntensity?: number
+  directionalColor?: string
+  directionalPosition?: [number, number, number]
+  pointIntensity?: number
+  pointColor?: string
+}
+
+export default function Lighting({
+  ambientIntensity = 0.4,
+  ambientColor = '#B8D4E3',
+  directionalIntensity = 1,
+  directionalColor = '#B8D4E3',
+  directionalPosition = [5, 10, -5],
+  pointIntensity = 0.5,
+  pointColor = '#D4AF37',
+}: LightingProps) {
+  const dColor = useMemo(() => new THREE.Color(directionalColor), [directionalColor])
+  const aColor = useMemo(() => new THREE.Color(ambientColor), [ambientColor])
+  const pColor = useMemo(() => new THREE.Color(pointColor), [pointColor])
+
   return (
     <>
-      <ambientLight intensity={0.4} color="#B8D4E3" />
+      <ambientLight intensity={ambientIntensity} color={aColor} />
       <directionalLight
-        position={[5, 10, -5]}
-        intensity={1}
-        color="#B8D4E3"
+        position={directionalPosition}
+        intensity={directionalIntensity}
+        color={dColor}
       />
-      <pointLight position={[0, 5, 0]} intensity={0.5} color="#D4AF37" />
+      <pointLight position={[0, 5, 0]} intensity={pointIntensity} color={pColor} />
       <pointLight position={[-3, 0, 2]} intensity={0.3} color="#00E5FF" />
     </>
   )

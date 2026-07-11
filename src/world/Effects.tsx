@@ -1,8 +1,19 @@
 'use client'
 
-// Placeholder — implement in Phase 3
-// Postprocessing effects
+import { useMemo } from 'react'
+import { useStore } from '@/store/useStore'
 
 export default function Effects() {
-  return null
+  const quality = useStore((s) => s.quality)
+
+  const effects = useMemo(() => {
+    const isMobile = quality <= 0.75
+    return { bloom: !isMobile }
+  }, [quality])
+
+  if (!effects.bloom) return null
+
+  return (
+    <></>
+  )
 }
