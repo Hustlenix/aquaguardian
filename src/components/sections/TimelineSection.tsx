@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import SectionWrapper from './SectionWrapper'
+import TridentIndicator from '@/components/ui/TridentIndicator'
 
 const MILESTONES = [
   {
@@ -46,6 +47,9 @@ export default function TimelineSection() {
       <div className="relative max-w-3xl mx-auto">
         {/* Vertical line - solid color */}
         <div className="absolute left-[18px] md:left-1/2 top-0 bottom-0 w-px bg-gold-400/20 -translate-x-1/2" />
+
+        {/* Scroll-tracking trident indicator */}
+        <TridentIndicator />
 
         {/* Milestones */}
         <div className="space-y-16">
