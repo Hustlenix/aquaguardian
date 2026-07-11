@@ -32,7 +32,7 @@ const STEPS = [
 export default function HowItWorksSection() {
   return (
     <SectionWrapper id="how-it-works">
-      <h2 className="heading-lg text-gradient-cyan text-center mb-4">
+      <h2 className="heading-lg text-cyan-400 text-center mb-4">
         HOW IT WORKS
       </h2>
 
@@ -43,8 +43,8 @@ export default function HowItWorksSection() {
 
       {/* Steps with connecting line */}
       <div className="relative max-w-5xl mx-auto">
-        {/* Vertical connecting line */}
-        <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-cyan-400/40 via-gold-400/30 to-cyan-400/40 hidden md:block" />
+        {/* Vertical connecting line - solid color */}
+        <div className="absolute left-8 top-0 bottom-0 w-px bg-cyan-400/20 hidden md:block" />
 
         <div className="space-y-12 md:space-y-0">
           {STEPS.map((step, index) => {
@@ -55,7 +55,11 @@ export default function HowItWorksSection() {
                 initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: '-80px' }}
-                transition={{ duration: 0.7, delay: index * 0.15 }}
+                transition={{
+                  duration: 0.7,
+                  delay: index * 0.2,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
                 className="relative md:flex md:items-start md:gap-8 md:even:flex-row-reverse"
               >
                 {/* Step number badge (desktop) */}
@@ -69,7 +73,7 @@ export default function HowItWorksSection() {
                         <h3 className="heading-md text-white">{step.title}</h3>
                       </div>
                     )}
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400/20 to-gold-400/10 border border-cyan-400/20 flex items-center justify-center flex-shrink-0 relative z-10">
+                    <div className="w-16 h-16 rounded-full bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center flex-shrink-0 relative z-10">
                       <Icon size={28} className="text-cyan-400" strokeWidth={1.5} />
                     </div>
                     {index % 2 !== 0 && (
@@ -87,7 +91,7 @@ export default function HowItWorksSection() {
                 <div className="md:w-1/2 md:pt-4">
                   {/* Mobile: icon + title row */}
                   <div className="flex items-center gap-4 mb-4 md:hidden">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400/20 to-gold-400/10 border border-cyan-400/20 flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 rounded-full bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center flex-shrink-0">
                       <Icon size={22} className="text-cyan-400" strokeWidth={1.5} />
                     </div>
                     <div>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Cinzel, Cormorant_Garamond, Inter, Space_Grotesk } from 'next/font/google'
 import './globals.css'
+import SmoothScroll from '@/components/SmoothScroll'
 
 const cinzel = Cinzel({
   subsets: ['latin'],
@@ -42,7 +43,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${cinzel.variable} ${cormorantGaramond.variable} ${inter.variable} ${spaceGrotesk.variable}`}>
-      <body>{children}</body>
+      <body>
+        <SmoothScroll>{children}</SmoothScroll>
+      </body>
     </html>
   )
 }

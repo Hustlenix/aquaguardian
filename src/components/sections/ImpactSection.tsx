@@ -2,12 +2,21 @@
 
 import { motion } from 'framer-motion'
 import SectionWrapper from './SectionWrapper'
+import CounterAnimation from '@/components/animations/CounterAnimation'
 
-const stats = [
-  { value: '125K', label: 'Tons of Plastic Collected', sub: 'and counting' },
-  { value: '5,000', label: 'Oceans Monitored', sub: 'active stations' },
-  { value: '850+', label: 'Species Protected', sub: 'marine habitats' },
-  { value: '98%', label: 'Detection Accuracy', sub: 'AI-driven analysis' },
+interface StatMapping {
+  value: number
+  label: string
+  sub: string
+  suffix: string
+  prefix: string
+}
+
+const stats: StatMapping[] = [
+  { value: 125, label: 'Tons of Plastic Collected', sub: 'and counting', suffix: 'K', prefix: '' },
+  { value: 5000, label: 'Oceans Monitored', sub: 'active stations', suffix: '+', prefix: '' },
+  { value: 850, label: 'Species Protected', sub: 'marine habitats', suffix: '+', prefix: '' },
+  { value: 98, label: 'Detection Accuracy', sub: 'AI-driven analysis', suffix: '%', prefix: '' },
 ]
 
 export default function ImpactSection() {
@@ -17,9 +26,10 @@ export default function ImpactSection() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
+        transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         className="text-center mb-16"
       >
-        <h2 className="heading-lg text-gradient-gold">OUR IMPACT</h2>
+        <h2 className="heading-lg text-gold-400">OUR IMPACT</h2>
         <p className="text-elegant text-text-muted mt-4 max-w-2xl mx-auto">
           Real results through advanced technology and dedicated action.
         </p>
@@ -32,11 +42,18 @@ export default function ImpactSection() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.1, duration: 0.6 }}
+            transition={{ delay: i * 0.12, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             className="glass-panel p-6 text-center"
+            whileHover={{ translateY: -4, transition: { duration: 0.2 } }}
           >
-            <div className="text-4xl md:text-5xl font-bold text-numeric text-gradient-gold mb-2">
-              {stat.value}
+            <div className="text-4xl md:text-5xl font-bold text-numeric text-gold-400 mb-2">
+              <CounterAnimation
+                value={stat.value}
+                suffix={stat.suffix}
+                prefix={stat.prefix}
+                duration={2}
+                delay={i * 0.12 + 0.3}
+              />
             </div>
             <div className="text-sm font-medium tracking-wide text-text uppercase mb-1">
               {stat.label}

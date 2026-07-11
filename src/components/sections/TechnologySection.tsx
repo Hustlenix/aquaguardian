@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import SectionWrapper from './SectionWrapper'
 import GlassPanel from '@/components/ui/GlassPanel'
 import { Brain, Activity, Compass } from 'lucide-react'
@@ -25,29 +26,63 @@ const TECH_CARDS = [
   },
 ]
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.15 },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] as const },
+  },
+}
+
 export default function TechnologySection() {
   return (
     <SectionWrapper id="technology">
-      <h2 className="heading-lg text-gradient-cyan text-center mb-12">
+      <h2 className="heading-lg text-cyan-400 text-center mb-12">
         TECHNOLOGY
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-60px' }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-6"
+      >
         {TECH_CARDS.map((card) => {
           const Icon = card.icon
           return (
-            <GlassPanel key={card.title} strong className="text-center">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-cyan-400/10 to-cyan-400/5 text-cyan-400 mb-6">
-                <Icon size={28} strokeWidth={1.5} />
-              </div>
-              <h3 className="heading-md text-white mb-3">{card.title}</h3>
-              <p className="text-body text-sm leading-relaxed">
-                {card.description}
-              </p>
-            </GlassPanel>
+            <motion.div
+              key={card.title}
+              variants={itemVariants}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+            >
+              <GlassPanel strong className="text-center">
+                <motion.div
+                  className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-cyan-400/10 text-cyan-400 mb-6"
+                  whileInView={{ rotate: [0, 360] }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                >
+                  <Icon size={28} strokeWidth={1.5} />
+                </motion.div>
+                <h3 className="heading-md text-white mb-3">{card.title}</h3>
+                <p className="text-body text-sm leading-relaxed">
+                  {card.description}
+                </p>
+              </GlassPanel>
+            </motion.div>
           )
         })}
-      </div>
+      </motion.div>
     </SectionWrapper>
   )
 }

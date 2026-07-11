@@ -1,7 +1,37 @@
 'use client'
 
-// Placeholder — implement in Phase 3
+import { motion } from 'framer-motion'
+import type { ReactNode } from 'react'
 
-export default function FloatingMotion() {
-  return null
+interface Props {
+  children: ReactNode
+  amplitude?: number
+  duration?: number
+  delay?: number
+  className?: string
+}
+
+export default function FloatingMotion({
+  children,
+  amplitude = 6,
+  duration = 3,
+  delay = 0,
+  className = '',
+}: Props) {
+  return (
+    <motion.div
+      className={className}
+      animate={{
+        y: [0, -amplitude, 0],
+      }}
+      transition={{
+        duration,
+        repeat: Infinity,
+        ease: 'easeInOut',
+        delay,
+      }}
+    >
+      {children}
+    </motion.div>
+  )
 }

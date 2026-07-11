@@ -40,7 +40,7 @@ const GALLERY_ITEMS = [
 const containerVariants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.08 },
+    transition: { staggerChildren: 0.06 },
   },
 }
 
@@ -49,14 +49,14 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] as const },
+    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const },
   },
 }
 
 export default function GallerySection() {
   return (
     <SectionWrapper id="gallery">
-      <h2 className="heading-lg text-gradient-cyan text-center mb-4">
+      <h2 className="heading-lg text-cyan-400 text-center mb-4">
         GALLERY
       </h2>
 
@@ -78,25 +78,23 @@ export default function GallerySection() {
             <motion.div
               key={item.label}
               variants={itemVariants}
+              whileHover={{
+                scale: 1.02,
+                transition: { duration: 0.3 },
+              }}
               className="group relative glass-panel overflow-hidden cursor-pointer min-h-[220px] flex flex-col items-center justify-center text-center p-8"
             >
-              {/* Hover gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/0 via-transparent to-gold-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-              {/* Corner decorations */}
-              <div className="absolute top-3 left-3 w-6 h-px bg-gradient-to-r from-gold-400/20 to-transparent" />
-              <div className="absolute top-3 left-3 h-6 w-px bg-gradient-to-b from-gold-400/20 to-transparent" />
-              <div className="absolute bottom-3 right-3 w-6 h-px bg-gradient-to-l from-gold-400/20 to-transparent" />
-              <div className="absolute bottom-3 right-3 h-6 w-px bg-gradient-to-t from-gold-400/20 to-transparent" />
-
               {/* Icon */}
-              <div className="relative z-10 w-14 h-14 rounded-full bg-gradient-to-br from-cyan-400/10 to-gold-400/5 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-500">
+              <motion.div
+                className="relative z-10 w-14 h-14 rounded-full bg-cyan-400/10 flex items-center justify-center mb-4"
+                whileHover={{ scale: 1.15, transition: { duration: 0.3 } }}
+              >
                 <Icon
                   size={26}
-                  className="text-cyan-400/70 group-hover:text-cyan-400 transition-colors duration-500"
+                  className="text-cyan-400/70 group-hover:text-cyan-400 transition-colors duration-300"
                   strokeWidth={1.5}
                 />
-              </div>
+              </motion.div>
 
               {/* Label */}
               <h3 className="relative z-10 text-sm font-semibold text-white tracking-wide mb-1">
@@ -106,8 +104,8 @@ export default function GallerySection() {
                 {item.description}
               </p>
 
-              {/* Bottom accent line */}
-              <div className="absolute bottom-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-gold-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Hover border glow */}
+              <div className="absolute inset-0 rounded-[16px] border border-transparent group-hover:border-gold-400/30 transition-all duration-500 pointer-events-none" />
             </motion.div>
           )
         })}

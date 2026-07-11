@@ -37,19 +37,36 @@ export default function FAQSection() {
 
   return (
     <SectionWrapper id="faq">
-      <h2 className="heading-lg text-center mb-12">FAQ</h2>
+      <h2 className="heading-lg text-gold-400 text-center mb-12">FAQ</h2>
+
       <div className="max-w-3xl mx-auto space-y-3">
         {faqs.map((faq, i) => (
-          <div key={i} className="glass-panel overflow-hidden">
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.4, delay: i * 0.05 }}
+            className="glass-panel overflow-hidden"
+          >
             <button
               onClick={() => setOpenIndex(openIndex === i ? null : i)}
-              className="w-full flex items-center justify-between p-5 text-left"
+              className="w-full flex items-center justify-between p-5 text-left group"
               aria-expanded={openIndex === i}
             >
-              <span className="font-medium text-sm md:text-base pr-4">{faq.q}</span>
-              <ChevronDown
-                className={`w-4 h-4 shrink-0 transition-transform duration-300 ${openIndex === i ? 'rotate-180' : ''}`}
-              />
+              <span className="font-medium text-sm md:text-base pr-4 text-white group-hover:text-gold-400 transition-colors duration-300">
+                {faq.q}
+              </span>
+              <motion.div
+                animate={{ rotate: openIndex === i ? 180 : 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="shrink-0"
+              >
+                <ChevronDown
+                  className="w-4 h-4 text-gold-400/70"
+                  strokeWidth={1.5}
+                />
+              </motion.div>
             </button>
             <AnimatePresence>
               {openIndex === i && (
@@ -57,7 +74,7 @@ export default function FAQSection() {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
                 >
                   <div className="px-5 pb-5 text-sm text-text-muted leading-relaxed">
                     {faq.a}
@@ -65,7 +82,7 @@ export default function FAQSection() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+          </motion.div>
         ))}
       </div>
     </SectionWrapper>
