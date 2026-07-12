@@ -13,10 +13,10 @@ interface StatMapping {
 }
 
 const stats: StatMapping[] = [
-  { value: 125, label: 'Tons of Plastic Collected', sub: 'and counting', suffix: 'K', prefix: '' },
-  { value: 5000, label: 'Oceans Monitored', sub: 'active stations', suffix: '+', prefix: '' },
-  { value: 850, label: 'Species Protected', sub: 'marine habitats', suffix: '+', prefix: '' },
-  { value: 98, label: 'Detection Accuracy', sub: 'AI-driven analysis', suffix: '%', prefix: '' },
+  { value: 125, label: 'Plastic Collected per Unit', sub: 'target tons per year', suffix: 'K', prefix: 'Goal: ' },
+  { value: 5000, label: 'Oceans Monitored', sub: 'target active stations', suffix: '+', prefix: 'Goal: ' },
+  { value: 850, label: 'Species Protected', sub: 'target marine habitats', suffix: '+', prefix: 'Goal: ' },
+  { value: 98, label: 'Detection Accuracy', sub: 'target AI-driven analysis', suffix: '%', prefix: 'Goal: ' },
 ]
 
 export default function ImpactSection() {
@@ -29,9 +29,9 @@ export default function ImpactSection() {
         transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         className="text-center mb-16"
       >
-        <h2 className="heading-lg text-gold-400">OUR IMPACT</h2>
+        <h2 className="heading-lg text-gold-400">OUR GOALS</h2>
         <p className="text-elegant text-text-muted mt-4 max-w-2xl mx-auto">
-          Real results through advanced technology and dedicated action.
+          Ambitious targets for ocean restoration by 2028
         </p>
       </motion.div>
 

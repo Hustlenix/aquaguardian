@@ -4,36 +4,53 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import SectionWrapper from './SectionWrapper'
+import { useEffect } from 'react'
 
 const faqs = [
   {
     q: 'What is AquaGuardian?',
-    a: 'AquaGuardian is an AI-powered autonomous underwater vehicle designed to monitor ocean health, collect plastic waste, and restore marine ecosystems through advanced robotics and environmental science.',
+    a: 'AquaGuardian is an AI-powered autonomous underwater vehicle (AUV) designed to monitor ocean health, collect plastic waste, and restore marine ecosystems through advanced robotics and environmental science.',
   },
   {
     q: 'How does AquaGuardian detect pollution?',
-    a: 'Using a multi-spectral sensor array and computer vision, AquaGuardian identifies microplastics, chemical pollutants, and biological changes in real-time with 98% accuracy.',
+    a: 'Using a multi-spectral sensor array and computer vision, AquaGuardian identifies microplastics, chemical pollutants, and biological changes. We are targeting 98% detection accuracy in controlled testing environments.',
   },
   {
     q: 'Is the technology available for commercial use?',
-    a: 'We are currently in the pilot deployment phase. Commercial licensing and partnership opportunities will be announced in Q4 2026.',
+    a: 'We are currently in the prototype development phase (Q2 2026). Commercial licensing and partnership opportunities are expected following successful pilot deployment in Q4 2026.',
   },
   {
     q: 'How much plastic can AquaGuardian collect?',
-    a: 'Each unit can process up to 500 kg of plastic waste per day. Our goal is to deploy 1,000 units globally by 2028.',
+    a: 'Each unit is designed to process up to 500 kg of plastic waste per day. Our goal is to deploy 1,000 units globally by 2028, subject to funding and pilot results.',
   },
   {
     q: 'How is the robot powered?',
-    a: 'AquaGuardian uses a hybrid system: solar panels for surface operations and hydrogen fuel cells for deep-water missions, enabling continuous 24/7 operation.',
+    a: 'AquaGuardian uses a hybrid system: solar panels for surface operations and hydrogen fuel cells for deep-water missions, enabling continuous 24/7 operation. Battery life is rated at 72 hours per mission cycle.',
   },
   {
     q: 'Can I support the project?',
-    a: 'Absolutely. You can contribute by spreading awareness, donating to our research fund, or partnering with us as a conservation organization.',
+    a: 'Yes! Subscribe to our newsletter for updates on our progress and pilot programs. We welcome interest from conservation organizations, research institutions, and potential partners.',
   },
 ]
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.type = 'application/ld+json'
+    script.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.q,
+        acceptedAnswer: { '@type': 'Answer', text: faq.a },
+      })),
+    })
+    document.head.appendChild(script)
+    return () => { document.head.removeChild(script) }
+  }, [])
 
   return (
     <SectionWrapper id="faq">

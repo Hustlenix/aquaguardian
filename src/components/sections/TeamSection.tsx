@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion'
 import SectionWrapper from './SectionWrapper'
 import GlassPanel from '@/components/ui/GlassPanel'
-import { Linkedin, Twitter } from 'lucide-react'
 
 const TEAM_MEMBERS = [
   {
@@ -100,22 +99,7 @@ export default function TeamSection() {
                 {member.bio}
               </p>
 
-              <div className="flex items-center gap-3">
-                <a
-                  href="#"
-                  className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 hover:text-gold-400 transition-all duration-300"
-                  aria-label={`${member.name} on LinkedIn`}
-                >
-                  <Linkedin size={14} className="text-text-muted" strokeWidth={1.5} />
-                </a>
-                <a
-                  href="#"
-                  className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 hover:text-gold-400 transition-all duration-300"
-                  aria-label={`${member.name} on Twitter`}
-                >
-                  <Twitter size={14} className="text-text-muted" strokeWidth={1.5} />
-                </a>
-              </div>
+
             </GlassPanel>
           </motion.div>
         ))}

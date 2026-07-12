@@ -10,16 +10,6 @@ export default function HeroSection() {
     <section className="relative min-h-screen flex items-center justify-center section-padding overflow-hidden">
       {/* Content */}
       <div className="section-inner relative z-10 flex flex-col items-center text-center px-4">
-        {/* Eyebrow label */}
-        <motion.span
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-          className="inline-block text-[0.55rem] md:text-[0.65rem] font-semibold tracking-[0.28em] uppercase text-gold-400/80 mb-5"
-        >
-          Ocean Guardian Initiative
-        </motion.span>
-
         {/* Main heading - word-by-word reveal */}
         <h1 className="heading-xl text-white mb-5">
           <TextReveal as="span" wordDelay={0.06} delay={0.3}>

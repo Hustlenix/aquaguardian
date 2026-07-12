@@ -1,20 +1,12 @@
 'use client'
 
-import { Twitter, Github, Linkedin, Instagram } from 'lucide-react'
-
 const QUICK_LINKS = [
   { label: 'About', href: '#mission' },
   { label: 'Mission', href: '#mission' },
   { label: 'Technology', href: '#technology' },
   { label: 'Impact', href: '#impact' },
   { label: 'FAQ', href: '#faq' },
-]
-
-const SOCIAL_LINKS = [
-  { label: 'Twitter / X', href: 'https://twitter.com', icon: Twitter },
-  { label: 'GitHub', href: 'https://github.com', icon: Github },
-  { label: 'LinkedIn', href: 'https://linkedin.com', icon: Linkedin },
-  { label: 'Instagram', href: 'https://instagram.com', icon: Instagram },
+  { label: 'Privacy', href: '/privacy' },
 ]
 
 export default function Footer() {
@@ -60,32 +52,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Connect */}
-          <div>
-            <h4 className="text-xs font-semibold tracking-[0.2em] uppercase text-gold-400/70 mb-5">
-              Connect
-            </h4>
-            <ul className="space-y-3">
-              {SOCIAL_LINKS.map((social) => {
-                const Icon = social.icon
-                return (
-                  <li key={social.label}>
-                    <a
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-3 text-sm text-text-muted hover:text-gold-400 transition-all duration-300 group"
-                    >
-                      <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-gold-400/15 transition-all duration-300">
-                        <Icon size={14} strokeWidth={1.5} className="group-hover:text-gold-400 transition-colors duration-300" />
-                      </span>
-                      <span>{social.label}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
         </div>
 
         {/* Bottom bar */}

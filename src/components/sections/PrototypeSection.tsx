@@ -4,15 +4,16 @@ import { motion } from 'framer-motion'
 import SectionWrapper from './SectionWrapper'
 import GlassPanel from '@/components/ui/GlassPanel'
 import Button from '@/components/ui/Button'
+import ModelVisual from '@/components/ui/ModelVisual'
 import { Navigation, Gauge, Battery, Weight, Zap, Cpu } from 'lucide-react'
 
 const SPECS = [
   { icon: Weight, label: 'Weight', value: '180 kg' },
-  { icon: Navigation, label: 'Depth Rating', value: '4,000 m' },
+  { icon: Navigation, label: 'Depth Rating', value: '4,000 m *' },
   { icon: Gauge, label: 'Speed', value: '8 knots' },
   { icon: Battery, label: 'Battery Life', value: '72 hrs' },
   { icon: Zap, label: 'Payload', value: '500 kg' },
-  { icon: Cpu, label: 'AI Model', value: 'AGNet-7B' },
+  { icon: Cpu, label: 'AI Model', value: 'AGNet-7B *' },
 ]
 
 export default function PrototypeSection() {
@@ -28,31 +29,15 @@ export default function PrototypeSection() {
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-        {/* Left: Hero visual placeholder */}
+        {/* Left: Hero visual */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <GlassPanel strong className="relative overflow-hidden min-h-[360px] lg:min-h-[480px] flex items-center justify-center">
-            {/* Center content */}
-            <div className="relative z-10 text-center">
-              <motion.div
-                className="w-32 h-32 mx-auto mb-6 rounded-full bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center"
-                whileInView={{ rotate: [0, 360] }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.5, ease: 'easeOut' }}
-              >
-                <Navigation size={52} className="text-cyan-400/60" strokeWidth={1} />
-              </motion.div>
-              <p className="text-body text-xs uppercase tracking-widest text-gold-400/70">
-                AquaGuardian Series 1
-              </p>
-              <p className="text-elegant text-white/50 text-sm mt-2">
-                Full 3D model coming soon
-              </p>
-            </div>
+          <GlassPanel strong className="relative overflow-hidden min-h-[360px] lg:min-h-[480px] flex items-center justify-center p-0">
+            <ModelVisual variant="prototype" />
           </GlassPanel>
         </motion.div>
 
@@ -111,10 +96,14 @@ export default function PrototypeSection() {
             <Button variant="primary" href="#contact">
               Request a Demo
             </Button>
-            <Button variant="secondary" href="#technology">
-              View Technical Specs
+            <Button variant="secondary" href="#">
+              Download Spec Sheet
             </Button>
           </motion.div>
+
+          <p className="text-[0.55rem] text-text-muted/50 text-center mt-4">
+            * Engineering targets — subject to testing validation
+          </p>
         </div>
       </div>
     </SectionWrapper>

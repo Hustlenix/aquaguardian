@@ -6,13 +6,8 @@ import Button from './Button'
 
 const NAV_LINKS = [
   { label: 'Mission', href: '#mission' },
-  { label: 'Problem', href: '#problem' },
-  { label: 'How It Works', href: '#how-it-works' },
   { label: 'Technology', href: '#technology' },
-  { label: 'Prototype', href: '#prototype' },
   { label: 'Impact', href: '#impact' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'FAQ', href: '#faq' },
   { label: 'Team', href: '#team' },
   { label: 'Contact', href: '#contact' },
 ]
@@ -73,11 +68,12 @@ export default function Navigation() {
               <li key={link.href} className="relative">
                 <a
                   href={link.href}
-                  className={`text-xs tracking-[0.18em] uppercase transition-all duration-300 ${
-                    isActive
-                      ? 'text-gold-400'
-                      : 'text-text-muted hover:text-white'
-                  }`}
+                   className={`text-xs tracking-[0.18em] uppercase transition-all duration-300 ${
+                     isActive
+                       ? 'text-gold-400'
+                       : 'text-text-muted hover:text-white'
+                   }`}
+                   aria-current={isActive ? 'location' : undefined}
                 >
                   {link.label}
                 </a>
@@ -92,7 +88,7 @@ export default function Navigation() {
 
         {/* Desktop CTA */}
         <div className="hidden md:block">
-          <Button variant="primary" href="#impact">
+          <Button variant="primary" href="#contact">
             Join the Mission
           </Button>
         </div>
@@ -122,22 +118,23 @@ export default function Navigation() {
                   <a
                     href={link.href}
                     onClick={handleNavClick}
-                    className={`text-xs tracking-[0.18em] uppercase transition-colors duration-300 ${
-                      isActive
-                        ? 'text-gold-400'
-                        : 'text-text-muted hover:text-white'
-                    }`}
-                  >
-                    {link.label}
-                  </a>
-                  {isActive && (
+                   className={`text-xs tracking-[0.18em] uppercase transition-colors duration-300 ${
+                     isActive
+                       ? 'text-gold-400'
+                       : 'text-text-muted hover:text-white'
+                   }`}
+                   aria-current={isActive ? 'location' : undefined}
+                >
+                  {link.label}
+                </a>
+                {isActive && (
                     <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold-400 shadow-[0_0_6px_rgba(212,175,55,0.6)]" />
                   )}
                 </li>
               )
             })}
             <li className="pt-3">
-              <Button variant="primary" href="#impact" onClick={handleNavClick}>
+              <Button variant="primary" href="#contact" onClick={handleNavClick}>
                 Join the Mission
               </Button>
             </li>
