@@ -106,7 +106,7 @@ export default function ContactSection() {
                 className="btn-primary whitespace-nowrap"
               >
                 <Send size={16} strokeWidth={1.5} />
-                {loading ? 'Sending...' : 'Get Early Access'}
+                {loading ? 'Sending...' : 'Join the Mission'}
               </button>
             </motion.div>
           </motion.form>
@@ -120,7 +120,7 @@ export default function ContactSection() {
             {error}
           </motion.p>
         )}
-        <p className="text-[0.55rem] text-text-muted/50 mt-4">
+        <p className="text-xs text-text-muted/50 mt-4">
           We respect your privacy.{' '}
           <a
             href="/privacy"

@@ -22,7 +22,7 @@ export default function CounterAnimation({
   className = '',
   formatter,
 }: Props) {
-  const count = useMotionValue(0)
+  const count = useMotionValue(value)
   const rounded = useTransform(count, (latest) =>
     formatter ? formatter(latest) : Math.round(latest).toLocaleString()
   )
@@ -37,6 +37,7 @@ export default function CounterAnimation({
       ([entry]) => {
         if (entry.isIntersecting && !hasAnimated.current) {
           hasAnimated.current = true
+          count.set(Math.round(value * 0.7))
           const controls = animate(count, value, {
             duration,
             delay,

@@ -50,9 +50,9 @@ const itemVariants = {
 export default function ProblemSection() {
   return (
     <SectionWrapper id="problem">
-      <h2 className="heading-lg text-center text-white mb-4">
-        THE CRISIS
-      </h2>
+        <h2 className="heading-lg text-center text-gold-400 mb-4">
+          THE CRISIS
+        </h2>
 
       <p className="text-elegant text-center text-white/70 max-w-3xl mx-auto mb-12">
         Our oceans are in peril. Decades of neglect have pushed marine
