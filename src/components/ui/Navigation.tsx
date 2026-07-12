@@ -55,25 +55,25 @@ export default function Navigation() {
           : 'bg-transparent'
       }`}
     >
-      <div className="section-inner flex items-center justify-between px-4 md:px-6 py-4">
+      <div className="section-inner flex items-center justify-between px-4 md:px-6 py-3 md:py-3">
         {/* Logo */}
         <a
           href="#"
-          className="text-lg md:text-xl font-bold tracking-[0.15em] text-white"
+          className="text-base md:text-lg font-bold tracking-[0.15em] text-white"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           AQUAGUARDIAN
         </a>
 
         {/* Desktop nav links */}
-        <ul className="hidden md:flex items-center gap-8">
+        <ul className="hidden md:flex items-center gap-6">
           {NAV_LINKS.map((link) => {
             const isActive = activeSection === link.href.slice(1)
             return (
-              <li key={link.href}>
+              <li key={link.href} className="relative">
                 <a
                   href={link.href}
-                  className={`text-sm tracking-widest uppercase transition-all duration-300 ${
+                  className={`text-xs tracking-[0.18em] uppercase transition-all duration-300 ${
                     isActive
                       ? 'text-gold-400'
                       : 'text-text-muted hover:text-white'
@@ -81,6 +81,10 @@ export default function Navigation() {
                 >
                   {link.label}
                 </a>
+                {/* Active dot indicator */}
+                {isActive && (
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold-400 shadow-[0_0_6px_rgba(212,175,55,0.6)]" />
+                )}
               </li>
             )
           })}
@@ -95,26 +99,30 @@ export default function Navigation() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden text-white p-2"
+          className="md:hidden text-white p-2 relative"
           onClick={() => setMobileOpen((prev) => !prev)}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          {/* Active dot on mobile hamburger */}
+          {activeSection && !mobileOpen && (
+            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-gold-400 shadow-[0_0_6px_rgba(212,175,55,0.6)]" />
+          )}
         </button>
       </div>
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden nav-blur border-t border-white/5">
-          <ul className="flex flex-col items-center gap-6 py-8">
+        <div className="md:hidden bg-[rgba(1,11,19,0.97)] border-t border-white/5">
+          <ul className="flex flex-col items-center gap-5 py-6">
             {NAV_LINKS.map((link) => {
               const isActive = activeSection === link.href.slice(1)
               return (
-                <li key={link.href}>
+                <li key={link.href} className="relative">
                   <a
                     href={link.href}
                     onClick={handleNavClick}
-                    className={`text-sm tracking-widest uppercase transition-colors duration-300 ${
+                    className={`text-xs tracking-[0.18em] uppercase transition-colors duration-300 ${
                       isActive
                         ? 'text-gold-400'
                         : 'text-text-muted hover:text-white'
@@ -122,10 +130,13 @@ export default function Navigation() {
                   >
                     {link.label}
                   </a>
+                  {isActive && (
+                    <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold-400 shadow-[0_0_6px_rgba(212,175,55,0.6)]" />
+                  )}
                 </li>
               )
             })}
-            <li className="pt-4">
+            <li className="pt-3">
               <Button variant="primary" href="#impact" onClick={handleNavClick}>
                 Join the Mission
               </Button>

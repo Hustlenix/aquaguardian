@@ -55,7 +55,7 @@ export default function TechnologySection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-60px' }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        className="grid grid-cols-1 md:grid-cols-3 gap-5"
       >
         {TECH_CARDS.map((card) => {
           const Icon = card.icon
@@ -63,11 +63,11 @@ export default function TechnologySection() {
             <motion.div
               key={card.title}
               variants={itemVariants}
-              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+              className="hover-lift"
             >
-              <GlassPanel strong className="text-center">
+              <GlassPanel strong className="text-center h-full">
                 <motion.div
-                  className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-cyan-400/10 text-cyan-400 mb-6"
+                  className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400/15 to-cyan-400/5 text-cyan-400 mb-5 border border-cyan-400/10"
                   whileInView={{ rotate: [0, 360] }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, ease: 'easeOut' }}

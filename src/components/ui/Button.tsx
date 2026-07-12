@@ -16,7 +16,7 @@ export default function Button({
   className = '',
 }: ButtonProps) {
   const cls =
-    variant === 'primary' ? 'btn-primary' : 'btn-secondary'
+    variant === 'primary' ? 'btn-primary' : variant === 'ghost' ? 'btn-ghost' : 'btn-secondary'
 
   if (href) {
     return (

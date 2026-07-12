@@ -32,16 +32,27 @@ export default function Home() {
         <main>
           <HeroSection />
           <MissionSection />
+          <div className="section-divider-gold max-w-[200px] mx-auto" />
           <ProblemSection />
+          <div className="section-divider max-w-[200px] mx-auto" />
           <SolutionSection />
+          <div className="section-divider-gold max-w-[200px] mx-auto" />
           <HowItWorksSection />
+          <div className="section-divider max-w-[200px] mx-auto" />
           <TechnologySection />
+          <div className="section-divider-gold max-w-[200px] mx-auto" />
           <PrototypeSection />
+          <div className="section-divider max-w-[200px] mx-auto" />
           <ImpactSection />
+          <div className="section-divider-gold max-w-[200px] mx-auto" />
           <TimelineSection />
+          <div className="section-divider max-w-[200px] mx-auto" />
           <GallerySection />
+          <div className="section-divider-gold max-w-[200px] mx-auto" />
           <FAQSection />
+          <div className="section-divider max-w-[200px] mx-auto" />
           <TeamSection />
+          <div className="section-divider-gold max-w-[200px] mx-auto" />
           <ContactSection />
         </main>
         <Footer />
