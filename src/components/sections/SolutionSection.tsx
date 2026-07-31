@@ -34,9 +34,7 @@ const itemVariants = {
 export default function SolutionSection() {
   return (
     <SectionWrapper id="solution">
-      <h2 className="heading-lg text-gold-400 text-center mb-4">
-        MEET AQUAGUARDIAN
-      </h2>
+      <h2 className="heading-lg text-gold-400 text-center mb-4">MEET AQUAGUARDIAN</h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left: Text content */}
@@ -47,10 +45,9 @@ export default function SolutionSection() {
           transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <p className="text-elegant text-white/70 mb-8">
-            AquaGuardian is a fully autonomous underwater vehicle designed to
-            patrol, monitor, and restore marine environments. Powered by
-            cutting-edge artificial intelligence and rugged deep-sea
-            engineering, it operates where humans cannot go.
+            AquaGuardian is a fully autonomous underwater vehicle designed to patrol, monitor, and
+            restore marine environments. Powered by cutting-edge artificial intelligence and rugged
+            deep-sea engineering, it operates where humans cannot go.
           </p>
 
           {/* Key features list */}

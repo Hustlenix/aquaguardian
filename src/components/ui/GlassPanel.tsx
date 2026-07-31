@@ -4,17 +4,9 @@ interface GlassPanelProps {
   strong?: boolean
 }
 
-export default function GlassPanel({
-  children,
-  className = '',
-  strong = false,
-}: GlassPanelProps) {
+export default function GlassPanel({ children, className = '', strong = false }: GlassPanelProps) {
   return (
-    <div
-      className={`${
-        strong ? 'glass-panel-strong' : 'glass-panel'
-      } p-6 md:p-8 ${className}`}
-    >
+    <div className={`${strong ? 'glass-panel-strong' : 'glass-panel'} p-6 md:p-8 ${className}`}>
       {children}
     </div>
   )

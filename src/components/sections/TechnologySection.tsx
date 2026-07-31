@@ -46,9 +46,7 @@ const itemVariants = {
 export default function TechnologySection() {
   return (
     <SectionWrapper id="technology">
-        <h2 className="heading-lg text-gold-400 text-center mb-12">
-          TECHNOLOGY
-        </h2>
+      <h2 className="heading-lg text-gold-400 text-center mb-12">TECHNOLOGY</h2>
 
       <motion.div
         variants={containerVariants}
@@ -60,11 +58,7 @@ export default function TechnologySection() {
         {TECH_CARDS.map((card) => {
           const Icon = card.icon
           return (
-            <motion.div
-              key={card.title}
-              variants={itemVariants}
-              className="hover-lift"
-            >
+            <motion.div key={card.title} variants={itemVariants} className="hover-lift">
               <GlassPanel strong className="text-center h-full">
                 <motion.div
                   className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400/15 to-cyan-400/5 text-cyan-400 mb-5 border border-cyan-400/10"
@@ -75,9 +69,7 @@ export default function TechnologySection() {
                   <Icon size={28} strokeWidth={1.5} />
                 </motion.div>
                 <h3 className="heading-md text-white mb-3">{card.title}</h3>
-                <p className="text-body text-sm leading-relaxed">
-                  {card.description}
-                </p>
+                <p className="text-body text-sm leading-relaxed">{card.description}</p>
               </GlassPanel>
             </motion.div>
           )

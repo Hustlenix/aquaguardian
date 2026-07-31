@@ -11,5 +11,11 @@ export const chapters: Chapter[] = [
   { id: 8, title: 'Technology', emotion: 'Trust', scrollStart: 900, scrollEnd: 1060 },
   { id: 9, title: 'Impact', emotion: 'Inspiration', scrollStart: 1060, scrollEnd: 1160 },
   { id: 10, title: 'Future Atlantis', emotion: 'Wonder', scrollStart: 1160, scrollEnd: 1320 },
-  { id: 11, title: 'Call to Action', emotion: 'Responsibility', scrollStart: 1320, scrollEnd: 1380 },
+  {
+    id: 11,
+    title: 'Call to Action',
+    emotion: 'Responsibility',
+    scrollStart: 1320,
+    scrollEnd: 1380,
+  },
 ]

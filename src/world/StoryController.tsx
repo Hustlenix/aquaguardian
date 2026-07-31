@@ -15,10 +15,13 @@ export default function StoryController() {
 
   const chapterCount = chapters.length
 
-  const getChapterAtProgress = useCallback((progress: number) => {
-    const index = Math.min(Math.floor(progress * chapterCount), chapterCount - 1)
-    return index
-  }, [chapterCount])
+  const getChapterAtProgress = useCallback(
+    (progress: number) => {
+      const index = Math.min(Math.floor(progress * chapterCount), chapterCount - 1)
+      return index
+    },
+    [chapterCount],
+  )
 
   useEffect(() => {
     const chapter = getChapterAtProgress(scrollProgress)

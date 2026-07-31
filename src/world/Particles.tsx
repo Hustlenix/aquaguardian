@@ -20,7 +20,12 @@ function ParticleLayer({
   spreadMul,
   yRange,
   yOffset,
-}: ParticlesProps & { sizeBase: number; spreadMul: number; yRange: [number, number]; yOffset: number }) {
+}: ParticlesProps & {
+  sizeBase: number
+  spreadMul: number
+  yRange: [number, number]
+  yOffset: number
+}) {
   const ref = useRef<THREE.Points>(null)
   const offsetsRef = useRef<Float32Array>(new Float32Array(count!))
 
@@ -49,7 +54,8 @@ function ParticleLayer({
       const s = speed! * 0.003
       for (let i = 0; i < count!; i++) {
         pos[i * 3 + 1] += Math.sin(state.clock.elapsedTime * speed! + offsetsRef.current[i]) * s
-        pos[i * 3] += Math.cos(state.clock.elapsedTime * speed! * 0.7 + offsetsRef.current[i] * 0.5) * s * 0.5
+        pos[i * 3] +=
+          Math.cos(state.clock.elapsedTime * speed! * 0.7 + offsetsRef.current[i] * 0.5) * s * 0.5
       }
       ref.current.geometry.attributes.position.needsUpdate = true
     }
@@ -73,13 +79,7 @@ function ParticleLayer({
 export default function Particles(props: ParticlesProps) {
   return (
     <group>
-      <ParticleLayer
-        {...props}
-        sizeBase={0.08}
-        spreadMul={1.2}
-        yRange={[-3, 12]}
-        yOffset={0}
-      />
+      <ParticleLayer {...props} sizeBase={0.08} spreadMul={1.2} yRange={[-3, 12]} yOffset={0} />
       <ParticleLayer
         {...props}
         count={Math.round((props.count ?? 200) * 2.5)}

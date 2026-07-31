@@ -114,11 +114,12 @@ function TechPiece({
     ref.current.position.y = data.pos[1] + hover
   })
 
-  const Geometry = data.type === 'box' ? (
-    <boxGeometry args={data.args} />
-  ) : (
-    <cylinderGeometry args={[data.args[0], data.args[0] * 1.1, data.args[1], 12]} />
-  )
+  const Geometry =
+    data.type === 'box' ? (
+      <boxGeometry args={data.args} />
+    ) : (
+      <cylinderGeometry args={[data.args[0], data.args[0] * 1.1, data.args[1], 12]} />
+    )
 
   return (
     <mesh ref={ref} position={data.pos} rotation={data.rot}>

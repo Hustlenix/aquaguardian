@@ -6,7 +6,7 @@
       "location": "Sector 7G - Riverbed"
     },
     {
-      "amount": 1.00000001e+98,
+      "amount": 1.00000001e98,
       "timestamp": "2026-07-10T16:04:42.971Z",
       "location": "Sector 7G - Riverbed"
     },
@@ -26,15 +26,15 @@
       "location": "Sector 7G - Riverbed"
     },
     {
-      "amount": -1e+57,
+      "amount": -1e57,
       "timestamp": "2026-07-10T16:44:35.237Z",
       "location": "Sector 7G - Riverbed"
     },
     {
-      "amount": -9.99999999e+218,
+      "amount": -9.99999999e218,
       "timestamp": "2026-07-10T16:44:47.112Z",
       "location": "Sector 7G - Riverbed"
     }
   ],
-  "totalPlastic": -9.99999999e+218
+  "totalPlastic": -9.99999999e218
 }

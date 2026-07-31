@@ -62,7 +62,9 @@ export default function Chapter04_Discovery() {
   )
 }
 
-function PulsingMesh({ data }: {
+function PulsingMesh({
+  data,
+}: {
   data: {
     pos: [number, number, number]
     rot: [number, number, number]

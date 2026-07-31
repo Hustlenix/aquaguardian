@@ -55,13 +55,10 @@ const itemVariants = {
 export default function GallerySection() {
   return (
     <SectionWrapper id="gallery">
-      <h2 className="heading-lg text-gold-400 text-center mb-4">
-        GALLERY
-      </h2>
+      <h2 className="heading-lg text-gold-400 text-center mb-4">GALLERY</h2>
 
       <p className="text-elegant text-center text-white/70 max-w-3xl mx-auto mb-12">
-        A glimpse into the world of AquaGuardian — from deployment to deep-sea
-        exploration.
+        A glimpse into the world of AquaGuardian — from deployment to deep-sea exploration.
       </p>
 
       <motion.div
@@ -92,9 +89,7 @@ export default function GallerySection() {
               <h3 className="text-sm font-semibold text-white tracking-wide mb-0.5">
                 {item.label}
               </h3>
-              <p className="text-xs text-white/60">
-                {item.description}
-              </p>
+              <p className="text-xs text-white/60">{item.description}</p>
             </div>
           </motion.div>
         ))}

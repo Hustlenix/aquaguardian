@@ -38,16 +38,16 @@ export default function PrivacyPage() {
               <h2 className="heading-md text-white mb-3">2. How We Use Your Information</h2>
               <p className="text-text-muted">
                 We use your email address solely to send you updates about AquaGuardian&apos;s
-                progress, pilot programs, and ocean conservation initiatives. We do not sell,
-                rent, or share your personal information with third parties.
+                progress, pilot programs, and ocean conservation initiatives. We do not sell, rent,
+                or share your personal information with third parties.
               </p>
             </section>
 
             <section>
               <h2 className="heading-md text-white mb-3">3. Data Protection</h2>
               <p className="text-text-muted">
-                We implement reasonable security measures to protect your information. However,
-                no method of electronic storage is 100% secure. You can unsubscribe from our
+                We implement reasonable security measures to protect your information. However, no
+                method of electronic storage is 100% secure. You can unsubscribe from our
                 communications at any time by replying to any email we send.
               </p>
             </section>
@@ -55,16 +55,16 @@ export default function PrivacyPage() {
             <section>
               <h2 className="heading-md text-white mb-3">4. Your Rights</h2>
               <p className="text-text-muted">
-                Depending on your jurisdiction, you may have the right to access, correct, or
-                delete your personal data. To exercise these rights, please contact us.
+                Depending on your jurisdiction, you may have the right to access, correct, or delete
+                your personal data. To exercise these rights, please contact us.
               </p>
             </section>
 
             <section>
               <h2 className="heading-md text-white mb-3">5. Contact</h2>
               <p className="text-text-muted">
-                For privacy-related inquiries, please reach out through our contact form or
-                email us at privacy@aquaguardian.io.
+                For privacy-related inquiries, please reach out through our contact form or email us
+                at privacy@aquaguardian.io.
               </p>
             </section>
           </div>

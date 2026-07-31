@@ -8,8 +8,18 @@ interface KelpProps {
   density?: number
 }
 
-function KelpStalk({ x, z, height, phase, color }: {
-  x: number; z: number; height: number; phase: number; color: string
+function KelpStalk({
+  x,
+  z,
+  height,
+  phase,
+  color,
+}: {
+  x: number
+  z: number
+  height: number
+  phase: number
+  color: string
 }) {
   const ref = useRef<THREE.Group>(null)
   const segments = 8

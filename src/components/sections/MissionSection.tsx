@@ -45,14 +45,11 @@ const itemVariants = {
 export default function MissionSection() {
   return (
     <SectionWrapper id="mission">
-      <h2 className="heading-lg text-gold-400 text-center mb-4">
-        OUR MISSION
-      </h2>
+      <h2 className="heading-lg text-gold-400 text-center mb-4">OUR MISSION</h2>
 
       <p className="text-elegant text-center text-white/70 max-w-3xl mx-auto mb-12">
-        To deploy intelligent autonomous systems that heal the ocean &mdash;
-        cleaning its waters, protecting its life, and restoring its ecosystems
-        at a scale never before possible.
+        To deploy intelligent autonomous systems that heal the ocean &mdash; cleaning its waters,
+        protecting its life, and restoring its ecosystems at a scale never before possible.
       </p>
 
       <motion.div
@@ -71,9 +68,7 @@ export default function MissionSection() {
                   <Icon size={26} strokeWidth={1.5} />
                 </div>
                 <h3 className="heading-md text-white mb-3">{card.title}</h3>
-                <p className="text-body text-sm leading-relaxed">
-                  {card.description}
-                </p>
+                <p className="text-body text-sm leading-relaxed">{card.description}</p>
               </GlassPanel>
             </motion.div>
           )

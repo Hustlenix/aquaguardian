@@ -12,7 +12,7 @@ export default function Chapter10_FutureAtlantis() {
 
   const gridSize = 5
   const spacing = 1.5
-  const offset = (gridSize - 1) * spacing / 2
+  const offset = ((gridSize - 1) * spacing) / 2
 
   const towers = useMemo(() => {
     const items: {
@@ -26,8 +26,7 @@ export default function Chapter10_FutureAtlantis() {
     for (let ix = 0; ix < gridSize; ix++) {
       for (let iz = 0; iz < gridSize; iz++) {
         const dist = Math.sqrt(
-          (ix - Math.floor(gridSize / 2)) ** 2 +
-          (iz - Math.floor(gridSize / 2)) ** 2
+          (ix - Math.floor(gridSize / 2)) ** 2 + (iz - Math.floor(gridSize / 2)) ** 2,
         )
         items.push({
           x: ix * spacing - offset,
@@ -54,12 +53,7 @@ export default function Chapter10_FutureAtlantis() {
       {/* Ground plane glow */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]}>
         <planeGeometry args={[gridSize * spacing + 1, gridSize * spacing + 1]} />
-        <meshBasicMaterial
-          color="#4AE0D0"
-          transparent
-          opacity={0.05}
-          side={THREE.DoubleSide}
-        />
+        <meshBasicMaterial color="#4AE0D0" transparent opacity={0.05} side={THREE.DoubleSide} />
       </mesh>
 
       {/* Towers */}

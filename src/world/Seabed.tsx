@@ -16,7 +16,11 @@ function Rock({ x, z, scale }: { x: number; z: number; scale: number }) {
     }
   })
   return (
-    <mesh ref={ref} position={[x, -4 + scale * 0.2, z]} rotation={[Math.random() * 0.5, Math.random() * Math.PI, Math.random() * 0.3]}>
+    <mesh
+      ref={ref}
+      position={[x, -4 + scale * 0.2, z]}
+      rotation={[Math.random() * 0.5, Math.random() * Math.PI, Math.random() * 0.3]}
+    >
       <icosahedronGeometry args={[scale * 0.4, 0]} />
       <meshStandardMaterial color="#3A4A4A" roughness={0.9} metalness={0.1} flatShading />
     </mesh>
@@ -76,7 +80,8 @@ export default function Seabed({ debrisCount = 0 }: SeabedProps) {
       for (let j = 0; j <= segments; j++) {
         const x = (i / segments - 0.5) * w
         const z = (j / segments - 0.5) * d
-        const yNoise = Math.sin(i * 0.3) * Math.cos(j * 0.4) * 0.4 +
+        const yNoise =
+          Math.sin(i * 0.3) * Math.cos(j * 0.4) * 0.4 +
           Math.sin(i * 0.7 + j * 0.5) * 0.2 +
           (Math.random() - 0.5) * 0.3
         positions[idx] = x

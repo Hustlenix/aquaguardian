@@ -45,9 +45,7 @@ export default class ErrorBoundary extends Component<Props, State> {
           <p style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>
             The current drifts have hidden this location.
           </p>
-          <p style={{ fontSize: '0.875rem', opacity: 0.6 }}>
-            {this.state.error?.message}
-          </p>
+          <p style={{ fontSize: '0.875rem', opacity: 0.6 }}>{this.state.error?.message}</p>
           <button
             onClick={() => window.location.reload()}
             style={{

@@ -4,8 +4,7 @@ export default function JsonLd() {
     '@type': 'Organization',
     name: 'AquaGuardian',
     url: 'https://hustlenix.github.io/aquaguardian',
-    description:
-      'AI-powered autonomous underwater vehicle for ocean monitoring and restoration.',
+    description: 'AI-powered autonomous underwater vehicle for ocean monitoring and restoration.',
     foundingDate: '2026',
     knowsAbout: [
       'Ocean Conservation',

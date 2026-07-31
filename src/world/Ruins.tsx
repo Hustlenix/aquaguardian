@@ -6,7 +6,17 @@ interface RuinsProps {
   intact?: number
 }
 
-function Pillar({ x, z, height, intact }: { x: number; z: number; height: number; intact: number }) {
+function Pillar({
+  x,
+  z,
+  height,
+  intact,
+}: {
+  x: number
+  z: number
+  height: number
+  intact: number
+}) {
   const brokenHeight = height * (0.3 + intact * 0.7)
   return (
     <group position={[x, -4 + brokenHeight / 2, z]}>
@@ -44,21 +54,27 @@ function Arch({ x, z }: { x: number; z: number }) {
 }
 
 export default function Ruins({ intact = 0.5 }: RuinsProps) {
-  const pillars = useMemo(() => [
-    { x: -12, z: -18, height: 3.0 },
-    { x: -10, z: -18, height: 2.5 },
-    { x: -14, z: -16, height: 2.0 },
-    { x: 10, z: -20, height: 2.8 },
-    { x: 12, z: -18, height: 2.2 },
-    { x: 14, z: -20, height: 1.8 },
-    { x: -5, z: -22, height: 2.0 },
-    { x: 5, z: -24, height: 1.5 },
-  ], [])
+  const pillars = useMemo(
+    () => [
+      { x: -12, z: -18, height: 3.0 },
+      { x: -10, z: -18, height: 2.5 },
+      { x: -14, z: -16, height: 2.0 },
+      { x: 10, z: -20, height: 2.8 },
+      { x: 12, z: -18, height: 2.2 },
+      { x: 14, z: -20, height: 1.8 },
+      { x: -5, z: -22, height: 2.0 },
+      { x: 5, z: -24, height: 1.5 },
+    ],
+    [],
+  )
 
-  const arches = useMemo(() => [
-    { x: -11, z: -17 },
-    { x: 11, z: -19 },
-  ], [])
+  const arches = useMemo(
+    () => [
+      { x: -11, z: -17 },
+      { x: 11, z: -19 },
+    ],
+    [],
+  )
 
   if (intact < 0.05) return null
 
@@ -67,9 +83,7 @@ export default function Ruins({ intact = 0.5 }: RuinsProps) {
       {pillars.map((p, i) => (
         <Pillar key={`p${i}`} x={p.x} z={p.z} height={p.height} intact={intact} />
       ))}
-      {intact > 0.3 && arches.map((a, i) => (
-        <Arch key={`a${i}`} x={a.x} z={a.z} />
-      ))}
+      {intact > 0.3 && arches.map((a, i) => <Arch key={`a${i}`} x={a.x} z={a.z} />)}
     </group>
   )
 }

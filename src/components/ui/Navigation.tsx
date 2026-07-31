@@ -45,9 +45,7 @@ export default function Navigation() {
   return (
     <nav
       className={`fixed top-0 left-0 z-50 w-full transition-all duration-500 ${
-        scrolled || mobileOpen
-          ? 'nav-blur shadow-lg shadow-black/20'
-          : 'bg-transparent'
+        scrolled || mobileOpen ? 'nav-blur shadow-lg shadow-black/20' : 'bg-transparent'
       }`}
     >
       <div className="section-inner flex items-center justify-between px-4 md:px-6 py-3 md:py-3">
@@ -68,12 +66,10 @@ export default function Navigation() {
               <li key={link.href} className="relative">
                 <a
                   href={link.href}
-                   className={`text-xs tracking-[0.18em] uppercase transition-all duration-300 ${
-                     isActive
-                       ? 'text-gold-400'
-                       : 'text-text-muted hover:text-white'
-                   }`}
-                   aria-current={isActive ? 'location' : undefined}
+                  className={`text-xs tracking-[0.18em] uppercase transition-all duration-300 ${
+                    isActive ? 'text-gold-400' : 'text-text-muted hover:text-white'
+                  }`}
+                  aria-current={isActive ? 'location' : undefined}
                 >
                   {link.label}
                 </a>
@@ -118,16 +114,14 @@ export default function Navigation() {
                   <a
                     href={link.href}
                     onClick={handleNavClick}
-                   className={`text-xs tracking-[0.18em] uppercase transition-colors duration-300 ${
-                     isActive
-                       ? 'text-gold-400'
-                       : 'text-text-muted hover:text-white'
-                   }`}
-                   aria-current={isActive ? 'location' : undefined}
-                >
-                  {link.label}
-                </a>
-                {isActive && (
+                    className={`text-xs tracking-[0.18em] uppercase transition-colors duration-300 ${
+                      isActive ? 'text-gold-400' : 'text-text-muted hover:text-white'
+                    }`}
+                    aria-current={isActive ? 'location' : undefined}
+                  >
+                    {link.label}
+                  </a>
+                  {isActive && (
                     <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold-400 shadow-[0_0_6px_rgba(212,175,55,0.6)]" />
                   )}
                 </li>

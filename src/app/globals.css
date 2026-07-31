@@ -1,30 +1,30 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --color-ocean-50: #E8F4F0;
-  --color-ocean-100: #C8E8E0;
-  --color-ocean-200: #8AD0C0;
-  --color-ocean-300: #4AB8A0;
-  --color-ocean-400: #2A9A8A;
-  --color-ocean-500: #1A7A6A;
-  --color-ocean-600: #0A5A4A;
-  --color-ocean-700: #043A2A;
-  --color-ocean-800: #021A10;
-  --color-ocean-900: #010B13;
+  --color-ocean-50: #e8f4f0;
+  --color-ocean-100: #c8e8e0;
+  --color-ocean-200: #8ad0c0;
+  --color-ocean-300: #4ab8a0;
+  --color-ocean-400: #2a9a8a;
+  --color-ocean-500: #1a7a6a;
+  --color-ocean-600: #0a5a4a;
+  --color-ocean-700: #043a2a;
+  --color-ocean-800: #021a10;
+  --color-ocean-900: #010b13;
 
-  --color-gold-300: #E8C84A;
-  --color-gold-400: #D4AF37;
-  --color-gold-500: #B8962A;
-  --color-gold-600: #8A6A1A;
+  --color-gold-300: #e8c84a;
+  --color-gold-400: #d4af37;
+  --color-gold-500: #b8962a;
+  --color-gold-600: #8a6a1a;
 
-  --color-cyan-300: #88E0FF;
-  --color-cyan-400: #00E5FF;
-  --color-cyan-500: #00B8D4;
+  --color-cyan-300: #88e0ff;
+  --color-cyan-400: #00e5ff;
+  --color-cyan-500: #00b8d4;
 
-  --color-surface: #010B13;
+  --color-surface: #010b13;
   --color-surface-light: #041525;
-  --color-text: #E8F0F0;
-  --color-text-muted: #8A9AA0;
+  --color-text: #e8f0f0;
+  --color-text-muted: #8a9aa0;
 
   --font-display: 'Cinzel', serif;
   --font-elegant: 'Cormorant Garamond', serif;
@@ -33,7 +33,9 @@
 }
 
 @layer base {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -45,8 +47,8 @@
 
   body {
     font-family: var(--font-body);
-    background-color: #010B13;
-    color: #E8F0F0;
+    background-color: #010b13;
+    color: #e8f0f0;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -54,11 +56,11 @@
 
   ::selection {
     background: rgba(0, 229, 255, 0.25);
-    color: #E8F0F0;
+    color: #e8f0f0;
   }
 
   :focus-visible {
-    outline: 2px solid #00E5FF;
+    outline: 2px solid #00e5ff;
     outline-offset: 2px;
     box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
   }
@@ -70,7 +72,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #010B13;
+    background: #010b13;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -86,7 +88,7 @@
   /* Firefox */
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(0, 229, 255, 0.25) #010B13;
+    scrollbar-color: rgba(0, 229, 255, 0.25) #010b13;
   }
 }
 
@@ -118,7 +120,7 @@
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
@@ -193,9 +195,9 @@
     gap: 0.5rem;
     padding: 0.875rem 2rem;
     border-radius: 100px;
-    background: linear-gradient(135deg, #D4AF37 0%, #E8C84A 50%, #D4AF37 100%);
+    background: linear-gradient(135deg, #d4af37 0%, #e8c84a 50%, #d4af37 100%);
     background-size: 200% 100%;
-    color: #010B13;
+    color: #010b13;
     font-family: var(--font-body);
     font-weight: 600;
     font-size: 0.9375rem;
@@ -210,7 +212,9 @@
 
   .btn-primary:hover {
     transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.4), 0 0 60px rgba(212, 175, 55, 0.1);
+    box-shadow:
+      0 8px 32px rgba(212, 175, 55, 0.4),
+      0 0 60px rgba(212, 175, 55, 0.1);
     background-position: 100% 0;
   }
 
@@ -220,7 +224,7 @@
   }
 
   .btn-primary:focus-visible {
-    outline: 2px solid #D4AF37;
+    outline: 2px solid #d4af37;
     outline-offset: 3px;
   }
 
@@ -232,7 +236,7 @@
     border-radius: 100px;
     background: transparent;
     border: 1px solid rgba(212, 175, 55, 0.3);
-    color: #D4AF37;
+    color: #d4af37;
     font-family: var(--font-body);
     font-weight: 500;
     font-size: 0.9375rem;
@@ -254,7 +258,7 @@
   }
 
   .btn-secondary:focus-visible {
-    outline: 2px solid #D4AF37;
+    outline: 2px solid #d4af37;
     outline-offset: 3px;
   }
 
@@ -277,12 +281,12 @@
   }
 
   .btn-ghost:hover {
-    color: #E8F0F0;
+    color: #e8f0f0;
     background: rgba(255, 255, 255, 0.05);
   }
 
   .btn-ghost:focus-visible {
-    outline: 2px solid #D4AF37;
+    outline: 2px solid #d4af37;
     outline-offset: 3px;
   }
 
@@ -303,8 +307,15 @@
   }
 
   @keyframes floatDown {
-    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.4; }
-    50% { transform: translateX(-50%) translateY(6px); opacity: 0.8; }
+    0%,
+    100% {
+      transform: translateX(-50%) translateY(0);
+      opacity: 0.4;
+    }
+    50% {
+      transform: translateX(-50%) translateY(6px);
+      opacity: 0.8;
+    }
   }
 
   .nav-blur {
@@ -346,8 +357,13 @@
   }
 
   @keyframes glowPulse {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 
   .transition-smooth {
@@ -369,8 +385,9 @@
   }
 
   .hover-lift {
-    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
-                box-shadow 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition:
+      transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+      box-shadow 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
 
   .hover-lift:hover {

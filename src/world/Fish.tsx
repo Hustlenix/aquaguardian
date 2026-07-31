@@ -23,11 +23,7 @@ function FishSchool({ count = 20 }: { count?: number }) {
     }[] = []
     for (let i = 0; i < count; i++) {
       arr.push({
-        pos: [
-          (Math.random() - 0.5) * 12,
-          -2 + Math.random() * 6,
-          -8 - Math.random() * 10,
-        ],
+        pos: [(Math.random() - 0.5) * 12, -2 + Math.random() * 6, -8 - Math.random() * 10],
         phase: Math.random() * Math.PI * 2,
         speed: 0.2 + Math.random() * 0.3,
         radius: 1 + Math.random() * 2,
@@ -57,10 +53,7 @@ function FishSchool({ count = 20 }: { count?: number }) {
     ref.current.instanceMatrix.needsUpdate = true
   })
 
-  const color = useMemo(
-    () => FISH_COLORS[Math.floor(Math.random() * FISH_COLORS.length)],
-    []
-  )
+  const color = useMemo(() => FISH_COLORS[Math.floor(Math.random() * FISH_COLORS.length)], [])
 
   return (
     <instancedMesh ref={ref} args={[undefined, undefined, count]}>
