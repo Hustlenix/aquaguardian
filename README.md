@@ -91,22 +91,6 @@ A few implementation details worth noting:
 
 ---
 
-## Language Footprint
-
-Browsers only execute HTML, CSS, and JavaScript, so TypeScript compiles down to the JavaScript the app ships. The rest of the repo is genuinely multilingual where it matters:
-
-| Language | Where it lives | What it does |
-|---|---|---|
-| TypeScript / JavaScript | `src/` (React, Next.js, R3F scene) | The app itself — UI, 3D world, motion, state |
-| HTML + CSS | `public/splash.html`, Tailwind design tokens | Framework-free page plus the visual system |
-| GLSL | `src/shaders/` | Custom GPU shaders — caustics, light rays, atmosphere |
-| Python | `scripts/*.py` | Build-time data and asset gates |
-| C | `scripts/native/ocean_metrics.c` | Deterministic native data generator (C99, zero dependencies) |
-
-The C tool cannot run in the browser, so it works at build time: `ocean_metrics.c` generates `database.json`, the Python analyzer turns that into `src/data/ocean_analysis.json`, and the dashboard renders it. The dataset is seeded — the default seed (`20260701`) produces byte-identical output on every run, which keeps builds and CI stable. It is intentionally demo data: the metrics illustrate the dashboard's behavior, not real collection records.
-
----
-
 ## Project Structure
 
 ```text
@@ -204,4 +188,4 @@ AquaGuardian is a personal showcase project exploring interactive 3D storytellin
 
 > "The sea, once it casts its spell, holds one in its net of wonder forever." — Jacques-Yves Cousteau
 
-No license is attached to this repository at the moment.
+Licensed under the [MIT License](LICENSE).
