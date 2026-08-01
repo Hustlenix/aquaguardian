@@ -91,12 +91,12 @@ export default function DashboardPage() {
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
             <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">Tracked entries</p>
             <p className="mt-3 text-3xl font-semibold">{loading ? '…' : trackedEntries}</p>
-            <p className="mt-2 text-sm text-text-muted">Submitted through the app’s collection API.</p>
+            <p className="mt-2 text-sm text-text-muted">Recorded in the committed ocean analysis dataset.</p>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
             <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">Estimated impact</p>
             <p className="mt-3 text-3xl font-semibold">{loading ? '…' : `${totalCollected} pieces`}</p>
-            <p className="mt-2 text-sm text-text-muted">A practical local tally from the app’s data feed.</p>
+            <p className="mt-2 text-sm text-text-muted">A practical local tally from the generated dataset.</p>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
             <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">Reference basis</p>

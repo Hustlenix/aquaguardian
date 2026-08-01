@@ -47,7 +47,6 @@ jobs:
         run: npm run build
         env:
           STATIC_EXPORT: true
-          NEXT_PUBLIC_BASE_PATH: /aquaguardian
 
       - name: Ensure Pages artifact exists
         run: |
