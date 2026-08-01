@@ -1,8 +1,11 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import SectionWrapper from './SectionWrapper'
 import CounterAnimation from '@/components/animations/CounterAnimation'
+
+const MotionLink = motion.create(Link)
 
 interface StatMapping {
   value: number
@@ -61,7 +64,7 @@ export default function ImpactSection() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, i) => (
-          <motion.a
+          <MotionLink
             key={stat.label}
             href={i === 0 ? '/dashboard' : i === 1 ? '/missions' : i === 2 ? '/learn' : '/assistant'}
             initial={{ opacity: 0, y: 30 }}
@@ -86,7 +89,7 @@ export default function ImpactSection() {
             <div className="text-xs text-text-muted">
               {stat.sub}
             </div>
-          </motion.a>
+          </MotionLink>
         ))}
       </div>
     </SectionWrapper>

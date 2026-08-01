@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 const QUICK_LINKS = [
   { label: 'About', href: '#mission' },
   { label: 'Mission', href: '#mission' },
@@ -41,43 +43,52 @@ export default function Footer() {
             <ul className="space-y-3">
               {QUICK_LINKS.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300"
-                  >
-                    {link.label}
-                  </a>
+                  {link.href.startsWith('#') ? (
+                    <a
+                      href={link.href}
+                      className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
               <li>
-                <a href="/dashboard" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                <Link href="/dashboard" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
                   Dashboard
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/missions" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                <Link href="/missions" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
                   Missions
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/challenges" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                <Link href="/challenges" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
                   Challenges
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/learn" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                <Link href="/learn" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
                   Education
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/assistant" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                <Link href="/assistant" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
                   Assistant
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/mobile" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                <Link href="/mobile" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
                   Mobile
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

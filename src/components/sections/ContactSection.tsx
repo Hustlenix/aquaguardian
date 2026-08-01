@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import SectionWrapper from './SectionWrapper'
 import { Send, CheckCircle } from 'lucide-react'
@@ -8,28 +9,19 @@ import { Send, CheckCircle } from 'lucide-react'
 export default function ContactSection() {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!email.trim()) return
-    setLoading(true)
-    setError('')
-    try {
-      const res = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      })
-      if (!res.ok) throw new Error('Subscription failed')
-      setSubmitted(true)
-      setEmail('')
-    } catch {
-      setError('Something went wrong. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+    // Static export has no API routes, so this demo form opens a mailto
+    // draft instead of posting to a backend.
+    const subject = encodeURIComponent('AquaGuardian newsletter signup')
+    const body = encodeURIComponent(
+      `Hi AquaGuardian team,\n\nPlease add me to your newsletter updates.\n\nEmail: ${email}`
+    )
+    window.location.href = `mailto:hello@aquaguardian.dev?subject=${subject}&body=${body}`
+    setSubmitted(true)
+    setEmail('')
   }
 
   return (
@@ -58,9 +50,10 @@ export default function ContactSection() {
             <div className="w-14 h-14 rounded-full bg-cyan-400/10 flex items-center justify-center">
               <CheckCircle size={28} className="text-cyan-400" strokeWidth={1.5} />
             </div>
-            <p className="text-sm font-medium text-white">You&apos;re on the list!</p>
+            <p className="text-sm font-medium text-white">Thanks for joining the mission!</p>
             <p className="text-xs text-text-muted">
-              We&apos;ll share pilot updates and ocean conservation news.
+              This is a static demo — nothing is stored. Your email app should have opened a draft
+              to hello@aquaguardian.dev.
             </p>
           </motion.div>
         ) : (
@@ -99,25 +92,16 @@ export default function ContactSection() {
             >
               <button type="submit" className="btn-primary whitespace-nowrap">
                 <Send size={16} strokeWidth={1.5} />
-                {loading ? 'Sending...' : 'Join the Mission'}
+                Join the Mission
               </button>
             </motion.div>
           </motion.form>
         )}
-        {error && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-xs text-red-400 mt-3"
-          >
-            {error}
-          </motion.p>
-        )}
         <p className="text-xs text-text-muted/50 mt-4">
           We respect your privacy.{' '}
-          <a href="/privacy" className="underline hover:text-gold-400 transition-colors">
+          <Link href="/privacy" className="underline hover:text-gold-400 transition-colors">
             Privacy Policy
-          </a>
+          </Link>
         </p>
       </motion.div>
     </SectionWrapper>
