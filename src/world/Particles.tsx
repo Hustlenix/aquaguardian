@@ -11,18 +11,27 @@ interface ParticlesProps {
   speed?: number
 }
 
-// Per-particle twinkle: sinusoidal opacity pulse with phase offset (plankton shimmer).
+// Per-particle twinkle & movement: sinusoidal opacity pulse and position drift with phase offset.
+// Optimized: Movement calculation offloaded entirely to the GPU's vertex shader to avoid heavy CPU loop
+// and costly WebGL vertex buffer uploads (needsUpdate = true) on every single frame.
 const twinkleVertexShader = `
   attribute float aPhase;
   attribute float aSize;
 
   uniform float uTime;
+  uniform float uSpeed;
 
   varying float vTwinkle;
 
   void main() {
     vTwinkle = 0.55 + 0.45 * sin(uTime * 1.4 + aPhase * 6.2831853);
-    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+
+    // Smooth drifting animation computed entirely on the GPU
+    vec3 animatedPos = position;
+    animatedPos.y += sin(uTime * uSpeed + aPhase * 6.2831853) * 0.18;
+    animatedPos.x += cos(uTime * uSpeed * 0.7 + aPhase * 3.1415926) * 0.13;
+
+    vec4 mvPosition = modelViewMatrix * vec4(animatedPos, 1.0);
     gl_PointSize = clamp(aSize * (280.0 / max(0.1, -mvPosition.z)), 1.0, 56.0);
     gl_Position = projectionMatrix * mvPosition;
   }
@@ -60,10 +69,8 @@ function ParticleLayer({
   const safeCount = Math.max(1, count ?? 200)
   const safeOpacity = opacity ?? 0.4
   const safeSpeed = Math.max(0.001, speed ?? 0.3)
-  const offsetsRef = useRef<Float32Array>(new Float32Array(safeCount))
 
   const geometry = useMemo(() => {
-    offsetsRef.current = new Float32Array(safeCount)
     const pos = new Float32Array(safeCount * 3)
     const sizes = new Float32Array(safeCount)
     const phases = new Float32Array(safeCount)
@@ -72,7 +79,6 @@ function ParticleLayer({
       pos[i * 3] = (Math.random() - 0.5) * 50 * spreadMul
       pos[i * 3 + 1] = yRange[0] + Math.random() * (yRange[1] - yRange[0]) + yOffset
       pos[i * 3 + 2] = (Math.random() - 0.5) * 40 * spreadMul - 5
-      offsetsRef.current[i] = Math.random() * Math.PI * 2
       sizes[i] = sizeBase * (0.5 + Math.random() * 1)
       phases[i] = Math.random()
     }
@@ -91,6 +97,7 @@ function ParticleLayer({
         fragmentShader: twinkleFragmentShader,
         uniforms: {
           uTime: { value: 0 },
+          uSpeed: { value: safeSpeed },
           uColor: { value: new THREE.Color(color ?? '#88BBDD') },
           uOpacity: { value: safeOpacity },
         },
@@ -98,7 +105,7 @@ function ParticleLayer({
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),
-    [color, safeOpacity]
+    [color, safeOpacity, safeSpeed]
   )
 
   useEffect(() => {
@@ -109,19 +116,9 @@ function ParticleLayer({
     material.uniforms.uOpacity.value = safeOpacity
   }, [material, safeOpacity])
 
+  // Single uniform update per frame instead of 700-iteration CPU loop and buffer re-upload
   useFrame((state) => {
     material.uniforms.uTime.value = state.clock.elapsedTime
-    if (ref.current) {
-      const pos = ref.current.geometry.attributes.position.array as Float32Array
-      const s = safeSpeed * 0.003
-
-      for (let i = 0; i < safeCount; i++) {
-        pos[i * 3 + 1] += Math.sin(state.clock.elapsedTime * safeSpeed + offsetsRef.current[i]) * s
-        pos[i * 3] += Math.cos(state.clock.elapsedTime * safeSpeed * 0.7 + offsetsRef.current[i] * 0.5) * s * 0.5
-      }
-
-      ref.current.geometry.attributes.position.needsUpdate = true
-    }
   })
 
   return (
