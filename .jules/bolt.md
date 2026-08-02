@@ -1,0 +1,3 @@
+## 2025-08-02 - GPU Particle Drift Offloading
+**Learning:** Performing vertex-level displacement animations on the CPU inside useFrame loops (such as looping over 700+ vertices) and updating buffers on every frame is a major WebGL performance bottleneck. These animations are far more efficient when offloaded to custom GPU shaders (e.g. vertex shaders within a shaderMaterial) and controlled via a simple time uniform.
+**Action:** Always inspect R3F point or mesh particle systems in useFrame loops. If they are updating buffer arrays and calling `needsUpdate = true` on every frame for simple drift or twinkle effects, refactor the motion equations directly into the vertex shader.
