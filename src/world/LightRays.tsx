@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -13,7 +13,7 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
   const groupRef = useRef<THREE.Group>(null)
   const rayColor = useMemo(
     () => new THREE.Color(color).lerp(new THREE.Color('#FFFFFF'), 0.3),
-    [color]
+    [color],
   )
 
   // Vertical alpha fade: transparent at the apex, full in the middle, soft at the base.
@@ -35,6 +35,13 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
     return [make(), make()]
   }, [])
 
+  // Clean up canvas textures on unmount to prevent WebGL memory leaks.
+  useEffect(() => {
+    return () => {
+      textures.forEach((texture) => texture.dispose())
+    }
+  }, [textures])
+
   const configs = useMemo(
     () =>
       Array.from({ length: 12 }, () => ({
@@ -46,7 +53,7 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
         speed: 0.2 + Math.random() * 0.3,
         phase: Math.random() * Math.PI * 2,
       })),
-    []
+    [],
   )
 
   useFrame((state) => {

@@ -4,10 +4,7 @@ import { useEffect, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useStore } from '@/store/useStore'
-import {
-  waterCausticsVertexShader,
-  waterCausticsFragmentShader,
-} from '@/shaders/waterCaustics'
+import { waterCausticsVertexShader, waterCausticsFragmentShader } from '@/shaders/waterCaustics'
 
 interface CausticsProps {
   intensity?: number
@@ -50,6 +47,13 @@ export default function Caustics({ intensity = 0.35 }: CausticsProps) {
     const op = quality > 0.75 ? intensity : intensity * 0.55
     material.uniforms.uOpacity.value = op
   }, [material, intensity, quality])
+
+  // Clean up shader material when it changes or component unmounts.
+  useEffect(() => {
+    return () => {
+      material.dispose()
+    }
+  }, [material])
 
   useFrame((state) => {
     material.uniforms.uTime.value = state.clock.elapsedTime

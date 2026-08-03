@@ -2,7 +2,13 @@
 
 import { useMemo } from 'react'
 import { useStore } from '@/store/useStore'
-import { EffectComposer, Bloom, Vignette, Noise, ChromaticAberration } from '@react-three/postprocessing'
+import {
+  EffectComposer,
+  Bloom,
+  Vignette,
+  Noise,
+  ChromaticAberration,
+} from '@react-three/postprocessing'
 
 export default function Effects() {
   const quality = useStore((s) => s.quality)

@@ -17,7 +17,7 @@ export default function ContactSection() {
     // draft instead of posting to a backend.
     const subject = encodeURIComponent('AquaGuardian newsletter signup')
     const body = encodeURIComponent(
-      `Hi AquaGuardian team,\n\nPlease add me to your newsletter updates.\n\nEmail: ${email}`
+      `Hi AquaGuardian team,\n\nPlease add me to your newsletter updates.\n\nEmail: ${email}`,
     )
     window.location.href = `mailto:hello@aquaguardian.dev?subject=${subject}&body=${body}`
     setSubmitted(true)

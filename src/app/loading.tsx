@@ -9,7 +9,10 @@ export default function Loading() {
         <span className="aq-loader__sweep" />
         <span className="aq-loader__core">
           <svg viewBox="0 0 64 64" className="aq-loader__trident">
-            <path d="M32 6 L27.6 40 L29.8 51.5 L32 54.4 L34.2 51.5 L36.4 40 Z" fill="url(#aqGold)" />
+            <path
+              d="M32 6 L27.6 40 L29.8 51.5 L32 54.4 L34.2 51.5 L36.4 40 Z"
+              fill="url(#aqGold)"
+            />
             <path d="M23.2 24.5 L26.4 42 L29.2 30.6 Z" fill="url(#aqGold)" opacity="0.7" />
             <path d="M40.8 24.5 L37.6 42 L34.8 30.6 Z" fill="url(#aqGold)" opacity="0.7" />
             <circle cx="32" cy="57" r="2.2" fill="url(#aqGold)" />

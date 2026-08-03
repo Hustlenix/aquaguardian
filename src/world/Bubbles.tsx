@@ -87,12 +87,20 @@ export default function Bubbles({ count = 80 }: { count?: number }) {
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),
-    []
+    [],
   )
 
   useEffect(() => {
     material.uniforms.uOpacity.value = 0.3
   }, [material])
+
+  // Clean up custom geometry and material on unmount to prevent WebGL memory leaks.
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+      material.dispose()
+    }
+  }, [geometry, material])
 
   useFrame((state, delta) => {
     if (!ref.current) return

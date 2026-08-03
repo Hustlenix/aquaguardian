@@ -61,32 +61,50 @@ export default function Footer() {
                 </li>
               ))}
               <li>
-                <Link href="/dashboard" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                <Link
+                  href="/dashboard"
+                  className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300"
+                >
                   Dashboard
                 </Link>
               </li>
               <li>
-                <Link href="/missions" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                <Link
+                  href="/missions"
+                  className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300"
+                >
                   Missions
                 </Link>
               </li>
               <li>
-                <Link href="/challenges" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                <Link
+                  href="/challenges"
+                  className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300"
+                >
                   Challenges
                 </Link>
               </li>
               <li>
-                <Link href="/learn" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                <Link
+                  href="/learn"
+                  className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300"
+                >
                   Education
                 </Link>
               </li>
               <li>
-                <Link href="/assistant" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                <Link
+                  href="/assistant"
+                  className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300"
+                >
                   Assistant
                 </Link>
               </li>
               <li>
-                <Link href="/mobile" className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300">
+                <Link
+                  href="/mobile"
+                  className="text-sm text-text-muted hover:text-gold-400 transition-colors duration-300"
+                >
                   Mobile
                 </Link>
               </li>

@@ -7,17 +7,20 @@ const missionTracks = [
   {
     title: 'River cleanup scan',
     stage: 'Active',
-    detail: 'Focuses on river mouths and urban coastlines where debris accumulates and local action can be highly visible.',
+    detail:
+      'Focuses on river mouths and urban coastlines where debris accumulates and local action can be highly visible.',
   },
   {
     title: 'Habitat condition review',
     stage: 'Planned',
-    detail: 'Tracks reef health, water quality, and habitat change over time using repeated observations.',
+    detail:
+      'Tracks reef health, water quality, and habitat change over time using repeated observations.',
   },
   {
     title: 'Volunteer engagement loop',
     stage: 'Pilot',
-    detail: 'Connects local actions with measurable impact stories that can be shared with schools and communities.',
+    detail:
+      'Connects local actions with measurable impact stories that can be shared with schools and communities.',
   },
 ]
 
@@ -32,7 +35,10 @@ export default function MissionsPage() {
               Track conservation missions with clear stages and evidence.
             </h1>
           </div>
-          <Link href="/" className="rounded-full border border-gold-400/30 px-4 py-2 text-sm text-gold-400 transition hover:border-gold-400/60 hover:bg-gold-400/10">
+          <Link
+            href="/"
+            className="rounded-full border border-gold-400/30 px-4 py-2 text-sm text-gold-400 transition hover:border-gold-400/60 hover:bg-gold-400/10"
+          >
             Back to story
           </Link>
         </div>
