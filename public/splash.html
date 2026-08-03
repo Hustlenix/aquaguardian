@@ -1,444 +1,450 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="dark" />
-  <meta
-    name="description"
-    content="AquaGuardian splash — a zero-framework HTML/CSS/JS page. No React, no TypeScript, just the web speaking its native languages."
-  />
-  <title>AquaGuardian — Vanilla Splash</title>
-  <style>
-    :root {
-      --abyss: #000b13;
-      --deep: #000000;
-      --glass: rgba(255, 255, 255, 0.05);
-      --line: rgba(255, 255, 255, 0.1);
-      --cyan: #00e5ff;
-      --gold: #d4af37;
-      --text: #e8f0f0;
-      --muted: #8a9aa0;
-      --serif: Georgia, 'Times New Roman', serif;
-      --sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta
+      name="description"
+      content="AquaGuardian splash — a zero-framework HTML/CSS/JS page. No React, no TypeScript, just the web speaking its native languages."
+    />
+    <title>AquaGuardian — Vanilla Splash</title>
+    <style>
+      :root {
+        --abyss: #000b13;
+        --deep: #000000;
+        --glass: rgba(255, 255, 255, 0.05);
+        --line: rgba(255, 255, 255, 0.1);
+        --cyan: #00e5ff;
+        --gold: #d4af37;
+        --text: #e8f0f0;
+        --muted: #8a9aa0;
+        --serif: Georgia, 'Times New Roman', serif;
+        --sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      }
 
-    * {
-      box-sizing: border-box;
-    }
+      * {
+        box-sizing: border-box;
+      }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at 50% 0%, rgba(50, 229, 255, 0.12), transparent 45%),
-        var(--abyss);
-      color: var(--text);
-      font-family: var(--sans);
-      line-height: 1.6;
-    }
-
-    a {
-      color: var(--cyan);
-      text-decoration: none;
-    }
-
-    a:hover,
-    a:focus-visible {
-      text-decoration: underline;
-    }
-
-    a:focus-visible,
-    button:focus-visible {
-      outline: 2px solid var(--cyan);
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
-
-    .shell {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem 4rem;
-    }
-
-    /* ---------- header ---------- */
-    .brand {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
-
-    .brand .wordmark {
-      font-family: var(--serif);
-      font-size: clamp(2rem, 7vw, 3.5rem);
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      color: var(--gold);
-      margin: 0;
-      text-shadow: 0 0 24px rgba(212, 175, 55, 0.25);
-    }
-
-    .brand .tagline {
-      margin: 0.75rem auto 0;
-      max-width: 34rem;
-      color: var(--muted);
-      font-size: 1.05rem;
-    }
-
-    .brand .tagline strong {
-      color: var(--cyan);
-      font-weight: 600;
-    }
-
-    /* ---------- sonar canvas ---------- */
-    .sonar-wrap {
-      display: flex;
-      justify-content: center;
-      margin: 2rem 0;
-    }
-
-    #sonar {
-      width: min(420px, 80vw);
-      height: min(420px, 80vw);
-      border-radius: 50%;
-      border: 1px solid var(--line);
-      background: radial-gradient(circle, rgba(0, 229, 255, 0.06), var(--deep) 70%);
-      box-shadow: 0 0 60px rgba(0, 229, 255, 0.15), inset 0 0 60px rgba(0, 229, 255, 0.08);
-    }
-
-    .sonar-caption {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.85rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      margin-top: 0.75rem;
-    }
-
-    /* ---------- glass cards ---------- */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 1rem;
-      margin: 2rem 0;
-    }
-
-    .card {
-      background: var(--glass);
-      border: 1px solid var(--line);
-      border-radius: 1.25rem;
-      padding: 1.25rem 1.5rem;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .card .value {
-      font-family: var(--serif);
-      font-size: 2.1rem;
-      font-weight: 700;
-      color: var(--cyan);
-      margin: 0;
-    }
-
-    .card .value.gold {
-      color: var(--gold);
-    }
-
-    .card .label {
-      margin: 0.25rem 0 0;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    /* ---------- vanilla explainer ---------- */
-    .panel {
-      background: var(--glass);
-      border: 1px solid var(--line);
-      border-radius: 1.25rem;
-      padding: 1.5rem 1.75rem;
-      margin: 1.5rem 0;
-    }
-
-    .panel h2 {
-      font-family: var(--serif);
-      color: var(--gold);
-      letter-spacing: 0.08em;
-      font-size: 1.25rem;
-      margin-top: 0;
-    }
-
-    .panel ul {
-      margin: 0;
-      padding-left: 1.25rem;
-    }
-
-    .panel li {
-      margin: 0.5rem 0;
-      color: var(--text);
-    }
-
-    .panel code {
-      background: rgba(0, 229, 255, 0.1);
-      border: 1px solid rgba(0, 229, 255, 0.25);
-      border-radius: 0.35rem;
-      padding: 0.1rem 0.4rem;
-      font-size: 0.9em;
-      color: var(--cyan);
-    }
-
-    /* ---------- footer / nav ---------- */
-    .nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-      margin-top: 2.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--line);
-    }
-
-    .nav a {
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      border-radius: 999px;
-      padding: 0.5rem 1.25rem;
-      font-size: 0.9rem;
-      letter-spacing: 0.08em;
-      transition: background 0.2s ease, border-color 0.2s ease;
-    }
-
-    .nav a:hover {
-      background: rgba(0, 229, 255, 0.12);
-      border-color: rgba(0, 229, 255, 0.6);
-      text-decoration: none;
-    }
-
-    .clock {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.8rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      margin-top: 1.5rem;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .clock span {
-      color: var(--cyan);
-    }
-
-    /* ---------- motion guard ---------- */
-    @media (prefers-reduced-motion: reduce) {
       html {
-        scroll-behavior: auto;
+        scroll-behavior: smooth;
       }
 
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 50% 0%, rgba(50, 229, 255, 0.12), transparent 45%), var(--abyss);
+        color: var(--text);
+        font-family: var(--sans);
+        line-height: 1.6;
       }
-    }
-  </style>
-</head>
-<body>
-  <main class="shell">
-    <header class="brand">
-      <h1 class="wordmark">AQUAGUARDIAN</h1>
-      <p class="tagline">
-        The <strong>zero-framework</strong> splash page. No React, no TypeScript,
-        no build step — just HTML, CSS, and JavaScript doing what they do natively.
-        It even has a working sonar.
+
+      a {
+        color: var(--cyan);
+        text-decoration: none;
+      }
+
+      a:hover,
+      a:focus-visible {
+        text-decoration: underline;
+      }
+
+      a:focus-visible,
+      button:focus-visible {
+        outline: 2px solid var(--cyan);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+
+      .shell {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem 4rem;
+      }
+
+      /* ---------- header ---------- */
+      .brand {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .brand .wordmark {
+        font-family: var(--serif);
+        font-size: clamp(2rem, 7vw, 3.5rem);
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        color: var(--gold);
+        margin: 0;
+        text-shadow: 0 0 24px rgba(212, 175, 55, 0.25);
+      }
+
+      .brand .tagline {
+        margin: 0.75rem auto 0;
+        max-width: 34rem;
+        color: var(--muted);
+        font-size: 1.05rem;
+      }
+
+      .brand .tagline strong {
+        color: var(--cyan);
+        font-weight: 600;
+      }
+
+      /* ---------- sonar canvas ---------- */
+      .sonar-wrap {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+      }
+
+      #sonar {
+        width: min(420px, 80vw);
+        height: min(420px, 80vw);
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        background: radial-gradient(circle, rgba(0, 229, 255, 0.06), var(--deep) 70%);
+        box-shadow:
+          0 0 60px rgba(0, 229, 255, 0.15),
+          inset 0 0 60px rgba(0, 229, 255, 0.08);
+      }
+
+      .sonar-caption {
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.85rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        margin-top: 0.75rem;
+      }
+
+      /* ---------- glass cards ---------- */
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+      }
+
+      .card {
+        background: var(--glass);
+        border: 1px solid var(--line);
+        border-radius: 1.25rem;
+        padding: 1.25rem 1.5rem;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .card .value {
+        font-family: var(--serif);
+        font-size: 2.1rem;
+        font-weight: 700;
+        color: var(--cyan);
+        margin: 0;
+      }
+
+      .card .value.gold {
+        color: var(--gold);
+      }
+
+      .card .label {
+        margin: 0.25rem 0 0;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      /* ---------- vanilla explainer ---------- */
+      .panel {
+        background: var(--glass);
+        border: 1px solid var(--line);
+        border-radius: 1.25rem;
+        padding: 1.5rem 1.75rem;
+        margin: 1.5rem 0;
+      }
+
+      .panel h2 {
+        font-family: var(--serif);
+        color: var(--gold);
+        letter-spacing: 0.08em;
+        font-size: 1.25rem;
+        margin-top: 0;
+      }
+
+      .panel ul {
+        margin: 0;
+        padding-left: 1.25rem;
+      }
+
+      .panel li {
+        margin: 0.5rem 0;
+        color: var(--text);
+      }
+
+      .panel code {
+        background: rgba(0, 229, 255, 0.1);
+        border: 1px solid rgba(0, 229, 255, 0.25);
+        border-radius: 0.35rem;
+        padding: 0.1rem 0.4rem;
+        font-size: 0.9em;
+        color: var(--cyan);
+      }
+
+      /* ---------- footer / nav ---------- */
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--line);
+      }
+
+      .nav a {
+        border: 1px solid rgba(0, 229, 255, 0.3);
+        border-radius: 999px;
+        padding: 0.5rem 1.25rem;
+        font-size: 0.9rem;
+        letter-spacing: 0.08em;
+        transition:
+          background 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .nav a:hover {
+        background: rgba(0, 229, 255, 0.12);
+        border-color: rgba(0, 229, 255, 0.6);
+        text-decoration: none;
+      }
+
+      .clock {
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.8rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        margin-top: 1.5rem;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .clock span {
+        color: var(--cyan);
+      }
+
+      /* ---------- motion guard ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="brand">
+        <h1 class="wordmark">AQUAGUARDIAN</h1>
+        <p class="tagline">
+          The <strong>zero-framework</strong> splash page. No React, no TypeScript, no build step —
+          just HTML, CSS, and JavaScript doing what they do natively. It even has a working sonar.
+        </p>
+      </header>
+
+      <section aria-label="Sonar animation">
+        <div class="sonar-wrap">
+          <canvas id="sonar" role="img" aria-label="Animated sonar sweep with detection blips">
+            Your browser does not support canvas. The ocean still believes in you.
+          </canvas>
+        </div>
+        <p class="sonar-caption">Native sonar · requestAnimationFrame · zero libraries</p>
+      </section>
+
+      <!-- STATS: rendered from a plain JS array via document.createElement -->
+      <section aria-label="Ocean statistics" id="stats" class="cards"></section>
+      <p class="sonar-caption">
+        Sources · OECD Global Plastics Outlook 2022 · Eriksen et al., PLOS ONE 2023 · FAO SOFIA 2024
+        · UNEP-WCMC / Protected Planet
       </p>
-    </header>
 
-    <section aria-label="Sonar animation">
-      <div class="sonar-wrap">
-        <canvas id="sonar" role="img" aria-label="Animated sonar sweep with detection blips">
-          Your browser does not support canvas. The ocean still believes in you.
-        </canvas>
-      </div>
-      <p class="sonar-caption">Native sonar · requestAnimationFrame · zero libraries</p>
-    </section>
+      <section class="panel" aria-labelledby="why-vanilla">
+        <h2 id="why-vanilla">Why a vanilla page exists in a React app</h2>
+        <ul>
+          <li>
+            Browsers execute exactly three languages: <strong>HTML</strong> for structure,
+            <strong>CSS</strong> for style, <strong>JavaScript</strong> for behavior. TypeScript is
+            JavaScript with types — it compiles down to the same JS.
+          </li>
+          <li>
+            This page proves the point: every effect you see here (the sonar sweep, the live clock,
+            these cards) is plain DOM APIs and canvas. No framework required — frameworks just scale
+            that up for big apps.
+          </li>
+          <li>
+            Elsewhere in this repo, <strong>Python</strong> and <strong>C</strong> do build-time
+            work — checking screenshots, validating assets, generating the metrics dataset. The
+            browser never runs them; the data they produce is what the app renders. Every language
+            in its natural habitat.
+          </li>
+        </ul>
+      </section>
 
-    <!-- STATS: rendered from a plain JS array via document.createElement -->
-    <section aria-label="Ocean statistics" id="stats" class="cards"></section>
-    <p class="sonar-caption">
-      Sources · OECD Global Plastics Outlook 2022 · Eriksen et al., PLOS ONE 2023 ·
-      FAO SOFIA 2024 · UNEP-WCMC / Protected Planet
-    </p>
+      <nav class="nav" aria-label="Navigation">
+        <a href="index.html" rel="index">Enter the full experience</a>
+        <a href="https://github.com/hustlenix/aquaguardian" rel="external">Source on GitHub</a>
+        <a href="https://hustlenix.github.io/aquaguardian/" rel="external">Live demo</a>
+      </nav>
 
-    <section class="panel" aria-labelledby="why-vanilla">
-      <h2 id="why-vanilla">Why a vanilla page exists in a React app</h2>
-      <ul>
-        <li>
-          Browsers execute exactly three languages: <strong>HTML</strong> for structure,
-          <strong>CSS</strong> for style, <strong>JavaScript</strong> for behavior.
-          TypeScript is JavaScript with types — it compiles down to the same JS.
-        </li>
-        <li>
-          This page proves the point: every effect you see here (the sonar sweep,
-          the live clock, these cards) is plain DOM APIs and canvas. No framework
-          required — frameworks just scale that up for big apps.
-        </li>
-        <li>
-          Elsewhere in this repo, <strong>Python</strong> and <strong>C</strong> do
-          build-time work — checking screenshots, validating assets, generating the
-          metrics dataset. The browser never runs them; the data they produce is
-          what the app renders. Every language in its natural habitat.
-        </li>
-      </ul>
-    </section>
+      <p class="clock">Pipeline UTC · <span id="clock">—</span></p>
+    </main>
 
-    <nav class="nav" aria-label="Navigation">
-      <a href="index.html" rel="index">Enter the full experience</a>
-      <a href="https://github.com/hustlenix/aquaguardian" rel="external">Source on GitHub</a>
-      <a href="https://hustlenix.github.io/aquaguardian/" rel="external">Live demo</a>
-    </nav>
+    <script>
+      ;(function () {
+        'use strict'
 
-    <p class="clock">Pipeline UTC · <span id="clock">—</span></p>
-  </main>
+        var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  <script>
-    (function () {
-      'use strict'
+        /* ---------- 1. Vanilla stats cards from a plain array ---------- */
+        var STATS = [
+          {
+            value: '11M t',
+            label: 'Metric tonnes of plastic entering the ocean yearly',
+            gold: false,
+          },
+          { value: '171T', label: 'Plastic pieces afloat in the global ocean', gold: true },
+          { value: '38%', label: 'Of assessed fish stocks overfished', gold: false },
+          { value: '8.4%', label: 'Of the global ocean currently protected', gold: true },
+        ]
 
-      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        var statsRoot = document.getElementById('stats')
+        STATS.forEach(function (stat) {
+          var card = document.createElement('article')
+          card.className = 'card'
 
-      /* ---------- 1. Vanilla stats cards from a plain array ---------- */
-      var STATS = [
-        { value: '11M t', label: 'Metric tonnes of plastic entering the ocean yearly', gold: false },
-        { value: '171T', label: 'Plastic pieces afloat in the global ocean', gold: true },
-        { value: '38%', label: 'Of assessed fish stocks overfished', gold: false },
-        { value: '8.4%', label: 'Of the global ocean currently protected', gold: true },
-      ]
+          var value = document.createElement('p')
+          value.className = 'value' + (stat.gold ? ' gold' : '')
+          value.textContent = stat.value
 
-      var statsRoot = document.getElementById('stats')
-      STATS.forEach(function (stat) {
-        var card = document.createElement('article')
-        card.className = 'card'
+          var label = document.createElement('p')
+          label.className = 'label'
+          label.textContent = stat.label
 
-        var value = document.createElement('p')
-        value.className = 'value' + (stat.gold ? ' gold' : '')
-        value.textContent = stat.value
+          card.appendChild(value)
+          card.appendChild(label)
+          statsRoot.appendChild(card)
+        })
 
-        var label = document.createElement('p')
-        label.className = 'label'
-        label.textContent = stat.label
+        /* ---------- 2. Live UTC clock (vanilla setInterval) ---------- */
+        var clockEl = document.getElementById('clock')
+        function tickClock() {
+          var now = new Date()
+          var stamp = now.toISOString().slice(0, 19).replace('T', ' ')
+          if (clockEl.textContent !== stamp) clockEl.textContent = stamp + ' UTC'
+        }
+        tickClock()
+        setInterval(tickClock, 1000)
 
-        card.appendChild(value)
-        card.appendChild(label)
-        statsRoot.appendChild(card)
-      })
+        /* ---------- 3. Sonar sweep on canvas ---------- */
+        var canvas = document.getElementById('sonar')
+        var ctx = canvas.getContext('2d')
+        var size = 420
+        var dpr = Math.min(window.devicePixelRatio || 1, 2)
+        canvas.width = size * dpr
+        canvas.height = size * dpr
+        ctx.scale(dpr, dpr)
 
-      /* ---------- 2. Live UTC clock (vanilla setInterval) ---------- */
-      var clockEl = document.getElementById('clock')
-      function tickClock() {
-        var now = new Date()
-        var stamp = now.toISOString().slice(0, 19).replace('T', ' ')
-        if (clockEl.textContent !== stamp) clockEl.textContent = stamp + ' UTC'
-      }
-      tickClock()
-      setInterval(tickClock, 1000)
+        var cx = size / 2
+        var cy = size / 2
+        var maxRadius = size / 2 - 10
+        var sweepAngle = 0
+        var blips = [
+          { angle: 0.6, radius: 0.45, speed: 0.0021 },
+          { angle: 2.1, radius: 0.72, speed: -0.0017 },
+          { angle: 4.0, radius: 0.3, speed: 0.0013 },
+          { angle: 5.2, radius: 0.85, speed: -0.0024 },
+        ]
 
-      /* ---------- 3. Sonar sweep on canvas ---------- */
-      var canvas = document.getElementById('sonar')
-      var ctx = canvas.getContext('2d')
-      var size = 420
-      var dpr = Math.min(window.devicePixelRatio || 1, 2)
-      canvas.width = size * dpr
-      canvas.height = size * dpr
-      ctx.scale(dpr, dpr)
+        function drawSonar() {
+          ctx.clearRect(0, 0, size, size)
 
-      var cx = size / 2
-      var cy = size / 2
-      var maxRadius = size / 2 - 10
-      var sweepAngle = 0
-      var blips = [
-        { angle: 0.6, radius: 0.45, speed: 0.0021 },
-        { angle: 2.1, radius: 0.72, speed: -0.0017 },
-        { angle: 4.0, radius: 0.3, speed: 0.0013 },
-        { angle: 5.2, radius: 0.85, speed: -0.0024 },
-      ]
+          // Concentric range rings.
+          ctx.strokeStyle = 'rgba(0, 229, 255, 0.22)'
+          ctx.lineWidth = 1
+          for (var i = 1; i <= 4; i++) {
+            ctx.beginPath()
+            ctx.arc(cx, cy, (maxRadius * i) / 4, 0, Math.PI * 2)
+            ctx.stroke()
+          }
 
-      function drawSonar() {
-        ctx.clearRect(0, 0, size, size)
-
-        // Concentric range rings.
-        ctx.strokeStyle = 'rgba(0, 229, 255, 0.22)'
-        ctx.lineWidth = 1
-        for (var i = 1; i <= 4; i++) {
+          // Crosshair axes.
           ctx.beginPath()
-          ctx.arc(cx, cy, (maxRadius * i) / 4, 0, Math.PI * 2)
+          ctx.moveTo(cx, 0)
+          ctx.lineTo(cx, size)
+          ctx.moveTo(0, cy)
+          ctx.lineTo(size, cy)
+          ctx.strokeStyle = 'rgba(0, 229, 255, 0.1)'
+          ctx.stroke()
+
+          // Detection blips — deterministic loops, drifting over time.
+          blips.forEach(function (blip) {
+            var bx = cx + Math.cos(blip.angle) * blip.radius * maxRadius
+            var by = cy + Math.sin(blip.angle) * blip.radius * maxRadius
+            ctx.beginPath()
+            ctx.arc(bx, by, 5, 0, Math.PI * 2)
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.9)'
+            ctx.shadowColor = '#d4af37'
+            ctx.shadowBlur = 12
+            ctx.fill()
+            ctx.shadowBlur = 0
+          })
+
+          // Rotating sweep with a fading trail.
+          var gradient = ctx.createConicGradient
+            ? ctx.createConicGradient(sweepAngle - 0.6, cx, cy)
+            : null
+          if (gradient) {
+            gradient.addColorStop(0, 'rgba(0, 229, 255, 0.0)')
+            gradient.addColorStop(1, 'rgba(0, 229, 255, 0.45)')
+            ctx.beginPath()
+            ctx.moveTo(cx, cy)
+            ctx.arc(cx, cy, maxRadius, sweepAngle - 0.6, sweepAngle)
+            ctx.closePath()
+            ctx.fillStyle = gradient
+            ctx.fill()
+          }
+
+          // Leading edge line.
+          ctx.beginPath()
+          ctx.moveTo(cx, cy)
+          ctx.lineTo(cx + Math.cos(sweepAngle) * maxRadius, cy + Math.sin(sweepAngle) * maxRadius)
+          ctx.strokeStyle = '#00e5ff'
+          ctx.lineWidth = 2
           ctx.stroke()
         }
 
-        // Crosshair axes.
-        ctx.beginPath()
-        ctx.moveTo(cx, 0)
-        ctx.lineTo(cx, size)
-        ctx.moveTo(0, cy)
-        ctx.lineTo(size, cy)
-        ctx.strokeStyle = 'rgba(0, 229, 255, 0.1)'
-        ctx.stroke()
-
-        // Detection blips — deterministic loops, drifting over time.
-        blips.forEach(function (blip) {
-          var bx = cx + Math.cos(blip.angle) * blip.radius * maxRadius
-          var by = cy + Math.sin(blip.angle) * blip.radius * maxRadius
-          ctx.beginPath()
-          ctx.arc(bx, by, 5, 0, Math.PI * 2)
-          ctx.fillStyle = 'rgba(212, 175, 55, 0.9)'
-          ctx.shadowColor = '#d4af37'
-          ctx.shadowBlur = 12
-          ctx.fill()
-          ctx.shadowBlur = 0
-        })
-
-        // Rotating sweep with a fading trail.
-        var gradient = ctx.createConicGradient
-          ? ctx.createConicGradient(sweepAngle - 0.6, cx, cy)
-          : null
-        if (gradient) {
-          gradient.addColorStop(0, 'rgba(0, 229, 255, 0.0)')
-          gradient.addColorStop(1, 'rgba(0, 229, 255, 0.45)')
-          ctx.beginPath()
-          ctx.moveTo(cx, cy)
-          ctx.arc(cx, cy, maxRadius, sweepAngle - 0.6, sweepAngle)
-          ctx.closePath()
-          ctx.fillStyle = gradient
-          ctx.fill()
+        function animateSonar() {
+          sweepAngle = (sweepAngle + 0.015) % (Math.PI * 2)
+          blips.forEach(function (blip) {
+            blip.angle += blip.speed
+          })
+          drawSonar()
+          if (!prefersReducedMotion) {
+            requestAnimationFrame(animateSonar)
+          }
         }
 
-        // Leading edge line.
-        ctx.beginPath()
-        ctx.moveTo(cx, cy)
-        ctx.lineTo(cx + Math.cos(sweepAngle) * maxRadius, cy + Math.sin(sweepAngle) * maxRadius)
-        ctx.strokeStyle = '#00e5ff'
-        ctx.lineWidth = 2
-        ctx.stroke()
-      }
-
-      function animateSonar() {
-        sweepAngle = (sweepAngle + 0.015) % (Math.PI * 2)
-        blips.forEach(function (blip) {
-          blip.angle += blip.speed
-        })
-        drawSonar()
+        drawSonar() // static frame first — the reduced-motion experience
         if (!prefersReducedMotion) {
           requestAnimationFrame(animateSonar)
         }
-      }
-
-      drawSonar() // static frame first — the reduced-motion experience
-      if (!prefersReducedMotion) {
-        requestAnimationFrame(animateSonar)
-      }
-    })()
-  </script>
-</body>
+      })()
+    </script>
+  </body>
 </html>

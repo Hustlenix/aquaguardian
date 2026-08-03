@@ -48,9 +48,9 @@ export default function MissionSection() {
       <h2 className="heading-lg text-gold-400 text-center mb-4">OUR MISSION</h2>
 
       <p className="text-elegant text-center text-white/70 max-w-3xl mx-auto mb-12">
-        The story&apos;s vision: intelligent autonomous systems that help heal the ocean &mdash; cleaning
-        its waters, protecting its life, and restoring its ecosystems. A concept, not a deployed
-        product.
+        The story&apos;s vision: intelligent autonomous systems that help heal the ocean &mdash;
+        cleaning its waters, protecting its life, and restoring its ecosystems. A concept, not a
+        deployed product.
       </p>
 
       <motion.div

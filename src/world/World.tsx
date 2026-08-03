@@ -82,7 +82,7 @@ export default function World() {
       pointerEvents: 'none' as const,
       zIndex: 0,
     }),
-    []
+    [],
   )
 
   return (

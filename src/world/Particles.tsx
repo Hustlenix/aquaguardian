@@ -98,7 +98,7 @@ function ParticleLayer({
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),
-    [color, safeOpacity]
+    [color, safeOpacity],
   )
 
   useEffect(() => {
@@ -109,6 +109,19 @@ function ParticleLayer({
     material.uniforms.uOpacity.value = safeOpacity
   }, [material, safeOpacity])
 
+  // Clean up geometry and material when they change or component unmounts.
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+    }
+  }, [geometry])
+
+  useEffect(() => {
+    return () => {
+      material.dispose()
+    }
+  }, [material])
+
   useFrame((state) => {
     material.uniforms.uTime.value = state.clock.elapsedTime
     if (ref.current) {
@@ -117,16 +130,17 @@ function ParticleLayer({
 
       for (let i = 0; i < safeCount; i++) {
         pos[i * 3 + 1] += Math.sin(state.clock.elapsedTime * safeSpeed + offsetsRef.current[i]) * s
-        pos[i * 3] += Math.cos(state.clock.elapsedTime * safeSpeed * 0.7 + offsetsRef.current[i] * 0.5) * s * 0.5
+        pos[i * 3] +=
+          Math.cos(state.clock.elapsedTime * safeSpeed * 0.7 + offsetsRef.current[i] * 0.5) *
+          s *
+          0.5
       }
 
       ref.current.geometry.attributes.position.needsUpdate = true
     }
   })
 
-  return (
-    <points ref={ref} geometry={geometry} material={material} />
-  )
+  return <points ref={ref} geometry={geometry} material={material} />
 }
 
 export default function Particles(props: ParticlesProps) {

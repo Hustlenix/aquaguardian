@@ -10,8 +10,8 @@ export default function NotFound() {
           Page not found
         </h2>
         <p className="max-w-md text-sm leading-7 text-text-muted">
-          This depth of the ocean is uncharted — the page you&apos;re looking for doesn&apos;t exist or
-          has drifted away. Head back to the surface to continue the mission.
+          This depth of the ocean is uncharted — the page you&apos;re looking for doesn&apos;t exist
+          or has drifted away. Head back to the surface to continue the mission.
         </p>
         <Link
           href="/"

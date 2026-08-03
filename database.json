@@ -1,29 +1,41 @@
 {
   "totalPlastic": 1804,
   "collections": [
-    {"amount": 106, "location": "Gulf of Mexico", "timestamp": "2026-07-05T19:08:00Z"},
-    {"amount": 102, "location": "Persian Gulf", "timestamp": "2026-07-20T02:07:00Z"},
-    {"amount": 88, "location": "Great Pacific Garbage Patch", "timestamp": "2026-07-19T18:34:00Z"},
-    {"amount": 20, "location": "Coral Triangle", "timestamp": "2026-07-28T16:43:00Z"},
-    {"amount": 72, "location": "Persian Gulf", "timestamp": "2026-07-07T13:25:00Z"},
-    {"amount": 46, "location": "Mediterranean Sea", "timestamp": "2026-07-26T07:52:00Z"},
-    {"amount": 41, "location": "Caribbean Sea", "timestamp": "2026-07-05T14:55:00Z"},
-    {"amount": 80, "location": "Coral Triangle", "timestamp": "2026-07-01T16:00:00Z"},
-    {"amount": 59, "location": "Coral Triangle", "timestamp": "2026-07-01T03:20:00Z"},
-    {"amount": 88, "location": "Great Pacific Garbage Patch", "timestamp": "2026-07-27T00:28:00Z"},
-    {"amount": 61, "location": "Persian Gulf", "timestamp": "2026-07-14T16:48:00Z"},
-    {"amount": 83, "location": "North Atlantic Gyre", "timestamp": "2026-07-28T22:23:00Z"},
-    {"amount": 95, "location": "Caribbean Sea", "timestamp": "2026-07-25T09:13:00Z"},
-    {"amount": 108, "location": "South China Sea", "timestamp": "2026-07-06T08:11:00Z"},
-    {"amount": 57, "location": "Caribbean Sea", "timestamp": "2026-07-26T08:57:00Z"},
-    {"amount": 73, "location": "Coral Triangle", "timestamp": "2026-07-23T23:43:00Z"},
-    {"amount": 46, "location": "Great Pacific Garbage Patch", "timestamp": "2026-07-22T19:25:00Z"},
-    {"amount": 99, "location": "Baltic Sea", "timestamp": "2026-07-23T13:04:00Z"},
-    {"amount": 82, "location": "Persian Gulf", "timestamp": "2026-07-23T07:57:00Z"},
-    {"amount": 97, "location": "South China Sea", "timestamp": "2026-07-08T16:35:00Z"},
-    {"amount": 55, "location": "North Atlantic Gyre", "timestamp": "2026-07-27T23:39:00Z"},
-    {"amount": 46, "location": "Persian Gulf", "timestamp": "2026-07-23T11:24:00Z"},
-    {"amount": 101, "location": "Coral Triangle", "timestamp": "2026-07-04T01:07:00Z"},
-    {"amount": 99, "location": "Mediterranean Sea", "timestamp": "2026-07-03T15:31:00Z"}
+    { "amount": 106, "location": "Gulf of Mexico", "timestamp": "2026-07-05T19:08:00Z" },
+    { "amount": 102, "location": "Persian Gulf", "timestamp": "2026-07-20T02:07:00Z" },
+    {
+      "amount": 88,
+      "location": "Great Pacific Garbage Patch",
+      "timestamp": "2026-07-19T18:34:00Z"
+    },
+    { "amount": 20, "location": "Coral Triangle", "timestamp": "2026-07-28T16:43:00Z" },
+    { "amount": 72, "location": "Persian Gulf", "timestamp": "2026-07-07T13:25:00Z" },
+    { "amount": 46, "location": "Mediterranean Sea", "timestamp": "2026-07-26T07:52:00Z" },
+    { "amount": 41, "location": "Caribbean Sea", "timestamp": "2026-07-05T14:55:00Z" },
+    { "amount": 80, "location": "Coral Triangle", "timestamp": "2026-07-01T16:00:00Z" },
+    { "amount": 59, "location": "Coral Triangle", "timestamp": "2026-07-01T03:20:00Z" },
+    {
+      "amount": 88,
+      "location": "Great Pacific Garbage Patch",
+      "timestamp": "2026-07-27T00:28:00Z"
+    },
+    { "amount": 61, "location": "Persian Gulf", "timestamp": "2026-07-14T16:48:00Z" },
+    { "amount": 83, "location": "North Atlantic Gyre", "timestamp": "2026-07-28T22:23:00Z" },
+    { "amount": 95, "location": "Caribbean Sea", "timestamp": "2026-07-25T09:13:00Z" },
+    { "amount": 108, "location": "South China Sea", "timestamp": "2026-07-06T08:11:00Z" },
+    { "amount": 57, "location": "Caribbean Sea", "timestamp": "2026-07-26T08:57:00Z" },
+    { "amount": 73, "location": "Coral Triangle", "timestamp": "2026-07-23T23:43:00Z" },
+    {
+      "amount": 46,
+      "location": "Great Pacific Garbage Patch",
+      "timestamp": "2026-07-22T19:25:00Z"
+    },
+    { "amount": 99, "location": "Baltic Sea", "timestamp": "2026-07-23T13:04:00Z" },
+    { "amount": 82, "location": "Persian Gulf", "timestamp": "2026-07-23T07:57:00Z" },
+    { "amount": 97, "location": "South China Sea", "timestamp": "2026-07-08T16:35:00Z" },
+    { "amount": 55, "location": "North Atlantic Gyre", "timestamp": "2026-07-27T23:39:00Z" },
+    { "amount": 46, "location": "Persian Gulf", "timestamp": "2026-07-23T11:24:00Z" },
+    { "amount": 101, "location": "Coral Triangle", "timestamp": "2026-07-04T01:07:00Z" },
+    { "amount": 99, "location": "Mediterranean Sea", "timestamp": "2026-07-03T15:31:00Z" }
   ]
 }

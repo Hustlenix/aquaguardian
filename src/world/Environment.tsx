@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import type { SceneState } from '@/types'
@@ -36,6 +36,13 @@ export default function Environment({ sceneState }: EnvironmentProps) {
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
     return geo
   }, [])
+
+  // Clean up geometry on unmount to prevent WebGL memory leaks.
+  useEffect(() => {
+    return () => {
+      particleGeo.dispose()
+    }
+  }, [particleGeo])
 
   return (
     <points geometry={particleGeo}>
