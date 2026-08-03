@@ -30,6 +30,24 @@ export const impactFacts: ImpactFact[] = [
     detail: 'Around 40% of the global population lives within 100 km of the coast, which makes coastal stewardship especially important.',
     source: 'UNEP',
   },
+  {
+    title: 'Excess heat absorbed by the ocean',
+    value: 'More than 90%',
+    detail: 'The ocean has absorbed more than 90% of the excess heat trapped in the Earth system by greenhouse gases, which drives sea-level rise, marine heatwaves, and coral bleaching.',
+    source: 'NOAA Climate.gov / NASA',
+  },
+  {
+    title: 'Oxygen produced by the ocean',
+    value: 'About 50%',
+    detail: 'Scientists estimate that roughly half of Earth\u2019s oxygen production comes from the ocean, mostly from photosynthesizing plankton.',
+    source: 'NOAA Ocean Service',
+  },
+  {
+    title: 'Ghost fishing gear in the GPGP',
+    value: 'About 46% of mass',
+    detail: 'Abandoned fishing nets, lines, and ropes make up about 46% of the Great Pacific Garbage Patch\u2019s mass — gear that keeps trapping marine life for years.',
+    source: 'Lebreton et al., Scientific Reports 2018',
+  },
 ]
 
 export const missionBlueprints = [

@@ -11,6 +11,7 @@ import HowItWorksSection from '@/components/sections/HowItWorksSection'
 import TechnologySection from '@/components/sections/TechnologySection'
 import PrototypeSection from '@/components/sections/PrototypeSection'
 import TimelineSection from '@/components/sections/TimelineSection'
+import OceanDataSection from '@/components/sections/OceanDataSection'
 import ImpactSection from '@/components/sections/ImpactSection'
 import ExperienceModesSection from '@/components/sections/ExperienceModesSection'
 import FAQSection from '@/components/sections/FAQSection'
@@ -43,6 +44,7 @@ export default function Home() {
           <ImpactSection />
           <div className="section-divider-gold max-w-[200px] mx-auto" />
           <TimelineSection />
+          <OceanDataSection />
           <FAQSection />
           <TeamSection />
           <ContactSection />
