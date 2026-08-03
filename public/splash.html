@@ -267,6 +267,10 @@
 
     <!-- STATS: rendered from a plain JS array via document.createElement -->
     <section aria-label="Ocean statistics" id="stats" class="cards"></section>
+    <p class="sonar-caption">
+      Sources · OECD Global Plastics Outlook 2022 · Eriksen et al., PLOS ONE 2023 ·
+      FAO SOFIA 2024 · UNEP-WCMC / Protected Planet
+    </p>
 
     <section class="panel" aria-labelledby="why-vanilla">
       <h2 id="why-vanilla">Why a vanilla page exists in a React app</h2>
@@ -307,10 +311,10 @@
 
       /* ---------- 1. Vanilla stats cards from a plain array ---------- */
       var STATS = [
-        { value: '8M', label: 'Tons of plastic entering oceans yearly', gold: false },
-        { value: '90%', label: 'Of marine species affected', gold: true },
-        { value: '30%', label: 'Of oceans are protected', gold: false },
-        { value: '3', label: 'Languages the browser actually runs', gold: true },
+        { value: '11M t', label: 'Metric tonnes of plastic entering the ocean yearly', gold: false },
+        { value: '171T', label: 'Plastic pieces afloat in the global ocean', gold: true },
+        { value: '38%', label: 'Of assessed fish stocks overfished', gold: false },
+        { value: '8.4%', label: 'Of the global ocean currently protected', gold: true },
       ]
 
       var statsRoot = document.getElementById('stats')

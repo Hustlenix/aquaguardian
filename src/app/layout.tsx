@@ -35,7 +35,7 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: 'AquaGuardian | AI-Powered Ocean Restoration',
   description:
-    "An AI-powered autonomous guardian monitoring and restoring ocean ecosystems. Combining advanced robotics with environmental science to protect our planet's most vital resource.",
+    'A concept experience: a cinematic 3D story imagining an AI-powered autonomous guardian for ocean monitoring and restoration. Fictional narrative; real, cited ocean data.',
   keywords: [
     'ocean cleanup',
     'autonomous underwater vehicle',
@@ -68,7 +68,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'AquaGuardian | AI-Powered Ocean Restoration',
-    description: 'An AI-powered autonomous guardian monitoring and restoring ocean ecosystems.',
+    description:
+      'A concept experience imagining an AI-powered autonomous guardian for ocean monitoring and restoration.',
     images: ['https://hustlenix.github.io/aquaguardian/og-image.png'],
   },
   robots: {

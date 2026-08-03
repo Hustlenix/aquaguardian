@@ -6,34 +6,34 @@ import SectionWrapper from './SectionWrapper'
 
 const MILESTONES = [
   {
-    period: 'Q1 2026',
+    period: 'Phase 01',
     title: 'Concept & Research',
     description:
-      'Foundational research and feasibility studies. Assembling the core team of marine biologists, AI researchers, and robotics engineers.',
+      'Grounding the vision in real ocean science — reviewing published research on marine debris, reef health, and autonomous monitoring to define what a concept would need to address.',
   },
   {
-    period: 'Q2 2026',
-    title: 'Prototype Development',
+    period: 'Phase 02',
+    title: 'Design & Simulation',
     description:
-      'Building the first functional prototype with AI navigation and basic sensor integration. Initial tank testing begins.',
+      'Exploring concept designs for a hypothetical autonomous platform: sketches, sensor concepts, and simulated mission planning against open ocean datasets.',
   },
   {
-    period: 'Q3 2026',
-    title: 'Field Testing',
+    period: 'Phase 03',
+    title: 'Test Criteria',
     description:
-      'Deploying the prototype in controlled coastal environments. Iterating on AI models with real-world ocean data.',
+      'Defining the validation steps a real prototype would have to pass — tank trials, sensor calibration, and safety reviews — before any coastal testing could even be considered.',
   },
   {
-    period: 'Q4 2026',
-    title: 'Pilot Deployment',
+    period: 'Phase 04',
+    title: 'Research Alignment',
     description:
-      'Full-scale pilot deployment in partnership with marine conservation organizations. Monitoring and restoration missions commence.',
+      'Mapping how a future concept could align with existing marine research and conservation programs. No pilots have been run; this remains a written design exercise.',
   },
   {
-    period: '2027',
-    title: 'Global Expansion',
+    period: 'Phase 05',
+    title: 'Open Learning',
     description:
-      'Scaling the fleet across critical ocean regions worldwide. Establishing data partnerships and open research initiatives.',
+      'Sharing the concept, its design system, and its code openly so students and researchers can build on the ideas — and correct them where reality demands it.',
   },
 ]
 
@@ -56,11 +56,15 @@ export default function TimelineSection() {
     <SectionWrapper id="timeline" className="relative">
       <div ref={sectionRef}>
         <motion.h2
-          className="heading-lg text-center text-gold-400 mb-16"
+          className="heading-lg text-center text-gold-400 mb-4"
           style={{ opacity: headingOpacity }}
         >
-          TIMELINE
+          FROM CONCEPT TO REALITY
         </motion.h2>
+        <p className="text-elegant text-center text-white/70 max-w-2xl mx-auto mb-16">
+          The development path this concept would need to follow — no dates are claimed because
+          no hardware exists, and no deployment has taken place.
+        </p>
 
         <div className="relative max-w-3xl mx-auto">
           {/* === VERTICAL LINE (base) === */}

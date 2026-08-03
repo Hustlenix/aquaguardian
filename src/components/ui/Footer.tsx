@@ -29,9 +29,9 @@ export default function Footer() {
               AQUAGUARDIAN
             </h3>
             <p className="text-body text-sm leading-relaxed max-w-xs text-text-muted/80">
-              An AI-powered autonomous guardian monitoring and restoring ocean ecosystems. Combining
-              advanced robotics with environmental science to protect our planet&apos;s most vital
-              resource.
+              AquaGuardian is a concept experience — a fictional-but-grounded vision of autonomous
+              ocean restoration told as an interactive 3D story. The ocean statistics shown across
+              the site are real and cited to published sources.
             </p>
           </div>
 
@@ -101,7 +101,7 @@ export default function Footer() {
             &copy; 2026 AquaGuardian. All rights reserved.
           </p>
           <p className="text-xs text-text-muted/40 tracking-widest uppercase">
-            Protecting our oceans with intelligent autonomy
+            Exploring intelligent autonomy for ocean stewardship
           </p>
         </div>
       </div>

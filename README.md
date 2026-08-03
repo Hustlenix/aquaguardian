@@ -60,7 +60,7 @@ Each chapter has its own visual state in the scene — lighting, fog, fish behav
 
 | Route | Purpose |
 |---|---|
-| `/` | Cinematic 3D hero plus narrative sections: Mission, Problem, Solution, How It Works, Technology, Prototype, Experience Modes, Impact, Timeline, Gallery, FAQ, Team, Contact |
+| `/` | Cinematic 3D hero plus narrative sections: Mission, Problem, Solution, How It Works, Technology, Prototype, Experience Modes, Impact, Timeline, Real Ocean Data, FAQ, Team, Contact |
 | `/dashboard` | Impact dashboard with ocean-health metrics from the generated dataset |
 | `/missions` | Conservation mission tracker |
 | `/challenges` | Community challenge mode |
