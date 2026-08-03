@@ -4,36 +4,12 @@ import { motion } from 'framer-motion'
 import SectionWrapper from './SectionWrapper'
 import GlassPanel from '@/components/ui/GlassPanel'
 
-const TEAM_MEMBERS = [
-  {
-    name: 'Dr. Anya Sharma',
-    role: 'Chief Executive Officer',
-    bio: "Marine biologist and AI researcher with 15+ years in ocean conservation. Former lead at NOAA's autonomous systems division.",
-    initials: 'AS',
-    color: 'bg-cyan-400/10',
-  },
-  {
-    name: 'James Calloway',
-    role: 'Chief Technology Officer',
-    bio: "Robotics engineer who led underwater drone development at NASA's Jet Propulsion Laboratory. Expert in autonomous navigation systems.",
-    initials: 'JC',
-    color: 'bg-gold-400/10',
-  },
-  {
-    name: 'Dr. Mei-Lin Chen',
-    role: 'Head of Environmental Science',
-    bio: 'PhD in Marine Ecology from Stanford. Pioneered AI-driven coral reef assessment methodology used across the Indo-Pacific.',
-    initials: 'MC',
-    color: 'bg-cyan-400/10',
-  },
-  {
-    name: 'Alex Rivera',
-    role: 'VP of Engineering',
-    bio: 'Full-stack robotics architect with expertise in embedded systems, sensor fusion, and edge AI deployment at scale.',
-    initials: 'AR',
-    color: 'bg-gold-400/10',
-  },
-]
+const PROJECT_NOTE = {
+  title: 'A concept experience',
+  body: 'AquaGuardian is a personal portfolio project — a fictional-but-grounded vision of autonomous ocean restoration. No hardware exists, no company is behind it, and no team is named here. The site exists to make ocean-conservation concepts tangible through an interactive 3D story, and to demonstrate frontend engineering across Next.js, Three.js, and motion design.',
+  secondary:
+    'The robot, its specs, and its "mission results" are illustrative narrative elements — real-world ocean statistics shown across the site are cited to published sources (OECD, UNEP, FAO, and peer-reviewed studies).',
+}
 
 const containerVariants = {
   hidden: {},
@@ -55,11 +31,11 @@ const itemVariants = {
 export default function TeamSection() {
   return (
     <SectionWrapper id="team">
-      <h2 className="heading-lg text-gold-400 text-center mb-4">OUR TEAM</h2>
+      <h2 className="heading-lg text-gold-400 text-center mb-4">ABOUT THIS PROJECT</h2>
 
       <p className="text-elegant text-center text-white/70 max-w-3xl mx-auto mb-12">
-        A diverse group of scientists, engineers, and dreamers united by a single mission — to
-        restore the health of our oceans.
+        A concept built to make ocean-restoration ideas visible — and to show what modern
+        frontend engineering can do.
       </p>
 
       <motion.div
@@ -67,37 +43,27 @@ export default function TeamSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-60px' }}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        className="grid grid-cols-1 gap-6"
       >
-        {TEAM_MEMBERS.map((member) => (
-          <motion.div
-            key={member.name}
-            variants={itemVariants}
-            whileHover={{
-              rotate: 0,
-              transition: { duration: 0.3 },
-            }}
-          >
-            <GlassPanel className="text-center h-full flex flex-col items-center">
-              <div
-                className={`w-20 h-20 rounded-full ${member.color} border border-white/10 flex items-center justify-center mb-5`}
+        <motion.div variants={itemVariants}>
+          <GlassPanel className="text-center h-full flex flex-col items-center p-8">
+            <div className="w-20 h-20 rounded-full bg-cyan-400/10 border border-white/10 flex items-center justify-center mb-5">
+              <span
+                className="text-xl font-bold text-white/80"
+                style={{ fontFamily: 'var(--font-display)' }}
               >
-                <span
-                  className="text-xl font-bold text-white/80"
-                  style={{ fontFamily: 'var(--font-display)' }}
-                >
-                  {member.initials}
-                </span>
-              </div>
-
-              <h3 className="text-base font-semibold text-white mb-1">{member.name}</h3>
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-gold-400 mb-3">
-                {member.role}
-              </p>
-              <p className="text-body text-xs leading-relaxed mb-5 flex-grow">{member.bio}</p>
-            </GlassPanel>
-          </motion.div>
-        ))}
+                🌊
+              </span>
+            </div>
+            <h3 className="text-base font-semibold text-white mb-1">{PROJECT_NOTE.title}</h3>
+            <p className="text-body text-xs leading-relaxed max-w-2xl text-text-muted">
+              {PROJECT_NOTE.body}
+            </p>
+            <p className="text-body text-xs leading-relaxed max-w-2xl mt-3 text-text-muted/70">
+              {PROJECT_NOTE.secondary}
+            </p>
+          </GlassPanel>
+        </motion.div>
       </motion.div>
     </SectionWrapper>
   )

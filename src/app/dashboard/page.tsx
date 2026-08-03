@@ -89,19 +89,19 @@ export default function DashboardPage() {
 
         <section className="grid gap-4 md:grid-cols-3">
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-            <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">Tracked entries</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">Tracked entries (simulated)</p>
             <p className="mt-3 text-3xl font-semibold">{loading ? '…' : trackedEntries}</p>
-            <p className="mt-2 text-sm text-text-muted">Recorded in the committed ocean analysis dataset.</p>
+            <p className="mt-2 text-sm text-text-muted">Demo pipeline output — not real collection records.</p>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-            <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">Estimated impact</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">Items collected (simulated)</p>
             <p className="mt-3 text-3xl font-semibold">{loading ? '…' : `${totalCollected} pieces`}</p>
-            <p className="mt-2 text-sm text-text-muted">A practical local tally from the generated dataset.</p>
+            <p className="mt-2 text-sm text-text-muted">A generated demo dataset — not actual measurements.</p>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-            <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">Reference basis</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">Ocean context</p>
             <p className="mt-3 text-3xl font-semibold">Real data</p>
-            <p className="mt-2 text-sm text-text-muted">Metrics are anchored to published conservation and ocean assessments.</p>
+            <p className="mt-2 text-sm text-text-muted">The facts below are anchored to published conservation and ocean assessments.</p>
           </div>
         </section>
 

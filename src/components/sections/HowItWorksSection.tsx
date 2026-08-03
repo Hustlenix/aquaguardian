@@ -9,23 +9,23 @@ const STEPS = [
   {
     step: 1,
     icon: Satellite,
-    title: 'Deploy & Monitor',
+    title: 'Monitor',
     description:
-      'A fleet of autonomous AquaGuardian units is deployed across target ocean regions. Using real-time satellite coordination, each unit begins continuous water quality monitoring and surface patrol.',
+      'In the concept story, autonomous AquaGuardian units patrol target ocean regions, running continuous water quality monitoring and surface patrol — coordinated through satellite links.',
   },
   {
     step: 2,
     icon: Search,
     title: 'Analyze & Detect',
     description:
-      'On-board AI processes multi-spectral sensor data to identify pollution sources, track marine life, and detect environmental anomalies with 98% accuracy — all without human intervention.',
+      'On-board AI processes multi-spectral sensor data to identify pollution sources, track marine life, and detect environmental anomalies — all without human intervention.',
   },
   {
     step: 3,
     icon: Trees,
     title: 'Clean & Restore',
     description:
-      'Upon detecting threats, AquaGuardian autonomously deploys containment and filtration systems. Collected data is relayed to scientists, enabling informed conservation strategies at scale.',
+      'Upon detecting threats, the concept envisions autonomous containment and filtration systems, with data relayed to scientists to inform conservation strategies at scale.',
   },
 ]
 
@@ -35,8 +35,8 @@ export default function HowItWorksSection() {
       <h2 className="heading-lg text-gold-400 text-center mb-4">HOW IT WORKS</h2>
 
       <p className="text-elegant text-center text-white/70 max-w-3xl mx-auto mb-16">
-        From deployment to restoration — a three-phase system that operates continuously to protect
-        our oceans.
+        From monitoring to restoration — the three-phase concept the story imagines for
+        protecting our oceans.
       </p>
 
       {/* Steps with connecting line */}

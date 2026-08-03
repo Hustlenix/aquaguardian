@@ -13,7 +13,6 @@ import PrototypeSection from '@/components/sections/PrototypeSection'
 import TimelineSection from '@/components/sections/TimelineSection'
 import ImpactSection from '@/components/sections/ImpactSection'
 import ExperienceModesSection from '@/components/sections/ExperienceModesSection'
-import GallerySection from '@/components/sections/GallerySection'
 import FAQSection from '@/components/sections/FAQSection'
 import TeamSection from '@/components/sections/TeamSection'
 import ContactSection from '@/components/sections/ContactSection'
@@ -44,7 +43,6 @@ export default function Home() {
           <ImpactSection />
           <div className="section-divider-gold max-w-[200px] mx-auto" />
           <TimelineSection />
-          <GallerySection />
           <FAQSection />
           <TeamSection />
           <ContactSection />

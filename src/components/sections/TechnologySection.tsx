@@ -10,7 +10,7 @@ const TECH_CARDS = [
     icon: Brain,
     title: 'AI Core',
     description:
-      'A neural network trained on millions of ocean data points enables real-time decision making, species identification, and adaptive mission planning in complex underwater environments.',
+      'The concept envisions a neural network trained on ocean data enabling real-time decision making, species identification, and adaptive mission planning in complex underwater environments.',
   },
   {
     icon: Activity,

@@ -8,28 +8,32 @@ import { useEffect } from 'react'
 
 const faqs = [
   {
-    q: 'What is AquaGuardian?',
-    a: 'AquaGuardian is an AI-powered autonomous underwater vehicle (AUV) designed to monitor ocean health, collect plastic waste, and restore marine ecosystems through advanced robotics and environmental science.',
+    q: 'Is AquaGuardian a real product?',
+    a: 'No. AquaGuardian is a concept experience — a fictional-but-grounded vision of autonomous ocean restoration, built as a personal portfolio project. No hardware exists, nothing is deployed, and no company is behind it. The robot, its specs, and its "mission results" are illustrative narrative elements.',
   },
   {
-    q: 'How does AquaGuardian detect pollution?',
-    a: 'Using a multi-spectral sensor array and computer vision, AquaGuardian identifies microplastics, chemical pollutants, and biological changes. We are targeting 98% detection accuracy in controlled testing environments.',
+    q: 'Where do the statistics on the site come from?',
+    a: 'Every figure shown as a fact is real and cited to a published source — UNEP and the Pew Charitable Trusts, the FAO, and peer-reviewed studies such as Jambeck et al. (2015) and Eriksen et al. (2023). The dashboard pipeline numbers are simulated demo data (generated with a fixed seed), clearly labeled as such, and are not real collection records.',
+  },
+  {
+    q: 'How would the concept detect pollution?',
+    a: 'The concept story imagines a multi-spectral sensor array and computer vision identifying microplastics, chemical pollutants, and biological changes. These are aspirational engineering ideas, not tested specifications — no accuracy claims are made.',
   },
   {
     q: 'Is the technology available for commercial use?',
-    a: 'We are currently in the prototype development phase (Q2 2026). Commercial licensing and partnership opportunities are expected following successful pilot deployment in Q4 2026.',
+    a: 'No. There is no technology to license — this is a design concept. You can explore the story, the design system, and the code, which is open source under the MIT License.',
   },
   {
-    q: 'How much plastic can AquaGuardian collect?',
-    a: 'Each unit is designed to process up to 500 kg of plastic waste per day. Our goal is to deploy 1,000 units globally by 2028, subject to funding and pilot results.',
+    q: 'How much plastic could a robot like this collect?',
+    a: 'No real collection capability exists. The prototype figures shown are illustrative concept targets. For real context: an estimated 8–12 million tonnes of plastic enter the ocean each year (Jambeck et al., Science 2015), which is why real cleanup efforts are urgently needed.',
   },
   {
-    q: 'How is the robot powered?',
-    a: 'AquaGuardian uses a hybrid system: solar panels for surface operations and hydrogen fuel cells for deep-water missions, enabling continuous 24/7 operation. Battery life is rated at 72 hours per mission cycle.',
+    q: 'How is the robot powered in the concept?',
+    a: 'The concept story imagines a hybrid system with solar panels for surface operations and battery storage for deep-water missions. These are narrative design choices, not tested engineering ratings.',
   },
   {
     q: 'Can I support the project?',
-    a: 'Yes! Subscribe to our newsletter for updates on our progress and pilot programs. We welcome interest from conservation organizations, research institutions, and potential partners.',
+    a: 'The best support is getting involved with real ocean conservation. Consider donating to or volunteering with organizations like The Ocean Cleanup, the Surfrider Foundation, or your local marine-protection group. You can also reach out at hello@aquaguardian.dev.',
   },
 ]
 

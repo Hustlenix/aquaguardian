@@ -9,14 +9,18 @@
  *   different, still reproducible dataset. The default seed is fixed so a
  *   bare rebuild is stable across machines and CI runs.
  *
+ *   IMPORTANT: the data it emits is SIMULATED demo data (default seed
+ *   20260701) — fiction for a concept site, NOT real ocean collection
+ *   records. Real, cited ocean statistics live in src/data/impactData.ts.
+ *
  * DATA PIPELINE
  *   ocean_metrics.c ──► database.json ──► analyze_ocean_data.py ──►
  *   src/data/ocean_analysis.json ──► dashboard page
  *
  *   C is a build-time tool here: it cannot run in the browser, but it can
- *   honestly generate the data the web app renders. (WebAssembly could run
- *   C client-side, but that needs an Emscripten toolchain — we keep it lean
- *   and native instead.)
+ *   generate the deterministic demo dataset the web app renders.
+ *   (WebAssembly could run C client-side, but that needs an Emscripten
+ *   toolchain — we keep it lean and native instead.)
  *
  * BUILD & RUN (any C99 compiler; run from the repo root so database.json
  * lands beside package.json):

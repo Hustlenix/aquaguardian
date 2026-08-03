@@ -6,27 +6,27 @@ import GlassPanel from '@/components/ui/GlassPanel'
 
 const STATS = [
   {
-    number: '8M',
-    unit: 'tons',
+    number: '11M',
+    unit: 'tonnes',
     label: 'of plastic enter oceans yearly',
     color: 'text-gold-400',
   },
   {
-    number: '90%',
+    number: '38%',
     unit: '',
-    label: 'of fish stocks depleted',
+    label: 'of assessed fish stocks overfished',
     color: 'text-gold-400',
   },
   {
-    number: '30%',
+    number: '50%',
     unit: '',
-    label: 'of coral reefs destroyed',
+    label: 'of live coral cover lost since the 1950s',
     color: 'text-gold-400',
   },
   {
-    number: '1M',
-    unit: 'species',
-    label: 'face extinction from ocean degradation',
+    number: '171T',
+    unit: 'pieces',
+    label: 'of plastic afloat in the world’s oceans',
     color: 'text-gold-400',
   },
 ]
@@ -80,6 +80,10 @@ export default function ProblemSection() {
           </motion.div>
         ))}
       </motion.div>
+      <p className="text-xs text-text-muted/60 text-center mt-6 max-w-2xl mx-auto">
+        Sources: OECD Global Plastics Outlook (2022); FAO SOFIA (2024); Eddy et al., Science (2021);
+        Eriksen et al., PLOS ONE (2023).
+      </p>
     </SectionWrapper>
   )
 }

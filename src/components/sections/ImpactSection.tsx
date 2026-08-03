@@ -17,32 +17,32 @@ interface StatMapping {
 
 const stats: StatMapping[] = [
   {
-    value: 125,
-    label: 'Plastic Collected per Unit',
-    sub: 'target tons per year',
-    suffix: 'K',
-    prefix: 'Goal: ',
+    value: 11,
+    label: 'Tonnes of Plastic Entering Oceans Yearly',
+    sub: 'OECD Global Plastics Outlook, 2022',
+    suffix: 'M',
+    prefix: '',
   },
   {
-    value: 5000,
-    label: 'Oceans Monitored',
-    sub: 'target active stations',
-    suffix: '+',
-    prefix: 'Goal: ',
+    value: 171,
+    label: 'Pieces of Plastic Afloat in the Oceans',
+    sub: 'Eriksen et al., PLOS ONE, 2023',
+    suffix: 'T',
+    prefix: '',
   },
   {
-    value: 850,
-    label: 'Species Protected',
-    sub: 'target marine habitats',
-    suffix: '+',
-    prefix: 'Goal: ',
-  },
-  {
-    value: 98,
-    label: 'Detection Accuracy',
-    sub: 'target AI-driven analysis',
+    value: 38,
+    label: 'of Assessed Fish Stocks Overfished',
+    sub: 'FAO SOFIA, 2024',
     suffix: '%',
-    prefix: 'Goal: ',
+    prefix: '',
+  },
+  {
+    value: 8,
+    label: 'of the Ocean Currently Protected',
+    sub: 'UNEP-WCMC / Protected Planet',
+    suffix: '%',
+    prefix: '',
   },
 ]
 
@@ -56,9 +56,9 @@ export default function ImpactSection() {
         transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         className="text-center mb-16"
       >
-        <h2 className="heading-lg text-gold-400">OUR GOALS</h2>
+        <h2 className="heading-lg text-gold-400">THE SCALE OF THE CHALLENGE</h2>
         <p className="text-elegant text-text-muted mt-4 max-w-2xl mx-auto">
-          Ambitious targets for ocean restoration by 2028
+          Real ocean-plastic and marine-health figures, cited to published sources
         </p>
       </motion.div>
 

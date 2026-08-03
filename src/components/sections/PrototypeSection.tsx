@@ -8,22 +8,22 @@ import ModelVisual from '@/components/ui/ModelVisual'
 import { Navigation, Gauge, Battery, Weight, Zap, Cpu } from 'lucide-react'
 
 const SPECS = [
-  { icon: Weight, label: 'Weight', value: '180 kg' },
-  { icon: Navigation, label: 'Depth Rating', value: '4,000 m *' },
-  { icon: Gauge, label: 'Speed', value: '8 knots' },
-  { icon: Battery, label: 'Battery Life', value: '72 hrs' },
-  { icon: Zap, label: 'Payload', value: '500 kg' },
-  { icon: Cpu, label: 'AI Model', value: 'AGNet-7B *' },
+  { icon: Weight, label: 'Concept Weight', value: '~180 kg' },
+  { icon: Navigation, label: 'Concept Depth', value: '4,000 m *' },
+  { icon: Gauge, label: 'Concept Speed', value: '8 knots *' },
+  { icon: Battery, label: 'Concept Endurance', value: '72 hrs *' },
+  { icon: Zap, label: 'Concept Payload', value: '500 kg *' },
+  { icon: Cpu, label: 'On-board AI', value: 'Vision model' },
 ]
 
 export default function PrototypeSection() {
   return (
     <SectionWrapper id="prototype">
-      <h2 className="heading-lg text-gold-400 text-center mb-4">THE PROTOTYPE</h2>
+      <h2 className="heading-lg text-gold-400 text-center mb-4">THE CONCEPT PROTOTYPE</h2>
 
       <p className="text-elegant text-center text-white/70 max-w-3xl mx-auto mb-16">
-        A marvel of marine engineering — designed to withstand the deepest pressures while operating
-        completely autonomously.
+        A 3D visual concept of the guardian robot — the figures below are illustrative design
+        targets for a fictional product, not tested hardware specifications.
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
@@ -44,14 +44,14 @@ export default function PrototypeSection() {
 
         {/* Right: Spec sheet */}
         <div>
-          <motion.h3
+            <motion.h3
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="heading-md text-white mb-6"
           >
-            Technical Specifications
+            Concept Design Targets
           </motion.h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
@@ -93,15 +93,16 @@ export default function PrototypeSection() {
             className="flex flex-col sm:flex-row gap-4"
           >
             <Button variant="primary" href="#contact">
-              Request a Demo
+              Ask a Question
             </Button>
-            <Button variant="secondary" href="#">
-              Download Spec Sheet
+            <Button variant="secondary" href="/dashboard">
+              See Real Ocean Data
             </Button>
           </motion.div>
 
           <p className="text-xs text-text-muted/50 text-center mt-4">
-            * Engineering targets — subject to testing validation
+            * Illustrative concept targets — no physical prototype exists. Real ocean-plastic
+            statistics are cited to published sources on the dashboard.
           </p>
         </div>
       </div>

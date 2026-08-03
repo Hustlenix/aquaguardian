@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 """
 AquaGuardian Ocean Impact Analytics Engine
-Multi-language utility (Python 3) for parsing, validating, and aggregating 
-real ocean plastic collection metrics and environmental impact data.
+Multi-language utility (Python 3) for parsing, validating, and aggregating
+the simulated demo dataset (database.json) produced by ocean_metrics.c, and
+deriving environmental impact figures from it.
+
+NOTE: The source data is DETERMINISTICALLY SIMULATED (seed 20260701) for
+display purposes. It is not real ocean plastic collection data. Real,
+sourced ocean statistics shown on the site (e.g. OECD, UNEP, FAO figures)
+live in src/data/impactData.ts instead.
 """
 
 import json

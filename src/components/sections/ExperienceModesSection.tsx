@@ -52,7 +52,7 @@ export default function ExperienceModesSection() {
             A fuller ocean story, not just a landing page.
           </h2>
           <p className="mt-4 text-lg leading-8 text-text-muted">
-            The site now includes a live dashboard, mission tracking, challenge loops, educational modules, an AI companion, and a mobile field experience.
+            The site includes an impact dashboard, mission tracking, challenge loops, educational modules, an AI companion, and a mobile field experience.
           </p>
         </div>
 
