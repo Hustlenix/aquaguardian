@@ -20,6 +20,13 @@ export default function OceanSurface({ topColor = '#1A6B8A' }: { topColor?: stri
     [segments]
   )
 
+  // Dispose of geometry when segments change or on unmount to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+    }
+  }, [geometry])
+
   const material = useMemo(() => {
     const m = new THREE.ShaderMaterial({
       vertexShader: oceanGradientVertexShader,
@@ -37,6 +44,13 @@ export default function OceanSurface({ topColor = '#1A6B8A' }: { topColor?: stri
     })
     return m
   }, [topColor])
+
+  // Dispose of material when topColor changes or on unmount to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      material.dispose()
+    }
+  }, [material])
 
   // Keep the surface color in sync with scene-state driven color changes.
   useEffect(() => {

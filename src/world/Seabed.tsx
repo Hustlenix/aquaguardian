@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -112,6 +112,13 @@ export default function Seabed({ debrisCount = 0 }: SeabedProps) {
     g.computeVertexNormals()
     return g
   }, [])
+
+  // Dispose of seabed geometry on unmount to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geo.dispose()
+    }
+  }, [geo])
 
   const rocks = useMemo(() => {
     const arr: { x: number; z: number; scale: number }[] = []
