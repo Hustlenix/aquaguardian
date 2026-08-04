@@ -74,6 +74,13 @@ export default function Bubbles({ count = 80 }: { count?: number }) {
     return geo
   }, [count])
 
+  // Dispose of geometry when count changes or on unmount to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+    }
+  }, [geometry])
+
   const material = useMemo(
     () =>
       new THREE.ShaderMaterial({
@@ -89,6 +96,13 @@ export default function Bubbles({ count = 80 }: { count?: number }) {
       }),
     []
   )
+
+  // Dispose of material on unmount to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      material.dispose()
+    }
+  }, [material])
 
   useEffect(() => {
     material.uniforms.uOpacity.value = 0.3

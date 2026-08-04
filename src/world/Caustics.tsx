@@ -37,6 +37,13 @@ export default function Caustics({ intensity = 0.35 }: CausticsProps) {
     return m
   }, [])
 
+  // Dispose of material on unmount to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      material.dispose()
+    }
+  }, [material])
+
   // Scene-state-driven tint: base the caustics on the section's ray color,
   // pulled toward a cool cyan so it always reads as water light.
   useEffect(() => {

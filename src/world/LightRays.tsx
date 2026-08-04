@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -34,6 +34,13 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
     }
     return [make(), make()]
   }, [])
+
+  // Dispose of textures on unmount to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      textures.forEach((tex) => tex.dispose())
+    }
+  }, [textures])
 
   const configs = useMemo(
     () =>

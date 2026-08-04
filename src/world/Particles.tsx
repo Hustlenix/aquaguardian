@@ -84,6 +84,13 @@ function ParticleLayer({
     return geo
   }, [safeCount, sizeBase, spreadMul, yRange, yOffset])
 
+  // Dispose of geometry when properties change or on unmount to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+    }
+  }, [geometry])
+
   const material = useMemo(
     () =>
       new THREE.ShaderMaterial({
@@ -100,6 +107,13 @@ function ParticleLayer({
       }),
     [color, safeOpacity]
   )
+
+  // Dispose of material when color/opacity changes or on unmount to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      material.dispose()
+    }
+  }, [material])
 
   useEffect(() => {
     ;(material.uniforms.uColor.value as THREE.Color).set(color ?? '#88BBDD')
