@@ -51,6 +51,19 @@ export default function Caustics({ color = '#7FD4E8', opacity = 0.22 }: Caustics
     return m
   }, [color, opacity])
 
+  // Prevent memory leaks by disposing of imperatively created ThreeJS resources on unmount or change.
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+    }
+  }, [geometry])
+
+  useEffect(() => {
+    return () => {
+      material.dispose()
+    }
+  }, [material])
+
   // Keep the tint in sync with scene-state driven color changes.
   useEffect(() => {
     ;(material.uniforms.uColor.value as THREE.Color).set(color)

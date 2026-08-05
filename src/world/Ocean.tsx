@@ -45,6 +45,19 @@ export default function OceanSurface({ topColor = '#1A6B8A', clarity = 0.8 }: Oc
     return m
   }, [topColor, clarity])
 
+  // Prevent memory leaks by disposing of imperatively created ThreeJS resources on unmount or change.
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+    }
+  }, [geometry])
+
+  useEffect(() => {
+    return () => {
+      material.dispose()
+    }
+  }, [material])
+
   // Keep the surface color in sync with scene-state driven color changes.
   useEffect(() => {
     ;(material.uniforms.uTopColor.value as THREE.Color).set(topColor)
