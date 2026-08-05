@@ -43,6 +43,7 @@ export default function Bubbles({ count = 80 }: { count?: number }) {
   const baseSizes = useRef<number[]>([])
   const speeds = useRef<number[]>([])
   const phases = useRef<number[]>([])
+  const wobbles = useRef<number[]>([])
   const popTimers = useRef<number[]>([])
 
   const geometry = useMemo(() => {
@@ -52,18 +53,22 @@ export default function Bubbles({ count = 80 }: { count?: number }) {
     baseSizes.current = []
     speeds.current = []
     phases.current = []
+    wobbles.current = []
     popTimers.current = []
 
     for (let i = 0; i < count; i++) {
       pos[i * 3] = (Math.random() - 0.5) * 18
       pos[i * 3 + 1] = -3.5 - Math.random() * 1.5
       pos[i * 3 + 2] = (Math.random() - 0.5) * 14 - 3
-      const size = 0.03 + Math.random() * 0.12
+      // Wider size variance — a mix of fine mist and visible orbs.
+      const size = 0.02 + Math.random() * 0.14
       sizes[i] = size
       alphas[i] = 1
       baseSizes.current.push(size)
       speeds.current.push(0.3 + Math.random() * 1.8)
       phases.current.push(Math.random() * Math.PI * 2)
+      // Per-bubble wobble amplitude: small bubbles drift, large ones meander.
+      wobbles.current.push(0.08 + Math.random() * 0.2)
       popTimers.current.push(0)
     }
 
@@ -105,8 +110,9 @@ export default function Bubbles({ count = 80 }: { count?: number }) {
     for (let i = 0; i < count; i++) {
       if (popTimers.current[i] <= 0) {
         pos[i * 3 + 1] += speeds.current[i] * delta * 0.5
-        pos[i * 3] += Math.sin(t * 0.5 + phases.current[i]) * delta * 0.15
-        pos[i * 3 + 2] += Math.cos(t * 0.4 + phases.current[i] * 1.3) * delta * 0.08
+        // Perpendicular sine drift — each bubble wanders at its own amplitude.
+        pos[i * 3] += Math.sin(t * 0.5 + phases.current[i]) * wobbles.current[i] * delta
+        pos[i * 3 + 2] += Math.cos(t * 0.4 + phases.current[i] * 1.3) * wobbles.current[i] * delta * 0.6
         sizes[i] = baseSizes.current[i] * (1 + Math.sin(t * 0.3 + i) * 0.12)
         alphas[i] = 1
 
@@ -117,15 +123,16 @@ export default function Bubbles({ count = 80 }: { count?: number }) {
       } else {
         popTimers.current[i] -= delta
         const k = Math.max(popTimers.current[i] / POP_DURATION, 0)
-        sizes[i] = baseSizes.current[i] * 1.1 * k
+        sizes[i] = baseSizes.current[i] * 1.15 * k
         alphas[i] = k * k
 
         if (popTimers.current[i] <= 0) {
           pos[i * 3] = (Math.random() - 0.5) * 18
           pos[i * 3 + 1] = -3.5 - Math.random() * 1.5
           pos[i * 3 + 2] = (Math.random() - 0.5) * 14 - 3
-          baseSizes.current[i] = 0.03 + Math.random() * 0.12
+          baseSizes.current[i] = 0.02 + Math.random() * 0.14
           speeds.current[i] = 0.3 + Math.random() * 1.8
+          wobbles.current[i] = 0.08 + Math.random() * 0.2
           alphas[i] = 1
         }
       }

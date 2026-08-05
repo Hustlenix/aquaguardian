@@ -5,6 +5,7 @@ import { AdaptiveDpr, PerformanceMonitor } from '@react-three/drei'
 import { Suspense, useMemo } from 'react'
 import * as THREE from 'three'
 import OceanSurface from './Ocean'
+import Caustics from './Caustics'
 import CameraRig from './Camera'
 import Lighting from './Lighting'
 import Particles from './Particles'
@@ -16,6 +17,7 @@ import Robot from './Robot'
 import Kelp from './Kelp'
 import Fish from './Fish'
 import Ruins from './Ruins'
+import Effects from './Effects'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import { useStore } from '@/store/useStore'
 
@@ -34,8 +36,12 @@ function SceneContent() {
       <color attach="background" args={[water.topColor]} />
       <fog attach="fog" args={[fogColor, lighting.fogNear, lighting.fogFar]} />
       <Suspense fallback={null}>
-        <OceanSurface topColor={water.topColor} />
+        <OceanSurface topColor={water.topColor} clarity={water.clarity} />
         <Seabed debrisCount={environment.debrisCount} />
+        <Caustics
+          color={environment.lightRayColor}
+          opacity={0.16 + environment.lightRayOpacity * 0.35}
+        />
         <Ruins intact={ruinsIntact} />
         <Coral intact={environment.templeIntact} />
         <Kelp density={kelpDensity} />
@@ -65,6 +71,7 @@ function SceneContent() {
           pointIntensity={lighting.pointIntensity}
           pointColor={lighting.pointColor}
         />
+        <Effects />
       </Suspense>
     </>
   )

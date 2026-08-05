@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -55,15 +55,53 @@ function Arm({ side }: { side: 'left' | 'right' }) {
 export default function Robot({ visible, activated, scale, position, scanBeam }: RobotProps) {
   const groupRef = useRef<THREE.Group>(null)
   const scanRef = useRef<THREE.Mesh>(null)
+  const antennaRef = useRef<THREE.Group>(null)
+  const coreRef = useRef<THREE.Mesh>(null)
 
-  useFrame((state) => {
+  // Anchor the idle hover to the scene-state base position so animation and
+  // section changes never fight each other.
+  const basePos = useRef(new THREE.Vector3(position[0], position[1], position[2]))
+  const coreMatRef = useRef<THREE.MeshBasicMaterial>(null)
+
+  useEffect(() => {
+    basePos.current.set(position[0], position[1], position[2])
+  }, [position])
+
+  useFrame((state, delta) => {
     if (!groupRef.current) return
-    groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.4) * 0.15
-    groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.1) * 0.15
+    const t = state.clock.elapsedTime
+
+    // Gentle idle bob + hover drift around the anchored position.
+    groupRef.current.position.y = basePos.current.y + Math.sin(t * 0.4) * 0.15
+    groupRef.current.position.z = basePos.current.z + Math.cos(t * 0.3) * 0.05
+    groupRef.current.rotation.y = Math.sin(t * 0.1) * 0.15
+
+    // Antenna sway — subtle when idle, livelier when the robot is activated.
+    if (antennaRef.current) {
+      const amp = activated ? 1 : 0.4
+      antennaRef.current.rotation.z = Math.sin(t * 0.9) * 0.12 * amp
+      antennaRef.current.rotation.x = Math.sin(t * 1.3 + 1) * 0.08 * amp
+    }
+
+    // Chest-core pulse: breathing scale + cyan-to-white glow when activated.
+    if (coreRef.current) {
+      const pulse = activated ? 0.5 + 0.5 * Math.sin(t * 2.5) : 0.2 + 0.1 * Math.sin(t * 1.2)
+      coreRef.current.scale.setScalar(1 + pulse * 0.16)
+      if (coreMatRef.current) {
+        const c = coreMatRef.current.color as THREE.Color
+        if (activated) {
+          c.set('#00E5FF').lerp(new THREE.Color('#E8FDFF'), pulse * 0.8)
+        } else {
+          c.set('#1A3A4A')
+        }
+      }
+    }
 
     if (scanRef.current && activated) {
-      scanRef.current.scale.x = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.3
-      scanRef.current.scale.y = 1 + Math.cos(state.clock.elapsedTime * 1.5) * 0.2
+      scanRef.current.scale.x = 1 + Math.sin(t * 2) * 0.3
+      scanRef.current.scale.y = 1 + Math.cos(t * 1.5) * 0.2
+      // Slow swirl so the ring reads as energy, not a static decal.
+      scanRef.current.rotation.z += delta * 0.8
     }
   })
 
@@ -91,9 +129,9 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
       </mesh>
 
       {/* Chest core */}
-      <mesh position={[0, 0.1, 0.5]}>
+      <mesh ref={coreRef} position={[0, 0.1, 0.5]}>
         <sphereGeometry args={[0.15, 12, 12]} />
-        <meshBasicMaterial color={activated ? '#00E5FF' : '#1A3A4A'} />
+        <meshBasicMaterial ref={coreMatRef} color={activated ? '#00E5FF' : '#1A3A4A'} />
       </mesh>
 
       {/* Head */}
@@ -105,15 +143,17 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
       <Eye xOff={-0.3} glow={activated} />
       <Eye xOff={0.3} glow={activated} />
 
-      {/* Antenna */}
-      <mesh position={[0, 1.2, 0]}>
-        <cylinderGeometry args={[0.02, 0.03, 0.4, 6]} />
-        <meshBasicMaterial color={activated ? '#D4AF37' : '#3A3A3A'} />
-      </mesh>
-      <mesh position={[0, 1.45, 0]}>
-        <sphereGeometry args={[0.05, 8, 8]} />
-        <meshBasicMaterial color={activated ? '#00E5FF' : '#224455'} />
-      </mesh>
+      {/* Antenna (group so it can sway) */}
+      <group ref={antennaRef}>
+        <mesh position={[0, 1.2, 0]}>
+          <cylinderGeometry args={[0.02, 0.03, 0.4, 6]} />
+          <meshBasicMaterial color={activated ? '#D4AF37' : '#3A3A3A'} />
+        </mesh>
+        <mesh position={[0, 1.45, 0]}>
+          <sphereGeometry args={[0.05, 8, 8]} />
+          <meshBasicMaterial color={activated ? '#00E5FF' : '#224455'} />
+        </mesh>
+      </group>
 
       <Arm side="left" />
       <Arm side="right" />

@@ -11,7 +11,8 @@ interface ParticlesProps {
   speed?: number
 }
 
-// Per-particle twinkle: sinusoidal opacity pulse with phase offset (plankton shimmer).
+// Per-particle twinkle: two-harmonic sinusoidal opacity pulse with phase
+// offset (plankton shimmer) — the second harmonic keeps it organic, not looped.
 const twinkleVertexShader = `
   attribute float aPhase;
   attribute float aSize;
@@ -21,7 +22,9 @@ const twinkleVertexShader = `
   varying float vTwinkle;
 
   void main() {
-    vTwinkle = 0.55 + 0.45 * sin(uTime * 1.4 + aPhase * 6.2831853);
+    vTwinkle = 0.55
+      + 0.35 * sin(uTime * 1.4 + aPhase * 6.2831853)
+      + 0.10 * sin(uTime * 2.6 + aPhase * 9.0);
     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
     gl_PointSize = clamp(aSize * (280.0 / max(0.1, -mvPosition.z)), 1.0, 56.0);
     gl_Position = projectionMatrix * mvPosition;

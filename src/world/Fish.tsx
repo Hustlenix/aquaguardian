@@ -81,8 +81,20 @@ export default function Fish({ visible = false }: FishProps) {
   const high = quality > 0.75
   return (
     <group>
-      <FishSchool count={high ? 25 : 14} />
-      <FishSchool count={high ? 15 : 8} />
+      {/* High quality: 3 schools (40 fish) drifting through the scene.
+          Low/medium: 2 smaller schools to protect the frame budget. */}
+      {high ? (
+        <>
+          <FishSchool count={20} />
+          <FishSchool count={12} />
+          <FishSchool count={8} />
+        </>
+      ) : (
+        <>
+          <FishSchool count={12} />
+          <FishSchool count={8} />
+        </>
+      )}
     </group>
   )
 }

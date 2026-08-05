@@ -1,6 +1,8 @@
 // Animated procedural water caustics projected onto the seabed.
-// Sum-of-sines filament pattern (classic water-caustic trick) with two
-// offset layers, raised to a power for sharp lens-shaped highlights.
+// Sum-of-sines filament pattern (classic water-caustic trick) with three
+// offset layers (two sharp detail layers + one slow drift layer), raised to
+// a power for sharp lens-shaped highlights. Cool cyan base with a warm gold
+// cast for a sun-through-water feel.
 
 export const waterCausticsVertexShader = `
   varying vec2 vUv;
@@ -13,6 +15,7 @@ export const waterCausticsVertexShader = `
 export const waterCausticsFragmentShader = `
   uniform float uTime;
   uniform vec3 uColor;
+  uniform vec3 uWarmColor;
   uniform float uOpacity;
   varying vec2 vUv;
 
@@ -32,8 +35,14 @@ export const waterCausticsFragmentShader = `
     vec2 uv = vUv * 3.0;
     float c1 = caustic(uv, t);
     float c2 = caustic(uv * 1.45 + vec2(2.0, 1.0), t * 0.8);
-    float c = c1 * 0.7 + c2 * 0.5;
-    gl_FragColor = vec4(uColor, c * uOpacity);
+    // Slow large-scale layer — reads as water-surface lensing drifting across the seabed.
+    float c3 = caustic(uv * 0.7 + vec2(4.0, 3.0), t * 1.3);
+    float c = c1 * 0.65 + c2 * 0.45 + c3 * 0.35;
+
+    // Cool cyan base with a subtle warm gold cast — sun-through-water feel.
+    vec3 tint = mix(uColor, uWarmColor, 0.22);
+
+    gl_FragColor = vec4(tint, c * uOpacity);
   }
 `
 

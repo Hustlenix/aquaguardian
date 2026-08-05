@@ -1,9 +1,3 @@
-// Volumetric light shaft shader — elongated additive cone with a bright core
-// that falls off toward the surface (true radial falloff around the cone axis)
-// and fades at both tips. Designed for coneGeometry (apex at top): the core is
-// brightest along the Y axis and dissolves toward the cone surface; alpha is
-// zero at the apex and base.
-
 export const volumetricLightVertexShader = `
   varying vec2 vUv;
   varying vec3 vLocalPos;

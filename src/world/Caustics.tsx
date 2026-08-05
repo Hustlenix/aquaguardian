@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useStore } from '@/store/useStore'
@@ -10,15 +10,28 @@ import {
 } from '@/shaders/waterCaustics'
 
 interface CausticsProps {
-  intensity?: number
+  color?: string
+  opacity?: number
 }
 
-// Big flat additive plane with an animated procedural caustic pattern,
-// projected onto the seabed. Tint follows the scene-state theming
-// (lightRayColor mixed toward cyan).
-export default function Caustics({ intensity = 0.35 }: CausticsProps) {
-  const sceneState = useStore((s) => s.sceneState)
+/**
+ * Animated procedural caustics projected onto the seabed.
+ * A big flat plane just above the floor with an additive sum-of-sines
+ * caustic pattern; the pattern is procedural in the fragment shader so the
+ * plane stays cheap even at high quality. The plane drifts and rotates
+ * imperceptibly so the light never reads as a frozen decal.
+ */
+export default function Caustics({ color = '#7FD4E8', opacity = 0.22 }: CausticsProps) {
   const quality = useStore((s) => s.quality)
+  const meshRef = useRef<THREE.Mesh>(null)
+
+  // High segment count only at high quality; lower on mobile/medium.
+  const segments = useMemo(() => (quality > 0.75 ? 96 : 32), [quality])
+
+  const geometry = useMemo(
+    () => new THREE.PlaneGeometry(60, 48, segments, segments),
+    [segments]
+  )
 
   const material = useMemo(() => {
     const m = new THREE.ShaderMaterial({
@@ -26,8 +39,9 @@ export default function Caustics({ intensity = 0.35 }: CausticsProps) {
       fragmentShader: waterCausticsFragmentShader,
       uniforms: {
         uTime: { value: 0 },
-        uColor: { value: new THREE.Color('#7FDFFF') },
-        uOpacity: { value: 0.35 },
+        uColor: { value: new THREE.Color(color) },
+        uWarmColor: { value: new THREE.Color('#D4AF37') },
+        uOpacity: { value: opacity },
       },
       transparent: true,
       depthWrite: false,
@@ -35,30 +49,36 @@ export default function Caustics({ intensity = 0.35 }: CausticsProps) {
       side: THREE.DoubleSide,
     })
     return m
-  }, [])
+  }, [color, opacity])
 
-  // Scene-state-driven tint: base the caustics on the section's ray color,
-  // pulled toward a cool cyan so it always reads as water light.
+  // Keep the tint in sync with scene-state driven color changes.
   useEffect(() => {
-    const tint = new THREE.Color(sceneState.environment.lightRayColor)
-    tint.lerp(new THREE.Color('#7FDFFF'), 0.5)
-    ;(material.uniforms.uColor.value as THREE.Color).copy(tint)
-  }, [material, sceneState.environment.lightRayColor])
+    ;(material.uniforms.uColor.value as THREE.Color).set(color)
+  }, [material, color])
 
-  // Softer caustics on low quality tiers.
   useEffect(() => {
-    const op = quality > 0.75 ? intensity : intensity * 0.55
-    material.uniforms.uOpacity.value = op
-  }, [material, intensity, quality])
+    material.uniforms.uOpacity.value = opacity
+  }, [material, opacity])
 
   useFrame((state) => {
-    material.uniforms.uTime.value = state.clock.elapsedTime
+    const t = state.clock.elapsedTime
+    material.uniforms.uTime.value = t
+    if (meshRef.current) {
+      // Imperceptible drift + rotation — living light, not a static decal.
+      meshRef.current.rotation.z = Math.sin(t * 0.05) * 0.015
+      meshRef.current.position.x = Math.sin(t * 0.03) * 0.4
+      meshRef.current.position.z = -6 + Math.cos(t * 0.025) * 0.3
+    }
   })
 
   return (
-    <mesh position={[0, -3.82, -5]} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[42, 28]} />
-      <primitive object={material} attach="material" />
-    </mesh>
+    <mesh
+      ref={meshRef}
+      geometry={geometry}
+      material={material}
+      position={[0, -3.55, -6]}
+      rotation={[-Math.PI / 2, 0, 0]}
+      renderOrder={1}
+    />
   )
 }

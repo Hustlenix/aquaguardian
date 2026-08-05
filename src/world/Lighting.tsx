@@ -27,6 +27,7 @@ export default function Lighting({
   const dirRef = useRef<THREE.DirectionalLight>(null)
   const robotSpotRef = useRef<THREE.PointLight>(null)
   const rimRef = useRef<THREE.PointLight>(null)
+  const pointRef = useRef<THREE.PointLight>(null)
   const { camera } = useThree()
   const robotActivated = useStore((s) => s.sceneState.robot.activated)
   const activeSection = useStore((s) => s.activeSection)
@@ -59,9 +60,15 @@ export default function Lighting({
       // Gentle animated intensity pulse (1-3% variation).
       dirRef.current.intensity = directionalIntensity * (1 + Math.sin(t * 0.6) * 0.02)
 
-      // Warm/cool tint driven by the current section.
-      scratch.copy(dColor).lerp(warmth >= 0 ? gold : cool, Math.abs(warmth))
+      // Warm/cool tint driven by the current section, with a very slow drift
+      // so the grade never feels locked in.
+      scratch.copy(dColor).lerp(warmth >= 0 ? gold : cool, Math.abs(warmth) + Math.sin(t * 0.2) * 0.02)
       dirRef.current.color.copy(scratch)
+    }
+
+    // Main scene fill light breathes gently with the swell.
+    if (pointRef.current) {
+      pointRef.current.intensity = pointIntensity * (1 + Math.sin(t * 0.7) * 0.05)
     }
 
     // Cyan spotlight above the seabed center; brightens smoothly when the
@@ -72,9 +79,11 @@ export default function Lighting({
       robotSpotRef.current.intensity = robotSpotTarget.current
     }
 
-    // Rim light that follows the camera for constant silhouette definition.
+    // Rim light that follows the camera for constant silhouette definition;
+    // a soft pulse keeps the edge light alive.
     if (rimRef.current) {
       rimRef.current.position.copy(camera.position).add(rimOffset)
+      rimRef.current.intensity = 0.45 * (1 + Math.sin(t * 0.8) * 0.12)
     }
   })
 
@@ -94,6 +103,7 @@ export default function Lighting({
         castShadow={false}
       />
       <pointLight
+        ref={pointRef}
         position={[0, 5, 0]}
         intensity={pointIntensity}
         color={pColor}
