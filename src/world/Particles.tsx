@@ -108,6 +108,19 @@ function ParticleLayer({
     ;(material.uniforms.uColor.value as THREE.Color).set(color ?? '#88BBDD')
   }, [material, color])
 
+  // Prevent memory leaks by disposing of imperatively created ThreeJS resources on unmount or change.
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+    }
+  }, [geometry])
+
+  useEffect(() => {
+    return () => {
+      material.dispose()
+    }
+  }, [material])
+
   useEffect(() => {
     material.uniforms.uOpacity.value = safeOpacity
   }, [material, safeOpacity])

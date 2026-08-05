@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useStore } from '@/store/useStore'
@@ -71,6 +71,13 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
       }),
     [configs, rayColor, opacity]
   )
+
+  // Prevent memory leaks by disposing of imperatively created ThreeJS resources on unmount or change.
+  useEffect(() => {
+    return () => {
+      materials.forEach((m) => m.dispose())
+    }
+  }, [materials])
 
   useFrame((state) => {
     if (!groupRef.current) return

@@ -95,6 +95,19 @@ export default function Bubbles({ count = 80 }: { count?: number }) {
     []
   )
 
+  // Prevent memory leaks by disposing of imperatively created ThreeJS resources on unmount or change.
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+    }
+  }, [geometry])
+
+  useEffect(() => {
+    return () => {
+      material.dispose()
+    }
+  }, [material])
+
   useEffect(() => {
     material.uniforms.uOpacity.value = 0.3
   }, [material])
