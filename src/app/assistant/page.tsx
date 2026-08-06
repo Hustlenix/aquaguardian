@@ -16,7 +16,12 @@ const SUGGESTED_PROMPTS = [
   'What does the robot do?',
   'How does the AI work?',
   "What's the impact so far?",
+  'How can I get involved?',
 ]
+
+const MIN_TYPING_MS = 700
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 let nextId = 1
 
@@ -36,7 +41,7 @@ export default function AssistantPage() {
     setInput('')
     setMessages((prev) => [...prev, { id: nextId++, role: 'user', text: prompt }])
     setBusy(true)
-    const response = await askAssistant(prompt)
+    const [response] = await Promise.all([askAssistant(prompt), wait(MIN_TYPING_MS)])
     setMessages((prev) => [...prev, { id: nextId++, role: 'assistant', text: response }])
     setBusy(false)
   }

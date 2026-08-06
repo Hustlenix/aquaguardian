@@ -1,3 +1,6 @@
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://hustlenix.github.io/aquaguardian'
+
 export const CHAPTER_COUNT = 11
 
 export const SCROLL_DURATION = 1.2

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Check, RotateCcw } from 'lucide-react'
+import { Check, RotateCcw, Trophy } from 'lucide-react'
 import {
   getMissions,
   toggleMission,
@@ -11,10 +11,21 @@ import {
   type Mission,
 } from '@/lib/api'
 
+const DIFFICULTY_STYLES: Record<Mission['difficulty'], string> = {
+  Easy: 'bg-emerald-400/15 text-emerald-300',
+  Moderate: 'bg-amber-400/15 text-amber-300',
+  Expert: 'bg-red-400/15 text-red-300',
+}
+
+const CATEGORY_FILTERS = ['All', 'Cleanup', 'Monitoring', 'Education'] as const
+
+type CategoryFilter = (typeof CATEGORY_FILTERS)[number]
+
 export default function MissionsPage() {
   const [missions, setMissions] = useState<Mission[]>([])
   const [loading, setLoading] = useState(true)
   const [toggling, setToggling] = useState<string | null>(null)
+  const [filter, setFilter] = useState<CategoryFilter>('All')
 
   useEffect(() => {
     let active = true
@@ -31,6 +42,9 @@ export default function MissionsPage() {
   const completedCount = missions.filter((m) => m.completed).length
   const total = missions.length
   const pct = total > 0 ? Math.round((completedCount / total) * 100) : 0
+
+  const filtered =
+    filter === 'All' ? missions : missions.filter((m) => m.category === filter)
 
   const handleToggle = async (id: string) => {
     setToggling(id)
@@ -95,8 +109,25 @@ export default function MissionsPage() {
           </div>
         </section>
 
+        <section className="flex flex-wrap gap-3">
+          {CATEGORY_FILTERS.map((category) => (
+            <button
+              key={category}
+              onClick={() => setFilter(category)}
+              aria-pressed={filter === category}
+              className={`rounded-full border px-4 py-2 text-sm transition ${
+                filter === category
+                  ? 'border-gold-400/60 bg-gold-400/10 text-gold-400'
+                  : 'border-white/10 text-text-muted hover:border-gold-400/40 hover:text-gold-400'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </section>
+
         <section className="grid gap-6 lg:grid-cols-3">
-          {missions.map((item, index) => (
+          {filtered.map((item, index) => (
             <motion.article
               key={item.id}
               initial={{ opacity: 0, y: 20 }}
@@ -108,8 +139,15 @@ export default function MissionsPage() {
                   : 'border-white/10 bg-white/5'
               }`}
             >
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/70">{item.category}</p>
+                <span
+                  className={`rounded-full px-3 py-1 text-xs ${DIFFICULTY_STYLES[item.difficulty]}`}
+                >
+                  {item.difficulty}
+                </span>
+              </div>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
                 <span
                   className={`rounded-full px-3 py-1 text-xs ${
                     item.completed
@@ -118,6 +156,10 @@ export default function MissionsPage() {
                   }`}
                 >
                   {item.completed ? 'Completed' : `+${item.impact} kg impact`}
+                </span>
+                <span className="flex items-center gap-1.5 rounded-full border border-gold-400/25 bg-gold-400/5 px-3 py-1 text-xs text-gold-400/90">
+                  <Trophy className="h-3.5 w-3.5" strokeWidth={1.5} />
+                  {item.reward}
                 </span>
               </div>
               <h2 className="mt-3 text-2xl font-semibold text-white">{item.title}</h2>

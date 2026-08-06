@@ -17,6 +17,8 @@ export interface Mission {
   title: string
   description: string
   category: string
+  difficulty: 'Easy' | 'Moderate' | 'Expert'
+  reward: string
   impact: number
   completed: boolean
 }
@@ -30,9 +32,21 @@ export interface Challenge {
   deadline: string
 }
 
+export interface LeaderboardEntry {
+  name: string
+  initials: string
+  points: number
+}
+
 export interface Lesson {
   title: string
   body: string
+}
+
+export interface QuizQuestion {
+  question: string
+  options: string[]
+  answer: number
 }
 
 export interface LearnModule {
@@ -41,6 +55,7 @@ export interface LearnModule {
   summary: string
   completed: boolean
   lessons: Lesson[]
+  quiz: QuizQuestion[]
 }
 
 export interface CollectionEntry {
@@ -110,6 +125,8 @@ const FALLBACK_MISSIONS: Mission[] = [
     description:
       'Scan river mouths and urban coastlines where debris accumulates, log accumulation hotspots, and coordinate a local cleanup event around the top three.',
     category: 'Cleanup',
+    difficulty: 'Easy',
+    reward: '150 AG credits',
     impact: 500,
     completed: false,
   },
@@ -118,7 +135,9 @@ const FALLBACK_MISSIONS: Mission[] = [
     title: 'Reef health condition review',
     description:
       'Track reef health, water clarity, and habitat change over time using repeated observations at a fixed transect — the baseline every restoration plan needs.',
-    category: 'Restoration',
+    category: 'Monitoring',
+    difficulty: 'Moderate',
+    reward: '200 AG credits',
     impact: 120,
     completed: false,
   },
@@ -127,7 +146,9 @@ const FALLBACK_MISSIONS: Mission[] = [
     title: 'Microplastic sampling survey',
     description:
       'Collect surface-water samples at three coastal sites, filter for microplastics, and publish a simple local data sheet for schools and researchers.',
-    category: 'Research',
+    category: 'Monitoring',
+    difficulty: 'Moderate',
+    reward: '200 AG credits',
     impact: 80,
     completed: false,
   },
@@ -137,6 +158,8 @@ const FALLBACK_MISSIONS: Mission[] = [
     description:
       'Bring a 45-minute ocean literacy session to ten local classrooms, pairing the robot story with real marine debris science and one classroom action.',
     category: 'Education',
+    difficulty: 'Easy',
+    reward: '100 AG credits',
     impact: 40,
     completed: false,
   },
@@ -145,7 +168,9 @@ const FALLBACK_MISSIONS: Mission[] = [
     title: 'Coastal community clean-up day',
     description:
       'Organize a volunteer clean-up along one kilometer of coastline, weigh everything collected, and report the results through the dashboard.',
-    category: 'Community',
+    category: 'Cleanup',
+    difficulty: 'Moderate',
+    reward: '250 AG credits',
     impact: 300,
     completed: false,
   },
@@ -154,7 +179,9 @@ const FALLBACK_MISSIONS: Mission[] = [
     title: 'Plastic tracking buoy pilot',
     description:
       'Deploy three low-cost tracking buoys at a river mouth to measure debris outflow over one tidal cycle and validate the model with real data.',
-    category: 'Innovation',
+    category: 'Monitoring',
+    difficulty: 'Expert',
+    reward: '400 AG credits',
     impact: 200,
     completed: false,
   },
@@ -199,6 +226,24 @@ const FALLBACK_CHALLENGES: Challenge[] = [
   },
 ]
 
+const FALLBACK_LEADERBOARD: LeaderboardEntry[] = [
+  {
+    name: 'Maya Chen',
+    initials: 'MC',
+    points: 1240,
+  },
+  {
+    name: 'Jonas Weber',
+    initials: 'JW',
+    points: 980,
+  },
+  {
+    name: 'Amara Okafor',
+    initials: 'AO',
+    points: 745,
+  },
+]
+
 const FALLBACK_LEARN_MODULES: LearnModule[] = [
   {
     id: 'coral-reefs',
@@ -213,6 +258,24 @@ const FALLBACK_LEARN_MODULES: LearnModule[] = [
       {
         title: 'The threats',
         body: 'Rising sea temperatures cause bleaching, where stressed corals expel their algae and turn white; marine heatwaves can kill reefs in weeks. Ocean acidification slows skeleton growth, and local stressors — overfishing, sedimentation, and plastic debris — compound the damage.',
+      },
+    ],
+    quiz: [
+      {
+        question:
+          'What covers less than 1% of the ocean floor yet supports roughly 25% of all marine species?',
+        options: ['Mangrove forests', 'Coral reefs', 'Kelp beds', 'Deep-sea vents'],
+        answer: 1,
+      },
+      {
+        question: 'What is the direct trigger of coral bleaching?',
+        options: [
+          'Ocean acidification alone',
+          'Sustained warm temperatures that stress corals',
+          'Plastic debris on the reef',
+          'Predatory fish',
+        ],
+        answer: 1,
       },
     ],
   },
@@ -231,6 +294,23 @@ const FALLBACK_LEARN_MODULES: LearnModule[] = [
         body: 'Plastic does not biodegrade; it photodegrades — sunlight breaks it into ever-smaller pieces called microplastics and nanoplastics. These particles are ingested by plankton, fish, seabirds, and marine mammals, entering food webs that include humans.',
       },
     ],
+    quiz: [
+      {
+        question: 'How much plastic is estimated to enter the ocean every year?',
+        options: ['8 to 12 million tonnes', '1 to 2 million tonnes', '50 million tonnes', 'Less than 100,000 tonnes'],
+        answer: 0,
+      },
+      {
+        question: 'Why does plastic persist in the ocean for centuries?',
+        options: [
+          'It biodegrades extremely slowly',
+          'It photodegrades into smaller fragments instead of breaking down',
+          'Marine bacteria cannot attach to it',
+          'It sinks below the reach of decomposers',
+        ],
+        answer: 1,
+      },
+    ],
   },
   {
     id: 'underwater-robotics',
@@ -245,6 +325,28 @@ const FALLBACK_LEARN_MODULES: LearnModule[] = [
       {
         title: 'Collecting without destroying',
         body: 'Collecting debris on the seabed is an exercise in precision: currents push everything, visibility is short, and fragile habitats sit next to the waste. Robots use computer vision to identify targets, then approach slowly with suction or gripper tools designed to disturb as little sediment as possible.',
+      },
+    ],
+    quiz: [
+      {
+        question: 'What is the key difference between an ROV and an AUV?',
+        options: [
+          'ROVs are tethered and human-controlled; AUVs run autonomous missions',
+          'ROVs fly above the water',
+          'AUVs are always larger than ROVs',
+          'There is no practical difference',
+        ],
+        answer: 0,
+      },
+      {
+        question: 'Why do underwater robots rely on acoustic sensors for navigation?',
+        options: [
+          'Radio waves do not travel well through water',
+          'Sonar is cheaper than cameras',
+          'Cameras always fail underwater',
+          'Sound waves travel slower in air',
+        ],
+        answer: 0,
       },
     ],
   },
@@ -263,6 +365,23 @@ const FALLBACK_LEARN_MODULES: LearnModule[] = [
         body: 'A single reading is a snapshot; trends are the story. Continuous or repeated sampling lets scientists separate natural variation — tides, seasons, storms — from genuine decline. That is why modern monitoring combines fixed buoys, robotic surveys, and citizen-collected samples into one time series.',
       },
     ],
+    quiz: [
+      {
+        question: 'Which of these is part of the classic water quality measurement suite?',
+        options: ['Dissolved oxygen', 'Wind speed', 'Wave height', 'Sunlight hours'],
+        answer: 0,
+      },
+      {
+        question: 'What does eutrophication cause in coastal waters?',
+        options: [
+          'Higher oxygen levels',
+          'Algal blooms that collapse oxygen levels',
+          'Cleared, transparent water',
+          'Faster coral growth',
+        ],
+        answer: 1,
+      },
+    ],
   },
   {
     id: 'ocean-data',
@@ -279,6 +398,28 @@ const FALLBACK_LEARN_MODULES: LearnModule[] = [
         body: 'Raw sensor readings do not move people; trends and maps do. Visualizing collection events as time series and locating them on a map turns a spreadsheet into an argument for action.',
       },
     ],
+    quiz: [
+      {
+        question: 'Why do monitoring programs combine buoys, robotic surveys, and citizen samples?',
+        options: [
+          'It is cheaper than any single method',
+          'Repeated sampling separates real trends from natural variation',
+          'Robots alone are unreliable',
+          'Buoys are the only instruments that collect plastic',
+        ],
+        answer: 1,
+      },
+      {
+        question: 'What makes citizen science useful at ocean scale?',
+        options: [
+          'Volunteers replace all research instruments',
+          'Consistent protocols turn many observers into reliable sensors',
+          'No training or tools are needed',
+          'It only works for fish counts',
+        ],
+        answer: 1,
+      },
+    ],
   },
   {
     id: 'marine-restoration',
@@ -293,6 +434,28 @@ const FALLBACK_LEARN_MODULES: LearnModule[] = [
       {
         title: 'Prevention beats restoration',
         body: 'Restoration is slow, expensive, and uncertain; preventing damage is fast, cheap, and reliable. Stopping plastic from entering the ocean and protecting existing reefs is orders of magnitude more effective than cleaning up afterwards.',
+      },
+    ],
+    quiz: [
+      {
+        question: 'What do coral nurseries do before outplanting fragments onto degraded reefs?',
+        options: [
+          'Grow fragments on underwater frames',
+          'Build artificial islands',
+          'Remove all fish from the area',
+          'Drain the surrounding water',
+        ],
+        answer: 0,
+      },
+      {
+        question: 'Why does prevention beat restoration in marine conservation?',
+        options: [
+          'Restoration is slow, expensive, and uncertain',
+          'Prevention is more visible to the public',
+          'Restoration never succeeds',
+          'Prevention costs more than cleanup',
+        ],
+        answer: 0,
       },
     ],
   },
@@ -402,6 +565,11 @@ export async function joinChallenge(id: string): Promise<Challenge> {
 
 export function isChallengeJoined(id: string): boolean {
   return loadLocal<string[]>(KEYS.challenges, []).includes(id)
+}
+
+/** Demo leaderboard — identical in server and static modes (bundled seed). */
+export function getLeaderboard(): LeaderboardEntry[] {
+  return FALLBACK_LEADERBOARD
 }
 
 export async function getLearnModules(): Promise<LearnModule[]> {

@@ -100,6 +100,52 @@ function CollectionChart({ entries }: { entries: CollectionEntry[] }) {
   )
 }
 
+/**
+ * Horizontal per-zone bars, built from the bundled ocean_analysis.json
+ * location breakdown (identical in server and static modes). Pure SVG.
+ */
+function LocationBreakdown() {
+  const zones = useMemo(() => {
+    const entries = Object.entries(oceanAnalysis.locationBreakdown).sort(
+      (a, b) => b[1] - a[1]
+    )
+    const total = entries.reduce((sum, [, amount]) => sum + amount, 0)
+    return { entries, total }
+  }, [])
+
+  const W = 720
+  const ROW_H = 40
+  const LABEL_W = 170
+  const MAX_BAR_W = W - LABEL_W - 60
+
+  return (
+    <svg viewBox={`0 0 ${W} ${zones.entries.length * ROW_H}`} className="mt-6 w-full" role="img" aria-label="Bar chart of collected debris by ocean zone">
+      {zones.entries.map(([location, amount], i) => {
+        const barW = (amount / zones.entries[0][1]) * MAX_BAR_W
+        const y = i * ROW_H + 8
+        const isTop = i === 0
+        const share = ((amount / zones.total) * 100).toFixed(1)
+        return (
+          <g key={location}>
+            <text x={0} y={y + 14} fontSize="11" fill="rgba(232,240,240,0.8)">
+              {location}
+            </text>
+            <rect x={LABEL_W} y={y} width={barW} height={16} rx={4} fill={isTop ? 'rgba(212,175,55,0.85)' : 'rgba(0,229,255,0.45)'}>
+              <title>{`${location}: ${amount} pieces (${share}%)`}</title>
+            </rect>
+            <text x={LABEL_W + barW + 8} y={y + 13} fontSize="11" fill="rgba(232,240,240,0.75)">
+              {amount}
+            </text>
+            <text x={W - 4} y={y + 13} textAnchor="end" fontSize="10" fill="rgba(138,154,160,0.8)">
+              {share}%
+            </text>
+          </g>
+        )
+      })}
+    </svg>
+  )
+}
+
 export default function DashboardPage() {
   const [stats, setStats] = useState<StatsState>({
     collections: [],
@@ -206,6 +252,20 @@ export default function DashboardPage() {
             {stats.pipeline.estimatedCo2SavedKg} kg CO₂ offset
           </p>
         )}
+
+        <section className="rounded-3xl border border-white/10 bg-[#041525]/80 p-8 shadow-[0_20px_80px_rgba(0,0,0,0.3)]">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 className="text-2xl font-semibold text-white">Debris by collection zone</h2>
+              <p className="mt-2 text-sm text-text-muted">
+                Simulated distribution of the {oceanAnalysis.metrics.totalItemsCollected} logged
+                pieces across monitoring zones — the {oceanAnalysis.metrics.topCollectionZone} is
+                the current hotspot.
+              </p>
+            </div>
+          </div>
+          <LocationBreakdown />
+        </section>
 
         <section className="grid gap-6 lg:grid-cols-[1.3fr_0.9fr]">
           <div className="rounded-3xl border border-white/10 bg-[#041525]/80 p-8 shadow-[0_20px_80px_rgba(0,0,0,0.3)]">

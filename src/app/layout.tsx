@@ -3,6 +3,7 @@ import { Cinzel, Cormorant_Garamond, Inter, Space_Grotesk } from 'next/font/goog
 import './globals.css'
 import SmoothScroll from '@/components/SmoothScroll'
 import JsonLd from './JsonLd'
+import { SITE_URL } from '@/lib/constants'
 
 const cinzel = Cinzel({
   subsets: ['latin'],
@@ -48,15 +49,19 @@ export const metadata: Metadata = {
   authors: [{ name: 'AquaGuardian' }],
   creator: 'AquaGuardian',
   publisher: 'AquaGuardian',
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: 'AquaGuardian | AI-Powered Ocean Restoration',
     description:
       'An immersive underwater storytelling experience where AI robotics and conservation meet cinematic web design.',
-    url: 'https://hustlenix.github.io/aquaguardian',
+    url: SITE_URL,
     siteName: 'AquaGuardian',
     images: [
       {
-        url: 'https://hustlenix.github.io/aquaguardian/og-image.png',
+        url: `${SITE_URL}/og-image.png`,
         width: 1200,
         height: 630,
         alt: 'AquaGuardian — AI-Powered Ocean Restoration',
@@ -70,7 +75,7 @@ export const metadata: Metadata = {
     title: 'AquaGuardian | AI-Powered Ocean Restoration',
     description:
       'A concept experience imagining an AI-powered autonomous guardian for ocean monitoring and restoration.',
-    images: ['https://hustlenix.github.io/aquaguardian/og-image.png'],
+    images: [`${SITE_URL}/og-image.png`],
   },
   robots: {
     index: true,
