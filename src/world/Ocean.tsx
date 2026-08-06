@@ -8,6 +8,7 @@ import {
   oceanGradientVertexShader,
   oceanGradientFragmentShader,
 } from '@/shaders/oceanGradient'
+import { OCEAN_COLORS } from '@/lib/constants'
 
 interface OceanSurfaceProps {
   topColor?: string
@@ -17,6 +18,7 @@ interface OceanSurfaceProps {
 
 export default function OceanSurface({ topColor = '#1A6B8A', clarity = 0.8 }: OceanSurfaceProps) {
   const quality = useStore((s) => s.quality)
+  const fogColor = useStore((s) => s.sceneState.lighting.fogColor)
 
   // High segment count only at high quality; lower on mobile/medium.
   const segments = useMemo(() => (quality > 0.75 ? 96 : 48), [quality])
@@ -24,6 +26,17 @@ export default function OceanSurface({ topColor = '#1A6B8A', clarity = 0.8 }: Oc
   const geometry = useMemo(
     () => new THREE.PlaneGeometry(120, 120, segments, segments),
     [segments]
+  )
+
+  // Derived colors: the mid stop sits between the surface color and the
+  // abyss; haze matches the scene fog so the surface melts into the depths.
+  const derived = useMemo(
+    () => ({
+      mid: new THREE.Color(topColor).lerp(new THREE.Color(OCEAN_COLORS.deep), 0.55),
+      sun: new THREE.Color(OCEAN_COLORS.sun),
+      haze: new THREE.Color(fogColor),
+    }),
+    [topColor, fogColor]
   )
 
   const material = useMemo(() => {
@@ -35,7 +48,11 @@ export default function OceanSurface({ topColor = '#1A6B8A', clarity = 0.8 }: Oc
         uAmplitude: { value: 1 },
         uClarity: { value: clarity },
         uTopColor: { value: new THREE.Color(topColor) },
-        uDeepColor: { value: new THREE.Color('#010B13') },
+        uMidColor: { value: derived.mid },
+        uDeepColor: { value: new THREE.Color(OCEAN_COLORS.deep) },
+        uSunColor: { value: derived.sun },
+        uHazeColor: { value: derived.haze },
+        uHazeDensity: { value: 0.045 },
         uLightDir: { value: new THREE.Vector3(0.4, 0.9, -0.25).normalize() },
       },
       transparent: true,
@@ -43,16 +60,21 @@ export default function OceanSurface({ topColor = '#1A6B8A', clarity = 0.8 }: Oc
       depthWrite: false,
     })
     return m
-  }, [topColor, clarity])
+  }, [topColor, clarity, derived])
 
-  // Keep the surface color in sync with scene-state driven color changes.
+  // Keep the surface colors in sync with scene-state driven changes.
   useEffect(() => {
     ;(material.uniforms.uTopColor.value as THREE.Color).set(topColor)
-  }, [material, topColor])
+    ;(material.uniforms.uMidColor.value as THREE.Color).copy(derived.mid)
+  }, [material, topColor, derived])
 
   useEffect(() => {
     material.uniforms.uClarity.value = clarity
   }, [material, clarity])
+
+  useEffect(() => {
+    ;(material.uniforms.uHazeColor.value as THREE.Color).copy(derived.haze)
+  }, [material, derived])
 
   useFrame((state) => {
     const t = state.clock.elapsedTime

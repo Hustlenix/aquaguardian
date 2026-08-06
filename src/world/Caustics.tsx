@@ -16,10 +16,10 @@ interface CausticsProps {
 
 /**
  * Animated procedural caustics projected onto the seabed.
- * A big flat plane just above the floor with an additive sum-of-sines
+ * A big flat plane just above the floor with an animated sum-of-abs-sines
  * caustic pattern; the pattern is procedural in the fragment shader so the
- * plane stays cheap even at high quality. The plane drifts and rotates
- * imperceptibly so the light never reads as a frozen decal.
+ * plane stays cheap even at high quality. The plane drifts, rotates and
+ * the cell scale breathes so the light never reads as a frozen decal.
  */
 export default function Caustics({ color = '#7FD4E8', opacity = 0.22 }: CausticsProps) {
   const quality = useStore((s) => s.quality)
@@ -39,6 +39,7 @@ export default function Caustics({ color = '#7FD4E8', opacity = 0.22 }: Caustics
       fragmentShader: waterCausticsFragmentShader,
       uniforms: {
         uTime: { value: 0 },
+        uScale: { value: 1 },
         uColor: { value: new THREE.Color(color) },
         uWarmColor: { value: new THREE.Color('#D4AF37') },
         uOpacity: { value: opacity },
@@ -63,6 +64,8 @@ export default function Caustics({ color = '#7FD4E8', opacity = 0.22 }: Caustics
   useFrame((state) => {
     const t = state.clock.elapsedTime
     material.uniforms.uTime.value = t
+    // Cell scale breathes slowly — the water lens above is never still.
+    material.uniforms.uScale.value = 0.85 + Math.sin(t * 0.12) * 0.18
     if (meshRef.current) {
       // Imperceptible drift + rotation — living light, not a static decal.
       meshRef.current.rotation.z = Math.sin(t * 0.05) * 0.015

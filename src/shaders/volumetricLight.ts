@@ -1,11 +1,23 @@
 export const volumetricLightVertexShader = `
+  uniform float uTime;
+  uniform float uHeight;
+
   varying vec2 vUv;
   varying vec3 vLocalPos;
 
   void main() {
     vUv = uv;
     vLocalPos = position;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+
+    // Gentle 3D bend — the beam sways like light through moving water.
+    // The apex (top) sways most; the base stays anchored near the surface.
+    float k = (position.y + uHeight * 0.5) / uHeight;
+    k = k * k;
+    vec3 pos = position;
+    pos.x += sin(position.y * 1.6 + uTime * 0.5) * 0.06 * k;
+    pos.z += cos(position.y * 1.3 + uTime * 0.4 + 1.2) * 0.05 * k;
+
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
   }
 `
 
@@ -14,6 +26,7 @@ export const volumetricLightFragmentShader = `
   uniform float uOpacity;
   uniform float uCoreWidth;
   uniform float uRadius;
+  uniform float uTime;
 
   varying vec2 vUv;
   varying vec3 vLocalPos;
@@ -29,7 +42,10 @@ export const volumetricLightFragmentShader = `
     // soft base (uv.y = 0).
     float vertical = smoothstep(0.0, 0.25, vUv.y) * smoothstep(1.0, 0.7, vUv.y);
 
-    float alpha = radial * vertical * uOpacity;
+    // Slow shimmer — light catching suspended particles inside the shaft.
+    float shimmer = 0.78 + 0.22 * sin(vLocalPos.y * 2.2 + uTime * 0.9);
+
+    float alpha = radial * vertical * uOpacity * shimmer;
     gl_FragColor = vec4(uColor, alpha);
   }
 `

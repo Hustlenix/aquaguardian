@@ -16,9 +16,11 @@ export const CAMERA_DEFAULTS = {
 
 export const OCEAN_COLORS = {
   surface: '#0A3A5C',
-  mid: '#041425',
+  mid: '#0A2A3E',
   deep: '#020B15',
   abyss: '#010B13',
+  sun: '#FFE9C8',
+  haze: '#041525',
 } as const
 
 export const RENDER_QUALITY = {

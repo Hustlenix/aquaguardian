@@ -29,6 +29,8 @@ export const oceanGradientVertexShader = `
     y += waveY(p, t, normalize(vec2(0.25, -0.9)), 0.10, 0.92, 2.3, 4.1, grad);
     // Octave 4 — high-frequency glint ripple (reads as sun shimmer on the surface)
     y += waveY(p, t, normalize(vec2(0.8, 0.55)), 0.05, 1.5, 2.9, 5.7, grad);
+    // Octave 5 — micro ripple, adds crest texture at any distance
+    y += waveY(p, t, normalize(vec2(0.35, 0.9)), 0.022, 2.6, 3.6, 8.2, grad);
 
     vec3 pos = position;
     pos.y += y * uAmplitude;
@@ -43,10 +45,14 @@ export const oceanGradientVertexShader = `
 
 export const oceanGradientFragmentShader = `
   uniform vec3 uTopColor;
+  uniform vec3 uMidColor;
   uniform vec3 uDeepColor;
+  uniform vec3 uSunColor;
+  uniform vec3 uHazeColor;
   uniform vec3 uLightDir;
   uniform float uTime;
   uniform float uClarity;
+  uniform float uHazeDensity;
 
   varying vec3 vWorldPos;
   varying vec3 vNormal;
@@ -58,10 +64,11 @@ export const oceanGradientFragmentShader = `
     float ndv = abs(dot(normal, viewDir));
     float fresnel = pow(1.0 - ndv, 2.0);
 
-    // Depth-based gradient: light surface color near the top, deep navy below.
-    // Clarity pushes the bright color deeper into the water column.
-    float depthFactor = clamp((vWorldPos.y + 4.0) / (22.0 + 14.0 * uClarity), 0.0, 1.0);
-    vec3 base = mix(uDeepColor, uTopColor, depthFactor);
+    // Three-stop depth gradient — surface → mid → deep. Clarity pushes the
+    // bright color deeper into the water column.
+    float df = clamp((vWorldPos.y + 4.0) / (22.0 + 14.0 * uClarity), 0.0, 1.0);
+    vec3 base = mix(uDeepColor, uMidColor, smoothstep(0.0, 0.6, df));
+    base = mix(base, uTopColor, smoothstep(0.35, 1.0, df));
 
     // Cinematic fresnel blend — grazing angles fade the surface out so the
     // mid-water and seabed read through; straight-on stays solid.
@@ -70,22 +77,31 @@ export const oceanGradientFragmentShader = `
     vec3 lDir = normalize(uLightDir);
     vec3 refl = reflect(-viewDir, normal);
 
-    // Tight sun glint on wave crests for sparkle.
+    // Warm sun glint on wave crests for sparkle.
     float spec = pow(max(dot(refl, lDir), 0.0), 48.0);
-    color += uTopColor * spec * 0.5 * (0.35 + depthFactor);
-
+    color += mix(uTopColor, uSunColor, 0.7) * spec * 0.5 * (0.35 + df);
     // White-hot core of the glint — the surface "catches" the light.
-    color += vec3(0.9, 0.97, 1.0) * pow(spec, 2.0) * 0.28;
+    color += uSunColor * pow(spec, 2.0) * 0.3;
 
     // Broad low-power sheen lobe for a wet, oily-smooth surface look.
     float sheen = pow(max(dot(refl, lDir), 0.0), 6.0);
-    color += uTopColor * sheen * 0.07 * (0.4 + depthFactor);
+    color += uTopColor * sheen * 0.07 * (0.4 + df);
+
+    // Crest foam — white where the wave steepens (normal pulled sideways).
+    float steep = 1.0 - normal.y;
+    color += uSunColor * smoothstep(0.72, 0.96, steep) * 0.22 * (0.3 + df);
 
     // Slow rolling light-bank shimmer — large-scale brightness undulation so
     // the surface never reads as static.
     float shimmer =
       0.5 + 0.5 * sin(vWorldPos.x * 0.35 + uTime * 0.25) * sin(vWorldPos.z * 0.3 - uTime * 0.2);
-    color += uTopColor * shimmer * 0.05 * depthFactor;
+    color += uTopColor * shimmer * 0.05 * df;
+
+    // Underwater haze — distance-based scattering toward the fog color, so
+    // the surface dissolves into the depths instead of ending in a hard edge.
+    float dist = length(cameraPosition - vWorldPos);
+    float haze = 1.0 - exp(-dist * uHazeDensity);
+    color = mix(color, uHazeColor, haze * 0.85);
 
     // Fresnel-based transparency: solid when looking straight down, more
     // transparent at grazing angles (never fully invisible).

@@ -2,13 +2,28 @@
 
 import { useMemo } from 'react'
 import { useStore } from '@/store/useStore'
-import { EffectComposer, Bloom, Vignette, Noise, ChromaticAberration } from '@react-three/postprocessing'
+import {
+  EffectComposer,
+  Bloom,
+  Vignette,
+  Noise,
+  ChromaticAberration,
+  SSAO,
+  DepthOfField,
+  ToneMapping,
+} from '@react-three/postprocessing'
+import { ToneMappingMode } from 'postprocessing'
 
 /**
- * Cinematic grade: bloom carries the glows (light rays, robot core, caustic
- * highlights), vignette frames the composition, film grain keeps it organic,
- * and a whisper of chromatic aberration adds lens character — but only at
- * high quality. Mobile/medium gets bloom alone to protect the frame budget.
+ * Cinematic grade. High quality:
+ * - Bloom carries the glows (light rays, robot core, caustic highlights).
+ * - SSAO grounds the seabed geometry with soft contact occlusion.
+ * - A very light depth of field keeps the foreground composition readable
+ *   while the ruins melt into the haze.
+ * - ACES filmic tone mapping for the final print.
+ * - Vignette frames the composition; a whisper of grain and chromatic
+ *   aberration add lens character.
+ * Mobile/medium gets bloom alone to protect the frame budget.
  */
 export default function Effects() {
   const quality = useStore((s) => s.quality)
@@ -24,7 +39,7 @@ export default function Effects() {
   }, [quality])
 
   return (
-    <EffectComposer multisampling={cfg.multisampling}>
+    <EffectComposer multisampling={cfg.multisampling} enableNormalPass={cfg.isHigh}>
       <Bloom
         intensity={cfg.bloomIntensity}
         luminanceThreshold={0.2}
@@ -34,9 +49,28 @@ export default function Effects() {
       />
       {cfg.isHigh ? (
         <>
-          <Vignette eskil={false} offset={0.2} darkness={0.7} />
-          <Noise premultiply opacity={0.028} />
-          <ChromaticAberration offset={[0.0018, 0.0014]} />
+          {/* Soft contact occlusion — subtle so the scene stays luminous */}
+          <SSAO
+            radius={0.06}
+            intensity={14}
+            bias={0.03}
+            luminanceInfluence={0.6}
+            samples={11}
+            resolutionScale={0.5}
+            distanceThreshold={4}
+            distanceFalloff={0.4}
+          />
+          {/* Very light DoF — focus on the mid-field, background dissolves */}
+          <DepthOfField
+            focusDistance={0.38}
+            focalLength={0.1}
+            bokehScale={1.4}
+            height={480}
+          />
+          <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+          <Vignette eskil={false} offset={0.25} darkness={0.55} />
+          <Noise premultiply opacity={0.018} />
+          <ChromaticAberration offset={[0.0012, 0.0008]} />
         </>
       ) : (
         <></>

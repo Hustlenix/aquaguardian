@@ -18,6 +18,7 @@ import Kelp from './Kelp'
 import Fish from './Fish'
 import Ruins from './Ruins'
 import Effects from './Effects'
+import Environment from './Environment'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import { useStore } from '@/store/useStore'
 
@@ -63,6 +64,7 @@ function SceneContent() {
         <Coral intact={environment.templeIntact} />
         <Kelp density={kelpDensity} />
         <LightRays color={environment.lightRayColor} opacity={environment.lightRayOpacity} />
+        <Environment />
         <Particles
           count={particleCfg.count}
           color={particleCfg.color}

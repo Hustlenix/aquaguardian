@@ -57,6 +57,8 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
           vertexShader: volumetricLightVertexShader,
           fragmentShader: volumetricLightFragmentShader,
           uniforms: {
+            uTime: { value: 0 },
+            uHeight: { value: c.height },
             uColor: { value: rayColor.clone() },
             uOpacity: { value: opacity },
             uCoreWidth: { value: 1.6 + Math.random() * 1.2 },
@@ -86,6 +88,7 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
       mesh.position.y =
         cfg.yTop - cfg.height / 2 + Math.sin(t * cfg.speed * 0.4 + cfg.phase * 1.7) * 0.15
       const mat = mesh.material as THREE.ShaderMaterial
+      mat.uniforms.uTime.value = t
       mat.uniforms.uOpacity.value = opacity * (0.65 + Math.sin(t * cfg.speed * 0.8 + cfg.phase) * 0.3)
     }
   })
