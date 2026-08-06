@@ -1,131 +1,289 @@
 'use client'
 
-import { useMemo, useRef } from 'react'
+import { useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { useStore } from '@/store/useStore'
 
 interface CoralProps {
   intact: number
 }
 
-function Tube({
-  points,
-  radius,
-  color,
-  intact,
-}: {
-  points: [number, number, number][]
-  radius: number
-  color: string
-  intact: number
-}) {
-  const curve = useMemo(() => {
-    return new THREE.CatmullRomCurve3(points.map((p) => new THREE.Vector3(p[0], p[1], p[2])))
-  }, [points])
+/** Abyss-friendly coral palette. */
+const PALETTE = [
+  '#D4856A',
+  '#C4A55A',
+  '#6A9AB5',
+  '#7A9A7A',
+  '#B57A5A',
+  '#5A8A9A',
+  '#C4956A',
+  '#A47A5A',
+]
 
-  return (
-    <mesh scale={Math.max(0.1, intact)}>
-      <tubeGeometry args={[curve, 8, radius, 5, false]} />
-      <meshStandardMaterial color={color} roughness={0.8} metalness={0.1} flatShading />
-    </mesh>
-  )
+/** Bleached grey the reef fades toward as `intact` drops. */
+const BLEACH = new THREE.Color('#4A5A5A')
+
+/**
+ * Deterministic PRNG (mulberry32) so reef layout is stable per mount —
+ * no layout reshuffle between renders.
+ */
+function mulberry32(seed: number) {
+  let a = seed >>> 0
+  return () => {
+    a |= 0
+    a = (a + 0x6d2b79f5) | 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
 }
 
-function CoralCluster({
-  x,
-  z,
-  scale,
-  color,
-  intact,
-  phase,
-}: {
-  x: number
-  z: number
-  scale: number
+const ROBOT_EXCLUSION = { x: 0, z: -8, r: 2.6 }
+const CENTER_HALF_WIDTH = 1.3
+const CENTER_MIN_Z = -7
+
+/** Pick a seabed spot: two dense reef zones plus scattered stragglers. */
+function randomPlacement(rand: () => number): { x: number; z: number } {
+  const roll = rand()
+  let x: number
+  let z: number
+  if (roll < 0.55) {
+    const a = rand() * Math.PI * 2
+    const r = Math.sqrt(rand()) * 3.6
+    x = -6 + Math.cos(a) * r
+    z = -9.5 + Math.sin(a) * r
+  } else if (roll < 0.8) {
+    const a = rand() * Math.PI * 2
+    const r = Math.sqrt(rand()) * 3.2
+    x = 6.5 + Math.cos(a) * r
+    z = -11.5 + Math.sin(a) * r
+  } else {
+    x = (rand() - 0.5) * 24
+    z = -2.5 - rand() * 13.5
+  }
+  // Keep the robot patrol zone clear.
+  const dx = x - ROBOT_EXCLUSION.x
+  const dz = z - ROBOT_EXCLUSION.z
+  if (dx * dx + dz * dz < ROBOT_EXCLUSION.r * ROBOT_EXCLUSION.r) {
+    z = -8 - ROBOT_EXCLUSION.r - rand() * 6
+  }
+  // Keep the center camera path clear.
+  if (Math.abs(x) < CENTER_HALF_WIDTH && z > CENTER_MIN_Z) {
+    x = (Math.abs(x) + 1.6) * (rand() > 0.5 ? 1 : -1)
+  }
+  return { x, z }
+}
+
+interface CoralInstance {
+  pos: [number, number, number]
+  rot: [number, number, number]
+  scale: [number, number, number]
   color: string
-  intact: number
   phase: number
+}
+
+/**
+ * One archetype rendered as a single InstancedMesh: canonical geometry,
+ * per-instance matrix + instance color, organic sway in the frame loop.
+ * Four archetypes ≈ 4 draw calls for the whole reef (vs ~120 before).
+ */
+function InstancedCoral({
+  geometry,
+  instances,
+  maxCount,
+  swaySpeed,
+  intact,
+}: {
+  geometry: THREE.BufferGeometry
+  instances: CoralInstance[]
+  maxCount: number
+  swaySpeed: number
+  intact: number
 }) {
-  const groupRef = useRef<THREE.Group>(null)
-  const swaySpeed = 0.08 + Math.random() * 0.06
+  const ref = useRef<THREE.InstancedMesh>(null)
+  const dummy = useMemo(() => new THREE.Object3D(), [])
+  const baseColors = useMemo(() => instances.map((i) => new THREE.Color(i.color)), [instances])
+  const scratch = useMemo(() => new THREE.Color(), [])
+  const lastIntact = useRef(intact)
+  const count = instances.length
+
+  useLayoutEffect(() => {
+    if (!ref.current) return
+    for (let i = 0; i < count; i++) ref.current.setColorAt(i, baseColors[i])
+    if (ref.current.instanceColor) ref.current.instanceColor.needsUpdate = true
+  }, [baseColors, count])
 
   useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.z =
-        Math.sin(state.clock.elapsedTime * swaySpeed + phase) * 0.03 * intact
-      groupRef.current.rotation.x =
-        Math.sin(state.clock.elapsedTime * swaySpeed * 0.7 + phase * 1.2) * 0.015 * intact
+    const mesh = ref.current
+    if (!mesh) return
+    const t = state.clock.elapsedTime
+    const intactScale = Math.max(0.1, intact)
+
+    for (let i = 0; i < count; i++) {
+      const inst = instances[i]
+      const sway = Math.sin(t * swaySpeed + inst.phase)
+      dummy.position.set(inst.pos[0], inst.pos[1], inst.pos[2])
+      dummy.rotation.set(
+        inst.rot[0] + Math.sin(t * swaySpeed * 0.8 + inst.phase * 1.3) * 0.012,
+        inst.rot[1] + sway * 0.035,
+        inst.rot[2] + Math.sin(t * swaySpeed * 0.6 + inst.phase) * 0.02
+      )
+      dummy.scale.set(
+        inst.scale[0] * intactScale,
+        inst.scale[1] * intactScale,
+        inst.scale[2] * intactScale
+      )
+      dummy.updateMatrix()
+      mesh.setMatrixAt(i, dummy.matrix)
+    }
+    mesh.instanceMatrix.needsUpdate = true
+
+    // Bleach toward grey as the reef degrades — upload colors only on change.
+    if (Math.abs(intact - lastIntact.current) > 0.01) {
+      lastIntact.current = intact
+      for (let i = 0; i < count; i++) {
+        scratch.copy(baseColors[i]).lerp(BLEACH, 1 - intact)
+        mesh.setColorAt(i, scratch)
+      }
+      if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
     }
   })
 
-  const fadedColor = useMemo(() => {
-    const c = new THREE.Color(color)
-    c.lerp(new THREE.Color('#4A5A5A'), 1 - intact)
-    return c.getStyle()
-  }, [color, intact])
-
   return (
-    <group ref={groupRef} position={[x, 0, z]} scale={scale * Math.max(0.1, intact)}>
-      <mesh position={[0, -2.5, 0]}>
-        <sphereGeometry args={[0.2, 6, 6]} />
-        <meshStandardMaterial color={fadedColor} roughness={0.7} flatShading />
-      </mesh>
-      {Array.from({ length: 4 }, (_, i) => {
-        const angle = (i / 4) * Math.PI * 2 + phase
-        return (
-          <Tube
-            key={i}
-            points={[
-              [0, -2.5, 0],
-              [Math.sin(angle) * 0.3, -2.2, Math.cos(angle) * 0.3],
-              [Math.sin(angle) * 0.5, -2.0, Math.cos(angle) * 0.5],
-            ]}
-            radius={0.04}
-            color={fadedColor}
-            intact={intact}
-          />
-        )
-      })}
-    </group>
+    <instancedMesh
+      ref={ref}
+      args={[geometry, undefined, maxCount]}
+      count={count}
+      frustumCulled={false}
+    >
+      <meshStandardMaterial
+        color="#FFFFFF"
+        roughness={0.65}
+        metalness={0.1}
+        flatShading
+        emissive="#0A1620"
+        emissiveIntensity={0.5}
+      />
+    </instancedMesh>
   )
 }
 
-export default function Coral({ intact = 1 }: CoralProps) {
-  const phases = useMemo(() => Array.from({ length: 14 }, () => Math.random() * Math.PI * 2), [])
+/** Canonical geometries — one per archetype, shared by every instance. */
+function makeBranchGeometry() {
+  const curve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0, 0, 0),
+    new THREE.Vector3(0.02, 0.3, 0.05),
+    new THREE.Vector3(0.09, 0.62, 0.02),
+    new THREE.Vector3(0.16, 0.95, -0.06),
+  ])
+  return new THREE.TubeGeometry(curve, 8, 0.045, 6, false)
+}
 
-  const clusters = useMemo(
-    () => [
-      { x: -8, z: -6, scale: 1.5, color: '#D4856A' },
-      { x: -4, z: -9, scale: 1.0, color: '#6A9AB5' },
-      { x: 5, z: -5, scale: 1.8, color: '#C4A55A' },
-      { x: 9, z: -10, scale: 1.2, color: '#6A9AB5' },
-      { x: 0, z: -12, scale: 1.4, color: '#D4856A' },
-      { x: -6, z: -14, scale: 0.8, color: '#C4A55A' },
-      { x: 7, z: -15, scale: 1.1, color: '#6A9AB5' },
-      { x: -10, z: -3, scale: 0.6, color: '#B57A5A' },
-      { x: 3, z: -8, scale: 0.9, color: '#7A9A7A' },
-      { x: -2, z: -16, scale: 1.0, color: '#C4956A' },
-      { x: 10, z: -6, scale: 0.7, color: '#5A8A9A' },
-      { x: -7, z: -11, scale: 0.8, color: '#A47A5A' },
-      { x: 4, z: -13, scale: 0.6, color: '#6A9A8A' },
-      { x: -9, z: -8, scale: 0.5, color: '#B58A6A' },
-    ],
-    [],
+function makeStalkGeometry() {
+  const curve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0, 0, 0),
+    new THREE.Vector3(0.012, 0.35, 0.02),
+    new THREE.Vector3(-0.02, 0.7, 0),
+  ])
+  return new THREE.TubeGeometry(curve, 6, 0.05, 5, false)
+}
+
+function makePlateGeometry() {
+  return new THREE.ConeGeometry(0.55, 0.09, 5)
+}
+
+function makeFernGeometry() {
+  return new THREE.ConeGeometry(0.03, 0.85, 4)
+}
+
+export default function Coral({ intact = 1 }: CoralProps) {
+  const quality = useStore((s) => s.quality)
+  const high = quality > 0.75
+  const tier = high ? 'high' : 'low'
+
+  const counts = useMemo(
+    () =>
+      high
+        ? { branch: 14, plate: 8, stalk: 16, fern: 12 }
+        : { branch: 8, plate: 5, stalk: 9, fern: 6 },
+    [high]
+  )
+
+  const instances = useMemo(() => {
+    const rand = mulberry32(0x51a63)
+    const pickColor = () => PALETTE[Math.floor(rand() * PALETTE.length)]
+    const build = (
+      n: number,
+      sMin: number,
+      sMax: number,
+      yMin: number,
+      yMax: number
+    ): CoralInstance[] =>
+      Array.from({ length: n }, () => {
+        const { x, z } = randomPlacement(rand)
+        const s = sMin + rand() * (sMax - sMin)
+        return {
+          pos: [x, -3.95 + rand() * 0.15, z],
+          rot: [0, rand() * Math.PI * 2, 0],
+          scale: [s, s * (yMin + rand() * (yMax - yMin)), s],
+          color: pickColor(),
+          phase: rand() * Math.PI * 2,
+        }
+      })
+
+    return {
+      branches: build(counts.branch, 0.7, 1.5, 1.1, 1.9),
+      plates: build(counts.plate, 0.6, 1.6, 0.8, 1.1),
+      stalks: build(counts.stalk, 0.6, 1.4, 1.0, 2.0),
+      ferns: build(counts.fern, 0.7, 1.8, 1.3, 2.4),
+    }
+  }, [counts])
+
+  const geometries = useMemo(
+    () => ({
+      branch: makeBranchGeometry(),
+      plate: makePlateGeometry(),
+      stalk: makeStalkGeometry(),
+      fern: makeFernGeometry(),
+    }),
+    []
   )
 
   return (
     <group>
-      {clusters.map((c, i) => (
-        <CoralCluster
-          key={i}
-          x={c.x}
-          z={c.z}
-          scale={c.scale}
-          color={c.color}
-          intact={intact}
-          phase={phases[i]}
-        />
-      ))}
+      <InstancedCoral
+        key={`branch-${tier}`}
+        geometry={geometries.branch}
+        instances={instances.branches}
+        maxCount={counts.branch}
+        swaySpeed={0.5}
+        intact={intact}
+      />
+      <InstancedCoral
+        key={`plate-${tier}`}
+        geometry={geometries.plate}
+        instances={instances.plates}
+        maxCount={counts.plate}
+        swaySpeed={0.35}
+        intact={intact}
+      />
+      <InstancedCoral
+        key={`stalk-${tier}`}
+        geometry={geometries.stalk}
+        instances={instances.stalks}
+        maxCount={counts.stalk}
+        swaySpeed={0.42}
+        intact={intact}
+      />
+      <InstancedCoral
+        key={`fern-${tier}`}
+        geometry={geometries.fern}
+        instances={instances.ferns}
+        maxCount={counts.fern}
+        swaySpeed={0.55}
+        intact={intact}
+      />
     </group>
   )
 }
