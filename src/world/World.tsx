@@ -21,6 +21,23 @@ import Effects from './Effects'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import { useStore } from '@/store/useStore'
 
+/**
+ * Quality matrix — how performance budgets are spent across devices.
+ *
+ * | Device / tier            | dpr cap    | Effects tier         | Particles      |
+ * |--------------------------|------------|----------------------|----------------|
+ * | Mobile / low             | [1, 1.5]   | bloom only (ms 0)    | count / 2, +40% size |
+ * | Desktop / high           | [1, 2]     | bloom + vignette + noise + CA (ms 4) | full |
+ *
+ * - dpr: capped here on the Canvas (PerformanceMonitor can still step it down).
+ * - Effects (Effects.tsx): quality > 0.75 unlocks the cinematic stack,
+ *   otherwise bloom alone with multisampling 0 — protects mobile frame budget.
+ * - Particles (Particles.tsx): halves counts and enlarges sprites on mobile.
+ * - Camera (Camera.tsx): portrait phones get +8 fov and a pulled-back
+ *   position; touch-drag parallax is window-level so phones feel the scene.
+ * - frameloop stays "always": the scene is continuously animated (fish,
+ *   particles, robot) so a demand-driven loop would animate anyway.
+ */
 function SceneContent() {
   const sceneState = useStore((s) => s.sceneState)
   const { lighting, water, environment, particles: particleCfg } = sceneState
@@ -78,7 +95,13 @@ function SceneContent() {
 }
 
 export default function World() {
-  const { setQuality } = useStore()
+  const { setQuality, quality, deviceTier } = useStore()
+
+  // dpr cap: [1, 1.5] on mobile/low, [1, 2] on desktop/high.
+  const dpr = useMemo<[number, number]>(
+    () => (deviceTier === 'low' || quality < 0.75 ? [1, 1.5] : [1, 2]),
+    [deviceTier, quality]
+  )
 
   const canvasWrapperStyle = useMemo(
     () => ({
@@ -96,7 +119,7 @@ export default function World() {
     <ErrorBoundary>
       <div style={canvasWrapperStyle}>
         <Canvas
-          dpr={[1, 1.5]}
+          dpr={dpr}
           camera={{ position: [0, 1, 8], fov: 60, near: 0.1, far: 40 }}
           gl={{ antialias: true, alpha: false }}
           onCreated={(state) => {

@@ -8,6 +8,15 @@ Thanks for taking the time to contribute. This project is a personal showcase of
 - Keep the experience **fast**: the 3D scene is the centerpiece, but it must respect the quality tiers (mobile/medium/high) and never tank the frame rate on mid-range hardware.
 - Preserve the design system — colors, typography, and motion tokens live in `src/tokens/` and `src/app/globals.css`. Use them instead of ad-hoc values.
 
+## Data & the Dual-Mode Requirement
+
+The site runs two ways and every feature must work in both:
+
+- **Server mode** (`npm run dev` / `npm run start`): API routes under `src/app/api/` persist through `src/lib/dataStore.ts`, which reads/writes `database.json` at the project root with an in-memory cache and atomic temp-file writes. New persistence needs go through `dataStore` — do not read/write `database.json` directly in a route.
+- **Static mode** (GitHub Pages): CI moves `src/app/api` aside and builds with `STATIC_EXPORT=true`. Pages must therefore fetch **only** through `src/lib/api.ts`, which tries the API with a short timeout and falls back to bundled seed data + localStorage (`aqua-missions`, `aqua-challenges`, `aqua-learn`). If you add an endpoint, add a matching fallback in `src/lib/api.ts` with the exact same response shape, and keep the assistant's canned-response logic mirrored between the route and the helper.
+- Keep the response shapes in `src/app/api/*`, `src/lib/api.ts`, and the seeded `database.json` in sync — they are one contract.
+- The data flow is documented in the README's [Full-Stack Mode](README.md#full-stack-mode) section.
+
 ## Getting Started
 
 1. Fork the repository and clone your fork.

@@ -1,27 +1,59 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { Users, CalendarDays } from 'lucide-react'
+import { getChallenges, joinChallenge, isChallengeJoined, type Challenge } from '@/lib/api'
 
-const challenges = [
-  {
-    title: 'Plastic audit week',
-    theme: 'Log collected waste and compare local progress.',
-    reward: 'Community recognition',
-  },
-  {
-    title: ' Reef watch streak',
-    theme: 'Record one observation each day to help track habitat change.',
-    reward: 'Learning milestone badge',
-  },
-  {
-    title: 'River guardian challenge',
-    theme: 'Join a local cleanup campaign and share the results.',
-    reward: 'Impact spotlight',
-  },
-]
+const DIFFICULTY_STYLES: Record<Challenge['difficulty'], string> = {
+  Easy: 'bg-cyan-400/15 text-cyan-300',
+  Medium: 'bg-gold-400/15 text-gold-400',
+  Hard: 'bg-red-400/15 text-red-300',
+}
+
+function formatDeadline(iso: string): string {
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return iso
+  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
+}
 
 export default function ChallengesPage() {
+  const [challenges, setChallenges] = useState<Challenge[]>([])
+  const [joined, setJoined] = useState<Set<string>>(new Set())
+  const [loading, setLoading] = useState(true)
+  const [joining, setJoining] = useState<string | null>(null)
+
+  useEffect(() => {
+    let active = true
+    getChallenges().then((data) => {
+      if (!active) return
+      setChallenges(data)
+      setJoined(new Set(data.filter((c) => isChallengeJoined(c.id)).map((c) => c.id)))
+      setLoading(false)
+    })
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const handleJoin = async (id: string) => {
+    setJoining(id)
+    // Optimistic update.
+    setChallenges((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, participants: c.participants + 1 } : c))
+    )
+    setJoined((prev) => new Set(prev).add(id))
+    try {
+      const updated = await joinChallenge(id)
+      setChallenges((prev) => prev.map((c) => (c.id === id ? updated : c)))
+    } catch {
+      // Non-fatal: local state already reflects the join.
+    } finally {
+      setJoining(null)
+    }
+  }
+
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(0,229,255,0.14),_transparent_35%),_#010B13] px-6 py-16 text-white">
       <div className="mx-auto flex max-w-7xl flex-col gap-10">
@@ -37,22 +69,53 @@ export default function ChallengesPage() {
           </Link>
         </div>
 
-        <section className="grid gap-6 lg:grid-cols-3">
-          {challenges.map((challenge, index) => (
-            <motion.article
-              key={challenge.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: index * 0.08 }}
-              className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl"
-            >
-              <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/70">Challenge</p>
-              <h2 className="mt-3 text-2xl font-semibold text-white">{challenge.title}</h2>
-              <p className="mt-3 text-sm leading-7 text-text-muted">{challenge.theme}</p>
-              <p className="mt-4 text-xs uppercase tracking-[0.25em] text-gold-400/70">Reward: {challenge.reward}</p>
-            </motion.article>
-          ))}
+        <section className="grid gap-6 lg:grid-cols-2">
+          {challenges.map((challenge, index) => {
+            const isJoined = joined.has(challenge.id)
+            return (
+              <motion.article
+                key={challenge.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: index * 0.08 }}
+                className="flex flex-col rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs uppercase tracking-[0.2em] ${DIFFICULTY_STYLES[challenge.difficulty]}`}
+                  >
+                    {challenge.difficulty}
+                  </span>
+                  <div className="flex items-center gap-4 text-xs text-text-muted">
+                    <span className="flex items-center gap-1.5">
+                      <Users className="h-3.5 w-3.5" strokeWidth={1.5} />
+                      {challenge.participants} joined
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <CalendarDays className="h-3.5 w-3.5" strokeWidth={1.5} />
+                      {formatDeadline(challenge.deadline)}
+                    </span>
+                  </div>
+                </div>
+                <h2 className="mt-4 text-2xl font-semibold text-white">{challenge.title}</h2>
+                <p className="mt-3 flex-1 text-sm leading-7 text-text-muted">{challenge.description}</p>
+                <button
+                  onClick={() => handleJoin(challenge.id)}
+                  disabled={isJoined || joining === challenge.id}
+                  className={`mt-5 rounded-full border px-5 py-2 text-sm transition disabled:opacity-60 ${
+                    isJoined
+                      ? 'border-cyan-400/40 bg-cyan-400/10 text-cyan-300'
+                      : 'border-gold-400/30 text-gold-400 hover:border-gold-400/60 hover:bg-gold-400/10'
+                  }`}
+                >
+                  {isJoined ? 'Joined ✓' : 'Join challenge'}
+                </button>
+              </motion.article>
+            )
+          })}
         </section>
+
+        {loading && <p className="text-center text-sm text-text-muted">Loading challenges…</p>}
       </div>
     </main>
   )

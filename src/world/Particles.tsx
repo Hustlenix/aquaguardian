@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
+import { useStore } from '@/store/useStore'
 import * as THREE from 'three'
 
 interface ParticlesProps {
@@ -133,13 +134,29 @@ function ParticleLayer({
 }
 
 export default function Particles(props: ParticlesProps) {
+  const deviceTier = useStore((s) => s.deviceTier)
+  const quality = useStore((s) => s.quality)
+
+  // Mobile budget: halve counts, enlarge sprites so the plankton field stays
+  // visible on small, high-density screens. (See the quality matrix in World.tsx.)
+  const isMobile = deviceTier === 'low' || quality < 0.75
+  const baseCount = Math.max(1, Math.round((props.count ?? 200) * (isMobile ? 0.5 : 1)))
+  const sizeMul = isMobile ? 1.4 : 1
+
   return (
     <group>
-      <ParticleLayer {...props} sizeBase={0.08} spreadMul={1.2} yRange={[-3, 12]} yOffset={0} />
       <ParticleLayer
         {...props}
-        count={Math.round((props.count ?? 200) * 2.5)}
-        sizeBase={0.03}
+        count={baseCount}
+        sizeBase={0.08 * sizeMul}
+        spreadMul={1.2}
+        yRange={[-3, 12]}
+        yOffset={0}
+      />
+      <ParticleLayer
+        {...props}
+        count={Math.round(baseCount * 2.5)}
+        sizeBase={0.03 * sizeMul}
         spreadMul={1.5}
         yRange={[-5, 15]}
         yOffset={0}

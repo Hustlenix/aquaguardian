@@ -7,6 +7,15 @@ All notable changes to this project are documented here. The format follows [Kee
 ### Added
 - None pending.
 
+## [1.0.0] - 2026-08-05
+
+### Added
+- **Full-stack API layer.** New shared persistence helper `src/lib/dataStore.ts` (atomic writes, in-memory cache) backed by `database.json`; new routes under `src/app/api/` — `GET /api/missions`, `POST /api/missions/toggle`, `GET /api/challenges`, `POST /api/challenges/join`, `GET /api/learn`, `POST /api/learn/complete`, `POST /api/assistant`, `POST /api/subscribe`; `GET /api/stats` refactored onto the same store. Seeded `database.json` with 6 missions, 4 challenges, and 6 real-content learn modules.
+- **Dual-mode data layer.** `src/lib/api.ts` gives every ecosystem page a single fetch-with-fallback helper: real APIs in server mode, bundled seed data + localStorage (`aqua-missions`, `aqua-challenges`, `aqua-learn`) on the static GitHub Pages export.
+- **Deepened ecosystem pages.** `/missions` gained toggleable completion with optimistic updates, a progress bar, and reset; `/challenges` gained difficulty badges, participant counts, deadlines, and persistent join state; `/learn` became six expandable accordion modules with per-module completion; `/assistant` is now a working chat UI with suggested prompts and category-matched answers; `/mobile` shows a phone-frame mockup of the companion app; `/dashboard` gained a pure-SVG chart of the last 12 collection events.
+- **Mobile 3D quality.** Quality matrix documented in `World.tsx` — dpr capped at `[1, 1.5]` on mobile vs `[1, 2]` on desktop, bloom-only effects with multisampling 0 on low tiers, particles halved and enlarged on mobile, touch-drag camera parallax, and a wider FOV with a pulled-back camera on portrait screens.
+- **Robot patrol & collection.** The robot now drifts on a slow idle patrol sway, and periodically seeks the nearest debris item, hovers ~2s under a pulsing cyan pickup beam, collects it (item hides, respawns ~12s later via the Seabed debris registry), and returns to base.
+
 ## [0.9.0] - 2026-08-05
 
 ### Changed
@@ -78,7 +87,8 @@ All notable changes to this project are documented here. The format follows [Kee
 - GitHub Pages deployment via GitHub Actions.
 - UI/UX audit pass: counters, reduced motion, CTAs, headings, gallery.
 
-[Unreleased]: https://github.com/Hustlenix/aquaguardian/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/Hustlenix/aquaguardian/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/Hustlenix/aquaguardian/releases/tag/v1.0.0
 [0.9.0]: https://github.com/Hustlenix/aquaguardian/releases/tag/v0.9.0
 [0.8.0]: https://github.com/Hustlenix/aquaguardian/releases/tag/v0.8.0
 [0.7.0]: https://github.com/Hustlenix/aquaguardian/releases/tag/v0.7.0
