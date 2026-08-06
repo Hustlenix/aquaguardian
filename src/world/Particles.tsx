@@ -12,8 +12,10 @@ interface ParticlesProps {
   speed?: number
 }
 
-// Per-particle twinkle: two-harmonic sinusoidal opacity pulse with phase
-// offset (plankton shimmer) — the second harmonic keeps it organic, not looped.
+/**
+ * Per-particle twinkle: two-harmonic sinusoidal opacity pulse with phase
+ * offset (plankton shimmer) — the second harmonic keeps it organic, not looped.
+ */
 const twinkleVertexShader = `
   attribute float aPhase;
   attribute float aSize;
@@ -45,48 +47,67 @@ const twinkleFragmentShader = `
   }
 `
 
-function ParticleLayer({
-  count,
-  color,
-  opacity,
-  speed,
-  sizeBase,
-  spreadMul,
-  yRange,
-  yOffset,
-}: ParticlesProps & {
+/** World-space drift volume; particles wrap seamlessly at the walls. */
+const BOUNDS = {
+  x: 26,
+  yMin: -6,
+  yMax: 16,
+  zMin: -32,
+  zMax: 6,
+} as const
+
+interface LayerConfig {
+  count: number
+  color: string
+  opacity: number
+  speed: number
   sizeBase: number
   spreadMul: number
-  yRange: [number, number]
-  yOffset: number
+  /** Upward buoyancy bias — plankton rises, snow sinks. */
+  buoyancy: number
+  /** Scale of the wander wobble. */
+  wobble: number
+}
+
+function ParticleLayer({
+  config,
+}: {
+  config: LayerConfig
 }) {
   const ref = useRef<THREE.Points>(null)
-  const safeCount = Math.max(1, count ?? 200)
-  const safeOpacity = opacity ?? 0.4
-  const safeSpeed = Math.max(0.001, speed ?? 0.3)
-  const offsetsRef = useRef<Float32Array>(new Float32Array(safeCount))
+  const safeCount = Math.max(1, config.count)
+
+  // Per-particle velocities + phases, pre-allocated once.
+  const vel = useRef<Float32Array>(new Float32Array(safeCount * 3))
+  const phases = useRef<Float32Array>(new Float32Array(safeCount))
 
   const geometry = useMemo(() => {
-    offsetsRef.current = new Float32Array(safeCount)
+    vel.current = new Float32Array(safeCount * 3)
+    phases.current = new Float32Array(safeCount)
     const pos = new Float32Array(safeCount * 3)
     const sizes = new Float32Array(safeCount)
-    const phases = new Float32Array(safeCount)
+    const phaseAttr = new Float32Array(safeCount)
 
+    const span = (BOUNDS.zMax - BOUNDS.zMin) * 0.55
     for (let i = 0; i < safeCount; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 50 * spreadMul
-      pos[i * 3 + 1] = yRange[0] + Math.random() * (yRange[1] - yRange[0]) + yOffset
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 40 * spreadMul - 5
-      offsetsRef.current[i] = Math.random() * Math.PI * 2
-      sizes[i] = sizeBase * (0.5 + Math.random() * 1)
-      phases[i] = Math.random()
+      pos[i * 3] = (Math.random() - 0.5) * BOUNDS.x * 2 * config.spreadMul
+      pos[i * 3 + 1] = BOUNDS.yMin + Math.random() * (BOUNDS.yMax - BOUNDS.yMin)
+      pos[i * 3 + 2] = BOUNDS.zMin + Math.random() * span * config.spreadMul
+      // Small per-particle drift velocity + shared buoyancy.
+      vel.current[i * 3] = (Math.random() - 0.5) * 0.02 * config.speed
+      vel.current[i * 3 + 1] = (Math.random() - 0.5) * 0.01 * config.speed + config.buoyancy
+      vel.current[i * 3 + 2] = (Math.random() - 0.5) * 0.02 * config.speed
+      phases.current[i] = Math.random() * Math.PI * 2
+      sizes[i] = config.sizeBase * (0.5 + Math.random() * 1)
+      phaseAttr[i] = Math.random()
     }
 
     const geo = new THREE.BufferGeometry()
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3))
     geo.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1))
-    geo.setAttribute('aPhase', new THREE.BufferAttribute(phases, 1))
+    geo.setAttribute('aPhase', new THREE.BufferAttribute(phaseAttr, 1))
     return geo
-  }, [safeCount, sizeBase, spreadMul, yRange, yOffset])
+  }, [safeCount, config.sizeBase, config.spreadMul, config.speed, config.buoyancy])
 
   const material = useMemo(
     () =>
@@ -95,42 +116,55 @@ function ParticleLayer({
         fragmentShader: twinkleFragmentShader,
         uniforms: {
           uTime: { value: 0 },
-          uColor: { value: new THREE.Color(color ?? '#88BBDD') },
-          uOpacity: { value: safeOpacity },
+          uColor: { value: new THREE.Color(config.color) },
+          uOpacity: { value: config.opacity },
         },
         transparent: true,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),
-    [color, safeOpacity]
+    [config.color, config.opacity]
   )
 
   useEffect(() => {
-    ;(material.uniforms.uColor.value as THREE.Color).set(color ?? '#88BBDD')
-  }, [material, color])
+    ;(material.uniforms.uColor.value as THREE.Color).set(config.color)
+  }, [material, config.color])
 
   useEffect(() => {
-    material.uniforms.uOpacity.value = safeOpacity
-  }, [material, safeOpacity])
+    material.uniforms.uOpacity.value = config.opacity
+  }, [material, config.opacity])
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     material.uniforms.uTime.value = state.clock.elapsedTime
-    if (ref.current) {
-      const pos = ref.current.geometry.attributes.position.array as Float32Array
-      const s = safeSpeed * 0.003
+    if (!ref.current) return
+    const dt = Math.min(delta, 0.05)
+    const t = state.clock.elapsedTime
+    const pos = ref.current.geometry.attributes.position.array as Float32Array
+    const v = vel.current
+    const ph = phases.current
 
-      for (let i = 0; i < safeCount; i++) {
-        pos[i * 3 + 1] += Math.sin(state.clock.elapsedTime * safeSpeed + offsetsRef.current[i]) * s
-        pos[i * 3] += Math.cos(state.clock.elapsedTime * safeSpeed * 0.7 + offsetsRef.current[i] * 0.5) * s * 0.5
-      }
+    for (let i = 0; i < safeCount; i++) {
+      // Velocity drift + sinusoidal wobble.
+      pos[i * 3] += v[i * 3] * dt + Math.sin(t * 0.4 + ph[i]) * config.wobble * dt
+      pos[i * 3 + 1] += v[i * 3 + 1] * dt + Math.sin(t * 0.55 + ph[i] * 1.7) * config.wobble * 0.5 * dt
+      pos[i * 3 + 2] += v[i * 3 + 2] * dt + Math.cos(t * 0.3 + ph[i] * 0.9) * config.wobble * 0.7 * dt
 
-      ref.current.geometry.attributes.position.needsUpdate = true
+      // Seamless wrap.
+      const x = pos[i * 3]
+      const y = pos[i * 3 + 1]
+      const z = pos[i * 3 + 2]
+      if (x > BOUNDS.x) pos[i * 3] = -BOUNDS.x
+      else if (x < -BOUNDS.x) pos[i * 3] = BOUNDS.x
+      if (y > BOUNDS.yMax) pos[i * 3 + 1] = BOUNDS.yMin
+      else if (y < BOUNDS.yMin) pos[i * 3 + 1] = BOUNDS.yMax
+      if (z > BOUNDS.zMax) pos[i * 3 + 2] = BOUNDS.zMin
+      else if (z < BOUNDS.zMin) pos[i * 3 + 2] = BOUNDS.zMax
     }
+
+    ref.current.geometry.attributes.position.needsUpdate = true
   })
 
-  return (
-    <points ref={ref} geometry={geometry} material={material} />
-  )
+  return <points ref={ref} geometry={geometry} material={material} />
 }
 
 export default function Particles(props: ParticlesProps) {
@@ -140,30 +174,56 @@ export default function Particles(props: ParticlesProps) {
   // Mobile budget: halve counts, enlarge sprites so the plankton field stays
   // visible on small, high-density screens. (See the quality matrix in World.tsx.)
   const isMobile = deviceTier === 'low' || quality < 0.75
-  const baseCount = Math.max(1, Math.round((props.count ?? 200) * (isMobile ? 0.5 : 1)))
+  const mul = isMobile ? 0.5 : 1
   const sizeMul = isMobile ? 1.4 : 1
+
+  const baseCount = Math.max(1, Math.round((props.count ?? 200) * mul))
+  const speed = Math.max(0.001, props.speed ?? 0.3)
+
+  const layers = useMemo<LayerConfig[]>(
+    () => [
+      // Fine dust — scene-tinted, everywhere.
+      {
+        count: Math.round(baseCount * 2),
+        color: props.color ?? '#88BBDD',
+        opacity: (props.opacity ?? 0.4) * 0.8,
+        speed,
+        sizeBase: 0.035 * sizeMul,
+        spreadMul: 1.6,
+        buoyancy: 0.004 * speed,
+        wobble: 0.06 * speed,
+      },
+      // Plankton motes — larger, warm-tinted, slow rise.
+      {
+        count: Math.round(baseCount * 1.1),
+        color: '#D8C890',
+        opacity: (props.opacity ?? 0.4) * 0.5,
+        speed: speed * 0.6,
+        sizeBase: 0.09 * sizeMul,
+        spreadMul: 1.1,
+        buoyancy: 0.02 * speed,
+        wobble: 0.12 * speed,
+      },
+      // Marine snow — sparse, slow sink.
+      {
+        count: Math.round(baseCount * 0.6),
+        color: '#9AB8CC',
+        opacity: (props.opacity ?? 0.4) * 0.4,
+        speed: speed * 0.45,
+        sizeBase: 0.055 * sizeMul,
+        spreadMul: 1.3,
+        buoyancy: -0.012 * speed,
+        wobble: 0.045 * speed,
+      },
+    ],
+    [baseCount, sizeMul, speed, props.color, props.opacity]
+  )
 
   return (
     <group>
-      <ParticleLayer
-        {...props}
-        count={baseCount}
-        sizeBase={0.08 * sizeMul}
-        spreadMul={1.2}
-        yRange={[-3, 12]}
-        yOffset={0}
-      />
-      <ParticleLayer
-        {...props}
-        count={Math.round(baseCount * 2.5)}
-        sizeBase={0.03 * sizeMul}
-        spreadMul={1.5}
-        yRange={[-5, 15]}
-        yOffset={0}
-        opacity={(props.opacity ?? 0.4) * 0.35}
-        speed={(props.speed ?? 0.3) * 0.5}
-        color="#88BBDD"
-      />
+      {layers.map((cfg, i) => (
+        <ParticleLayer key={i} config={cfg} />
+      ))}
     </group>
   )
 }

@@ -3,9 +3,15 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { useStore } from '@/store/useStore'
 
 const POP_DURATION = 0.4
+/** Brief hold at the surface before the bubble bursts. */
+const SURFACE_HOLD = 0.18
 const SURFACE_Y = 7.2
+/** Chance that a bubble spawns as part of a rising stream (chain). */
+const CHAIN_CHANCE = 0.2
+const CHAIN_MAX = 5
 
 const bubbleVertexShader = `
   attribute float aSize;
@@ -37,39 +43,61 @@ const bubbleFragmentShader = `
   }
 `
 
-export default function Bubbles({ count = 80 }: { count?: number }) {
-  const ref = useRef<THREE.Points>(null)
+interface BubbleState {
+  size: number
+  speed: number
+  phase: number
+  wobble: number
+  wobble2: number
+  /** 0 = rising, else seconds left of hold/pop. */
+  holdTimer: number
+  popTimer: number
+  alpha: number
+}
 
-  const baseSizes = useRef<number[]>([])
-  const speeds = useRef<number[]>([])
-  const phases = useRef<number[]>([])
-  const wobbles = useRef<number[]>([])
-  const popTimers = useRef<number[]>([])
+export default function Bubbles({ count = 80 }: { count?: number }) {
+  const quality = useStore((s) => s.quality)
+  const safeCount = Math.max(1, quality > 0.75 ? count : Math.round(count / 2))
+
+  const ref = useRef<THREE.Points>(null)
+  const state = useRef<BubbleState[]>([])
 
   const geometry = useMemo(() => {
-    const pos = new Float32Array(count * 3)
-    const sizes = new Float32Array(count)
-    const alphas = new Float32Array(count)
-    baseSizes.current = []
-    speeds.current = []
-    phases.current = []
-    wobbles.current = []
-    popTimers.current = []
+    const pos = new Float32Array(safeCount * 3)
+    const sizes = new Float32Array(safeCount)
+    const alphas = new Float32Array(safeCount)
+    state.current = []
 
-    for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 18
-      pos[i * 3 + 1] = -3.5 - Math.random() * 1.5
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 14 - 3
-      // Wider size variance — a mix of fine mist and visible orbs.
-      const size = 0.02 + Math.random() * 0.14
-      sizes[i] = size
-      alphas[i] = 1
-      baseSizes.current.push(size)
-      speeds.current.push(0.3 + Math.random() * 1.8)
-      phases.current.push(Math.random() * Math.PI * 2)
-      // Per-bubble wobble amplitude: small bubbles drift, large ones meander.
-      wobbles.current.push(0.08 + Math.random() * 0.2)
-      popTimers.current.push(0)
+    // Spawn in small vertical chains (~20% of bubbles) so streams read as
+    // rising from the seabed, not random static points.
+    for (let i = 0; i < safeCount; i++) {
+      const chained = Math.random() < CHAIN_CHANCE
+      const chainLen = chained ? 2 + Math.floor(Math.random() * (CHAIN_MAX - 1)) : 1
+      const x = (Math.random() - 0.5) * 18
+      const z = (Math.random() - 0.5) * 14 - 3
+      const baseY = -3.5 - Math.random() * 1.5
+
+      for (let c = 0; c < chainLen && i + c < safeCount; c++) {
+        const j = i + c
+        // Wider size variance — a mix of fine mist and visible orbs.
+        const size = 0.02 + Math.random() * 0.14
+        pos[j * 3] = x + (Math.random() - 0.5) * 0.12
+        pos[j * 3 + 1] = baseY - c * 0.28
+        pos[j * 3 + 2] = z + (Math.random() - 0.5) * 0.12
+        sizes[j] = size
+        alphas[j] = 0.5 + Math.random() * 0.5
+        state.current.push({
+          size,
+          speed: 0.3 + Math.random() * 1.8,
+          phase: Math.random() * Math.PI * 2,
+          wobble: 0.08 + Math.random() * 0.2,
+          wobble2: 0.05 + Math.random() * 0.15,
+          holdTimer: 0,
+          popTimer: 0,
+          alpha: alphas[j],
+        })
+      }
+      i += chainLen - 1
     }
 
     const geo = new THREE.BufferGeometry()
@@ -77,7 +105,7 @@ export default function Bubbles({ count = 80 }: { count?: number }) {
     geo.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1))
     geo.setAttribute('aAlpha', new THREE.BufferAttribute(alphas, 1))
     return geo
-  }, [count])
+  }, [safeCount])
 
   const material = useMemo(
     () =>
@@ -99,42 +127,65 @@ export default function Bubbles({ count = 80 }: { count?: number }) {
     material.uniforms.uOpacity.value = 0.3
   }, [material])
 
-  useFrame((state, delta) => {
+  useFrame((stateFrame, delta) => {
     if (!ref.current) return
+    const dt = Math.min(delta, 0.05)
 
     const pos = ref.current.geometry.attributes.position.array as Float32Array
     const sizes = ref.current.geometry.attributes.aSize.array as Float32Array
     const alphas = ref.current.geometry.attributes.aAlpha.array as Float32Array
-    const t = state.clock.elapsedTime
+    const t = stateFrame.clock.elapsedTime
+    const n = state.current.length
 
-    for (let i = 0; i < count; i++) {
-      if (popTimers.current[i] <= 0) {
-        pos[i * 3 + 1] += speeds.current[i] * delta * 0.5
-        // Perpendicular sine drift — each bubble wanders at its own amplitude.
-        pos[i * 3] += Math.sin(t * 0.5 + phases.current[i]) * wobbles.current[i] * delta
-        pos[i * 3 + 2] += Math.cos(t * 0.4 + phases.current[i] * 1.3) * wobbles.current[i] * delta * 0.6
-        sizes[i] = baseSizes.current[i] * (1 + Math.sin(t * 0.3 + i) * 0.12)
-        alphas[i] = 1
+    const respawn = (i: number) => {
+      pos[i * 3] = (Math.random() - 0.5) * 18
+      pos[i * 3 + 1] = -3.5 - Math.random() * 1.5
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 14 - 3
+      const s = state.current[i]
+      s.size = 0.02 + Math.random() * 0.14
+      s.speed = 0.3 + Math.random() * 1.8
+      s.wobble = 0.08 + Math.random() * 0.2
+      s.wobble2 = 0.05 + Math.random() * 0.15
+      s.holdTimer = 0
+      s.popTimer = 0
+      sizes[i] = s.size
+      alphas[i] = s.alpha
+    }
 
-        if (pos[i * 3 + 1] > SURFACE_Y) {
-          popTimers.current[i] = POP_DURATION
+    for (let i = 0; i < n; i++) {
+      const s = state.current[i]
+
+      if (s.popTimer <= 0 && s.holdTimer <= 0) {
+        // Rising — two-harmonic wobble keeps the path organic.
+        pos[i * 3 + 1] += s.speed * dt * 0.5
+        pos[i * 3] +=
+          Math.sin(t * 0.5 + s.phase) * s.wobble * dt +
+          Math.sin(t * 1.3 + s.phase * 2.1) * s.wobble2 * dt * 0.6
+        pos[i * 3 + 2] +=
+          Math.cos(t * 0.4 + s.phase * 1.3) * s.wobble * dt * 0.6 +
+          Math.cos(t * 1.1 + s.phase * 0.7) * s.wobble2 * dt * 0.4
+        sizes[i] = s.size * (1 + Math.sin(t * 0.3 + s.phase) * 0.12)
+        alphas[i] = s.alpha
+
+        if (pos[i * 3 + 1] >= SURFACE_Y) {
+          s.holdTimer = SURFACE_HOLD
+          pos[i * 3 + 1] = SURFACE_Y
+        }
+      } else if (s.holdTimer > 0) {
+        // Held at the surface — slight lateral drift before bursting.
+        s.holdTimer -= dt
+        pos[i * 3] += Math.sin(t * 0.8 + s.phase) * 0.06 * dt
+        if (s.holdTimer <= 0) {
+          s.popTimer = POP_DURATION
           pos[i * 3 + 1] = SURFACE_Y
         }
       } else {
-        popTimers.current[i] -= delta
-        const k = Math.max(popTimers.current[i] / POP_DURATION, 0)
-        sizes[i] = baseSizes.current[i] * 1.15 * k
-        alphas[i] = k * k
-
-        if (popTimers.current[i] <= 0) {
-          pos[i * 3] = (Math.random() - 0.5) * 18
-          pos[i * 3 + 1] = -3.5 - Math.random() * 1.5
-          pos[i * 3 + 2] = (Math.random() - 0.5) * 14 - 3
-          baseSizes.current[i] = 0.02 + Math.random() * 0.14
-          speeds.current[i] = 0.3 + Math.random() * 1.8
-          wobbles.current[i] = 0.08 + Math.random() * 0.2
-          alphas[i] = 1
-        }
+        // Popping — shrinks and fades out.
+        s.popTimer -= dt
+        const k = Math.max(s.popTimer / POP_DURATION, 0)
+        sizes[i] = s.size * 1.15 * k
+        alphas[i] = s.alpha * k * k
+        if (s.popTimer <= 0) respawn(i)
       }
     }
 
