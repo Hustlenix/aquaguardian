@@ -10,15 +10,18 @@ import oceanAnalysis from '@/data/ocean_analysis.json'
 const FEATURES = [
   {
     title: 'Live ocean telemetry',
-    detail: 'Collection events stream into the app the moment a robot logs them — amount, location, and timestamp for every pickup.',
+    detail:
+      'Collection events stream into the app the moment a robot logs them — amount, location, and timestamp for every pickup.',
   },
   {
     title: 'Mission tracking',
-    detail: 'Field teams tick off conservation missions on the go, with progress that syncs back to the central dashboard.',
+    detail:
+      'Field teams tick off conservation missions on the go, with progress that syncs back to the central dashboard.',
   },
   {
     title: 'AI ocean assistant',
-    detail: 'The same companion that explains the story on the web fits in your pocket — instant answers to reef, plastic, and robotics questions.',
+    detail:
+      'The same companion that explains the story on the web fits in your pocket — instant answers to reef, plastic, and robotics questions.',
   },
 ]
 
@@ -83,12 +86,17 @@ export default function MobilePage() {
       <div className="mx-auto flex max-w-7xl flex-col gap-10">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-gold-400/80">Mobile companion experience</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-gold-400/80">
+              Mobile companion experience
+            </p>
             <h1 className="mt-2 text-4xl font-semibold tracking-[0.08em] text-white sm:text-5xl">
               Support field teams with a lightweight, practical companion experience.
             </h1>
           </div>
-          <Link href="/" className="rounded-full border border-gold-400/30 px-4 py-2 text-sm text-gold-400 transition hover:border-gold-400/60 hover:bg-gold-400/10">
+          <Link
+            href="/"
+            className="rounded-full border border-gold-400/30 px-4 py-2 text-sm text-gold-400 transition hover:border-gold-400/60 hover:bg-gold-400/10"
+          >
             Back to story
           </Link>
         </div>
@@ -122,7 +130,9 @@ export default function MobilePage() {
 
               {/* App header */}
               <div className="px-5 pb-3 pt-2">
-                <p className="text-[10px] uppercase tracking-[0.3em] text-gold-400/80">AquaGuardian</p>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-gold-400/80">
+                  AquaGuardian
+                </p>
                 <p className="mt-1 text-lg font-semibold text-white">Field companion</p>
               </div>
 
@@ -139,7 +149,9 @@ export default function MobilePage() {
                       className="space-y-4"
                     >
                       <div className="rounded-2xl border border-cyan-400/25 bg-cyan-400/5 p-4">
-                        <p className="text-[10px] uppercase tracking-[0.25em] text-cyan-400/70">Collected to date</p>
+                        <p className="text-[10px] uppercase tracking-[0.25em] text-cyan-400/70">
+                          Collected to date
+                        </p>
                         <p className="mt-1 font-numeric text-3xl font-semibold text-white">
                           {loading ? '…' : totalPlastic.toLocaleString()}
                         </p>
@@ -147,7 +159,9 @@ export default function MobilePage() {
                       </div>
 
                       <div className="space-y-2">
-                        <p className="text-[10px] uppercase tracking-[0.25em] text-text-muted">Active missions</p>
+                        <p className="text-[10px] uppercase tracking-[0.25em] text-text-muted">
+                          Active missions
+                        </p>
                         {missions.map((mission) => (
                           <div
                             key={mission.id}
@@ -183,20 +197,37 @@ export default function MobilePage() {
                     >
                       <div className="grid grid-cols-2 gap-2">
                         {[
-                          { label: 'Items collected', value: metrics.totalItemsCollected.toLocaleString() },
+                          {
+                            label: 'Items collected',
+                            value: metrics.totalItemsCollected.toLocaleString(),
+                          },
                           { label: 'Weight', value: `${metrics.totalWeightKg} kg` },
                           { label: 'CO₂ offset', value: `${metrics.estimatedCo2SavedKg} kg` },
-                          { label: 'Collection events', value: String(metrics.totalCollectionEvents) },
+                          {
+                            label: 'Collection events',
+                            value: String(metrics.totalCollectionEvents),
+                          },
                         ].map((stat) => (
-                          <div key={stat.label} className="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5">
-                            <p className="text-[10px] uppercase tracking-[0.25em] text-text-muted">{stat.label}</p>
-                            <p className="mt-1 font-numeric text-sm font-semibold text-white">{stat.value}</p>
+                          <div
+                            key={stat.label}
+                            className="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5"
+                          >
+                            <p className="text-[10px] uppercase tracking-[0.25em] text-text-muted">
+                              {stat.label}
+                            </p>
+                            <p className="mt-1 font-numeric text-sm font-semibold text-white">
+                              {stat.value}
+                            </p>
                           </div>
                         ))}
                       </div>
                       <div className="rounded-xl border border-gold-400/20 bg-gold-400/5 px-3 py-2.5">
-                        <p className="text-[10px] uppercase tracking-[0.25em] text-gold-400/70">Top hotspot</p>
-                        <p className="mt-0.5 text-xs font-medium text-white">{metrics.topCollectionZone}</p>
+                        <p className="text-[10px] uppercase tracking-[0.25em] text-gold-400/70">
+                          Top hotspot
+                        </p>
+                        <p className="mt-0.5 text-xs font-medium text-white">
+                          {metrics.topCollectionZone}
+                        </p>
                         <p className="mt-0.5 text-[10px] leading-4 text-text-muted">
                           Highest simulated debris density this cycle.
                         </p>
@@ -279,7 +310,9 @@ export default function MobilePage() {
                 transition={{ duration: 0.45, delay: 0.1 + index * 0.1 }}
               >
                 <h3 className="text-xl font-semibold text-white">
-                  <span className="mr-3 text-gold-400/80">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="mr-3 text-gold-400/80">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
                   {feature.title}
                 </h3>
                 <p className="mt-2 text-sm leading-7 text-text-muted">{feature.detail}</p>

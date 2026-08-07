@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import * as THREE from 'three'
 
 interface RuinsProps {
@@ -109,7 +109,7 @@ export default function Ruins({ intact = 0.5 }: RuinsProps) {
         emissiveIntensity: 0.5,
       }),
     }),
-    []
+    [],
   )
 
   // Blocks scattered on the platform — layout randomized once per mount.
@@ -122,8 +122,15 @@ export default function Ruins({ intact = 0.5 }: RuinsProps) {
         rot: Math.random() * Math.PI,
         tall: Math.random() > 0.6,
       })),
-    []
+    [],
   )
+
+  // Clean up imperatively allocated WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      Object.values(mats).forEach((m) => m.dispose())
+    }
+  }, [mats])
 
   if (intact < 0.05) return null
 

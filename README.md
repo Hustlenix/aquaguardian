@@ -16,12 +16,12 @@ AquaGuardian is an interactive 3D ocean-restoration experience built with Next.j
 
 ## Screenshots
 
-| Cinematic hero | Impact dashboard |
-|---|---|
+| Cinematic hero                                    | Impact dashboard                                      |
+| ------------------------------------------------- | ----------------------------------------------------- |
 | ![AquaGuardian hero](assets/screenshots/hero.png) | ![Impact dashboard](assets/screenshots/dashboard.png) |
 
-| Mission tracking | Educational mode |
-|---|---|
+| Mission tracking                                     | Educational mode                                  |
+| ---------------------------------------------------- | ------------------------------------------------- |
 | ![Mission tracking](assets/screenshots/missions.png) | ![Educational mode](assets/screenshots/learn.png) |
 
 The repo also includes a framework-free companion page — [`public/splash.html`](public/splash.html) is plain HTML, CSS, and vanilla JS (canvas sonar sweep included). It ships with the static export and is served from GitHub Pages at <https://hustlenix.github.io/aquaguardian/splash.html>.
@@ -43,14 +43,14 @@ The experience itself is a mix of two things:
 
 The homepage story is defined in [`src/data/chapters.ts`](src/data/chapters.ts) and rendered as eleven scroll-driven chapters:
 
-| # | Chapter | # | Chapter |
-|---|---|---|---|
-| 1 | Arrival | 7 | Mission |
-| 2 | Descent | 8 | Technology |
-| 3 | Crisis | 9 | Impact |
-| 4 | Discovery | 10 | Future Atlantis |
-| 5 | Robot Reveal | 11 | Call to Action |
-| 6 | AI | | |
+| #   | Chapter      | #   | Chapter         |
+| --- | ------------ | --- | --------------- |
+| 1   | Arrival      | 7   | Mission         |
+| 2   | Descent      | 8   | Technology      |
+| 3   | Crisis       | 9   | Impact          |
+| 4   | Discovery    | 10  | Future Atlantis |
+| 5   | Robot Reveal | 11  | Call to Action  |
+| 6   | AI           |     |                 |
 
 Each chapter has its own visual state in the scene — lighting, fog, fish behavior, and robot activity are all driven by a single scroll-tracked store, so the world and the story stay in sync.
 
@@ -60,9 +60,9 @@ Each chapter has its own visual state in the scene — lighting, fog, fish behav
 
 AquaGuardian is a dual-mode application. Every ecosystem page (missions, challenges, learn, assistant, dashboard, mobile) works identically in both modes:
 
-| Mode | How to run | APIs | Persistence |
-|---|---|---|---|
-| **Server mode** | `npm run dev` or `npm run start` | Real route handlers under `src/app/api/` | `src/lib/dataStore.ts` reads/writes `database.json` at the project root (in-memory cache, atomic temp-file writes). Progress survives restarts. |
+| Mode            | How to run                                                 | APIs                                                             | Persistence                                                                                                                                                       |
+| --------------- | ---------------------------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Server mode** | `npm run dev` or `npm run start`                           | Real route handlers under `src/app/api/`                         | `src/lib/dataStore.ts` reads/writes `database.json` at the project root (in-memory cache, atomic temp-file writes). Progress survives restarts.                   |
 | **Static mode** | `STATIC_EXPORT=true npm run build` → `out/` (GitHub Pages) | CI moves `src/app/api` aside before the build, so no routes ship | `src/lib/api.ts` bundled fallback data + localStorage keys (`aqua-missions`, `aqua-challenges`, `aqua-learn`). Progress survives reloads on the visitor's device. |
 
 `src/lib/api.ts` is the single entry point for pages: it tries `fetch('/api/...')` with a short timeout and falls back to bundled seed data when the request fails (e.g. on Pages). The assistant's canned answers live in both `src/app/api/assistant/route.ts` and `src/lib/api.ts` with identical logic, so the chat behaves the same with or without a server.
@@ -71,17 +71,17 @@ AquaGuardian is a dual-mode application. Every ecosystem page (missions, challen
 
 All routes are JSON under `src/app/api/`, and all mutations persist through `src/lib/dataStore.ts` into `database.json`:
 
-| Method | Path | Body | Response |
-|---|---|---|---|
-| GET | `/api/stats` | — | `{ totalPlastic, collections: [{ amount, location, timestamp }], missions, challenges, learn, subscribers }` |
-| GET | `/api/missions` | — | `{ missions: [{ id, title, description, category, impact, completed }] }` |
-| POST | `/api/missions/toggle` | `{ id }` | `{ mission }` — toggled mission |
-| GET | `/api/challenges` | — | `{ challenges: [{ id, title, description, difficulty, participants, deadline }] }` |
-| POST | `/api/challenges/join` | `{ id }` | `{ challenge }` — participants incremented |
-| GET | `/api/learn` | — | `{ modules: [{ id, title, summary, completed, lessons: [{ title, body }] }] }` |
-| POST | `/api/learn/complete` | `{ id }` | `{ module }` — marked completed |
-| POST | `/api/assistant` | `{ prompt }` | `{ response }` — canned, category-matched answer |
-| POST | `/api/subscribe` | `{ email }` | `{ success }` — email added to `subscribers` |
+| Method | Path                   | Body         | Response                                                                                                     |
+| ------ | ---------------------- | ------------ | ------------------------------------------------------------------------------------------------------------ |
+| GET    | `/api/stats`           | —            | `{ totalPlastic, collections: [{ amount, location, timestamp }], missions, challenges, learn, subscribers }` |
+| GET    | `/api/missions`        | —            | `{ missions: [{ id, title, description, category, impact, completed }] }`                                    |
+| POST   | `/api/missions/toggle` | `{ id }`     | `{ mission }` — toggled mission                                                                              |
+| GET    | `/api/challenges`      | —            | `{ challenges: [{ id, title, description, difficulty, participants, deadline }] }`                           |
+| POST   | `/api/challenges/join` | `{ id }`     | `{ challenge }` — participants incremented                                                                   |
+| GET    | `/api/learn`           | —            | `{ modules: [{ id, title, summary, completed, lessons: [{ title, body }] }] }`                               |
+| POST   | `/api/learn/complete`  | `{ id }`     | `{ module }` — marked completed                                                                              |
+| POST   | `/api/assistant`       | `{ prompt }` | `{ response }` — canned, category-matched answer                                                             |
+| POST   | `/api/subscribe`       | `{ email }`  | `{ success }` — email added to `subscribers`                                                                 |
 
 Every route wraps its work in try/catch and returns `{ error }` with a 500 on failure (400 for missing/invalid input).
 
@@ -89,29 +89,29 @@ Every route wraps its work in try/catch and returns `{ error }` with a 500 on fa
 
 ## Routes
 
-| Route | Purpose |
-|---|---|
-| `/` | Cinematic 3D hero plus narrative sections: Mission, Problem, Solution, How It Works, Technology, Prototype, Experience Modes, Impact, Timeline, Real Ocean Data, FAQ, Team, Contact |
-| `/dashboard` | Impact dashboard with ocean-health metrics from the generated dataset |
-| `/missions` | Conservation mission tracker |
-| `/challenges` | Community challenge mode |
-| `/learn` | Educational content about marine ecosystems and restoration science |
-| `/assistant` | AI assistant layer explaining the world, robotics, and mission context |
-| `/mobile` | Mobile-first companion experience for field teams |
-| `/privacy` | Privacy policy |
+| Route         | Purpose                                                                                                                                                                             |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`           | Cinematic 3D hero plus narrative sections: Mission, Problem, Solution, How It Works, Technology, Prototype, Experience Modes, Impact, Timeline, Real Ocean Data, FAQ, Team, Contact |
+| `/dashboard`  | Impact dashboard with ocean-health metrics from the generated dataset                                                                                                               |
+| `/missions`   | Conservation mission tracker                                                                                                                                                        |
+| `/challenges` | Community challenge mode                                                                                                                                                            |
+| `/learn`      | Educational content about marine ecosystems and restoration science                                                                                                                 |
+| `/assistant`  | AI assistant layer explaining the world, robotics, and mission context                                                                                                              |
+| `/mobile`     | Mobile-first companion experience for field teams                                                                                                                                   |
+| `/privacy`    | Privacy policy                                                                                                                                                                      |
 
 ---
 
 ## Tech Stack
 
-| Layer | Tools |
-|---|---|
-| Framework | Next.js 15 (App Router, static export), React 19, TypeScript |
-| Styling | Tailwind CSS 4 with a design-token system in `src/tokens/` |
-| 3D | Three.js, React Three Fiber, custom GLSL shaders in `src/shaders/` |
-| Motion | GSAP, Framer Motion, Lenis smooth scroll |
-| State | Zustand (`src/store/`) |
-| Quality | ESLint, Prettier, typed components, reduced-motion hooks |
+| Layer     | Tools                                                              |
+| --------- | ------------------------------------------------------------------ |
+| Framework | Next.js 15 (App Router, static export), React 19, TypeScript       |
+| Styling   | Tailwind CSS 4 with a design-token system in `src/tokens/`         |
+| 3D        | Three.js, React Three Fiber, custom GLSL shaders in `src/shaders/` |
+| Motion    | GSAP, Framer Motion, Lenis smooth scroll                           |
+| State     | Zustand (`src/store/`)                                             |
+| Quality   | ESLint, Prettier, typed components, reduced-motion hooks           |
 
 A few implementation details worth noting:
 

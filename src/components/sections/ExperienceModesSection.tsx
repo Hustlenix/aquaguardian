@@ -6,37 +6,43 @@ import { motion } from 'framer-motion'
 const experiences = [
   {
     title: 'Live dashboard',
-    description: 'See ocean-impact metrics, mission context, and evidence-backed conservation insights.',
+    description:
+      'See ocean-impact metrics, mission context, and evidence-backed conservation insights.',
     href: '/dashboard',
     accent: 'text-cyan-400',
   },
   {
     title: 'Mission tracking',
-    description: 'Follow active conservation tracks, planned habitat reviews, and community engagement loops.',
+    description:
+      'Follow active conservation tracks, planned habitat reviews, and community engagement loops.',
     href: '/missions',
     accent: 'text-gold-400',
   },
   {
     title: 'Sustainability challenges',
-    description: 'Turn stewardship into guided participation with clear goals, rewards, and progress.',
+    description:
+      'Turn stewardship into guided participation with clear goals, rewards, and progress.',
     href: '/challenges',
     accent: 'text-cyan-400',
   },
   {
     title: 'Learn mode',
-    description: 'Teach ocean stewardship through guided educational modules with a clearer narrative.',
+    description:
+      'Teach ocean stewardship through guided educational modules with a clearer narrative.',
     href: '/learn',
     accent: 'text-gold-400',
   },
   {
     title: 'AI companion',
-    description: 'Let visitors ask what the mission means, how the robot works, and why the evidence matters.',
+    description:
+      'Let visitors ask what the mission means, how the robot works, and why the evidence matters.',
     href: '/assistant',
     accent: 'text-cyan-400',
   },
   {
     title: 'Mobile companion',
-    description: 'Support field teams with practical checklists, mission briefs, and shareable reports.',
+    description:
+      'Support field teams with practical checklists, mission briefs, and shareable reports.',
     href: '/mobile',
     accent: 'text-gold-400',
   },
@@ -52,7 +58,8 @@ export default function ExperienceModesSection() {
             A fuller ocean story, not just a landing page.
           </h2>
           <p className="mt-4 text-lg leading-8 text-text-muted">
-            The site includes an impact dashboard, mission tracking, challenge loops, educational modules, an AI companion, and a mobile field experience.
+            The site includes an impact dashboard, mission tracking, challenge loops, educational
+            modules, an AI companion, and a mobile field experience.
           </p>
         </div>
 

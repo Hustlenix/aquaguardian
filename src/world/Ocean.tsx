@@ -4,10 +4,7 @@ import { useEffect, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useStore } from '@/store/useStore'
-import {
-  oceanGradientVertexShader,
-  oceanGradientFragmentShader,
-} from '@/shaders/oceanGradient'
+import { oceanGradientVertexShader, oceanGradientFragmentShader } from '@/shaders/oceanGradient'
 import { OCEAN_COLORS } from '@/lib/constants'
 
 interface OceanSurfaceProps {
@@ -23,10 +20,7 @@ export default function OceanSurface({ topColor = '#1A6B8A', clarity = 0.8 }: Oc
   // High segment count only at high quality; lower on mobile/medium.
   const segments = useMemo(() => (quality > 0.75 ? 96 : 48), [quality])
 
-  const geometry = useMemo(
-    () => new THREE.PlaneGeometry(120, 120, segments, segments),
-    [segments]
-  )
+  const geometry = useMemo(() => new THREE.PlaneGeometry(120, 120, segments, segments), [segments])
 
   // Derived colors: the mid stop sits between the surface color and the
   // abyss; haze matches the scene fog so the surface melts into the depths.
@@ -36,7 +30,7 @@ export default function OceanSurface({ topColor = '#1A6B8A', clarity = 0.8 }: Oc
       sun: new THREE.Color(OCEAN_COLORS.sun),
       haze: new THREE.Color(fogColor),
     }),
-    [topColor, fogColor]
+    [topColor, fogColor],
   )
 
   const material = useMemo(() => {
@@ -76,6 +70,14 @@ export default function OceanSurface({ topColor = '#1A6B8A', clarity = 0.8 }: Oc
     ;(material.uniforms.uHazeColor.value as THREE.Color).copy(derived.haze)
   }, [material, derived])
 
+  // Clean up imperatively allocated WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+      material.dispose()
+    }
+  }, [geometry, material])
+
   useFrame((state) => {
     const t = state.clock.elapsedTime
     material.uniforms.uTime.value = t
@@ -83,12 +85,5 @@ export default function OceanSurface({ topColor = '#1A6B8A', clarity = 0.8 }: Oc
     material.uniforms.uAmplitude.value = 1 + Math.sin(t * 0.3) * 0.08
   })
 
-  return (
-    <mesh
-      position={[0, 0.5, 0]}
-      geometry={geometry}
-      material={material}
-      renderOrder={-1}
-    />
-  )
+  return <mesh position={[0, 0.5, 0]} geometry={geometry} material={material} renderOrder={-1} />
 }

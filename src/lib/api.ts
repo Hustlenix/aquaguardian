@@ -248,7 +248,8 @@ const FALLBACK_LEARN_MODULES: LearnModule[] = [
   {
     id: 'coral-reefs',
     title: 'Coral Reef Ecosystems',
-    summary: 'Why coral reefs are the most biodiverse ecosystems in the ocean and what threatens them.',
+    summary:
+      'Why coral reefs are the most biodiverse ecosystems in the ocean and what threatens them.',
     completed: false,
     lessons: [
       {
@@ -297,7 +298,12 @@ const FALLBACK_LEARN_MODULES: LearnModule[] = [
     quiz: [
       {
         question: 'How much plastic is estimated to enter the ocean every year?',
-        options: ['8 to 12 million tonnes', '1 to 2 million tonnes', '50 million tonnes', 'Less than 100,000 tonnes'],
+        options: [
+          '8 to 12 million tonnes',
+          '1 to 2 million tonnes',
+          '50 million tonnes',
+          'Less than 100,000 tonnes',
+        ],
         answer: 0,
       },
       {
@@ -353,7 +359,8 @@ const FALLBACK_LEARN_MODULES: LearnModule[] = [
   {
     id: 'water-quality',
     title: 'Water Quality Monitoring',
-    summary: 'The core measurements that tell us whether water is healthy — and what changes reveal.',
+    summary:
+      'The core measurements that tell us whether water is healthy — and what changes reveal.',
     completed: false,
     lessons: [
       {

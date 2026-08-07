@@ -1,6 +1,6 @@
 'use client'
 
-import { useLayoutEffect, useMemo, useRef } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useStore } from '@/store/useStore'
@@ -63,7 +63,7 @@ function FogLayer({ cfg }: { cfg: FogLayerConfig }) {
         blending: THREE.AdditiveBlending,
         side: THREE.DoubleSide,
       }),
-    [cfg.opacity, cfg.seed]
+    [cfg.opacity, cfg.seed],
   )
 
   useFrame((state) => {
@@ -72,10 +72,15 @@ function FogLayer({ cfg }: { cfg: FogLayerConfig }) {
 
   const [width, height] = cfg.size
 
-  const geometry = useMemo(
-    () => new THREE.PlaneGeometry(width, height, 1, 1),
-    [width, height]
-  )
+  const geometry = useMemo(() => new THREE.PlaneGeometry(width, height, 1, 1), [width, height])
+
+  // Clean up imperatively allocated WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      material.dispose()
+      geometry.dispose()
+    }
+  }, [material, geometry])
 
   return (
     <mesh
@@ -102,7 +107,7 @@ function SilhouetteRidge({ count }: { count: number }) {
         y: -4.6 + Math.random() * 1.4,
         rotY: Math.random() * Math.PI,
       })),
-    [count]
+    [count],
   )
 
   useLayoutEffect(() => {
@@ -149,6 +154,13 @@ function GlowMotes({ count }: { count: number }) {
     return geo
   }, [count])
 
+  // Clean up imperatively allocated WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+    }
+  }, [geometry])
+
   useFrame((state, delta) => {
     if (!ref.current) return
     const dt = Math.min(delta, 0.05)
@@ -193,7 +205,7 @@ export default function Environment() {
       { pos: [5, 0.5, -19], size: [60, 15], rotY: -0.1, opacity: 0.045, seed: 2.1 },
       { pos: [-2, -1, -27], size: [64, 14], rotY: 0.05, opacity: 0.06, seed: 4.3 },
     ],
-    []
+    [],
   )
 
   return (

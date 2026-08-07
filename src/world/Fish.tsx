@@ -1,6 +1,6 @@
 'use client'
 
-import { useLayoutEffect, useMemo, useRef } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
@@ -70,7 +70,7 @@ function FishSchool({ spec }: { spec: SchoolSpec }) {
       q: new THREE.Quaternion(),
       q2: new THREE.Quaternion(),
     }),
-    []
+    [],
   )
 
   const agents = useMemo<FishAgent[]>(() => {
@@ -78,7 +78,7 @@ function FishSchool({ spec }: { spec: SchoolSpec }) {
     const bias = new THREE.Vector3(
       (Math.random() - 0.5) * 0.35,
       (Math.random() - 0.5) * 0.12,
-      (Math.random() - 0.5) * 0.35
+      (Math.random() - 0.5) * 0.35,
     )
     const arr: FishAgent[] = []
     for (let i = 0; i < spec.count; i++) {
@@ -86,12 +86,12 @@ function FishSchool({ spec }: { spec: SchoolSpec }) {
         pos: new THREE.Vector3(
           spec.center[0] + (Math.random() - 0.5) * spec.half[0] * 1.4,
           spec.center[1] + (Math.random() - 0.5) * spec.half[1] * 1.4,
-          spec.center[2] + (Math.random() - 0.5) * spec.half[2] * 1.4
+          spec.center[2] + (Math.random() - 0.5) * spec.half[2] * 1.4,
         ),
         vel: new THREE.Vector3(
           bias.x + (Math.random() - 0.5) * 0.3,
           bias.y + (Math.random() - 0.5) * 0.15,
-          bias.z + (Math.random() - 0.5) * 0.3
+          bias.z + (Math.random() - 0.5) * 0.3,
         ),
         size: 0.8 + Math.random() * 0.5,
         color: new THREE.Color(FISH_COLORS[Math.floor(Math.random() * FISH_COLORS.length)]),
@@ -120,7 +120,7 @@ function FishSchool({ spec }: { spec: SchoolSpec }) {
     // Per-instance phase so tails swish out of sync.
     merged.setAttribute(
       'aPhase',
-      new THREE.InstancedBufferAttribute(new Float32Array(spec.count), 1)
+      new THREE.InstancedBufferAttribute(new Float32Array(spec.count), 1),
     )
     return merged
   }, [spec])
@@ -141,7 +141,7 @@ function FishSchool({ spec }: { spec: SchoolSpec }) {
       shader.vertexShader = shader.vertexShader
         .replace(
           '#include <common>',
-          '#include <common>\nattribute float aFin;\nattribute float aPhase;'
+          '#include <common>\nattribute float aFin;\nattribute float aPhase;',
         )
         .replace(
           '#include <begin_vertex>',
@@ -155,11 +155,19 @@ function FishSchool({ spec }: { spec: SchoolSpec }) {
           float c = cos(sw);
           float s = sin(sw);
           transformed = vec3(p.x * c + p.z * s, p.y, -p.x * s + p.z * c) + tp;
-          `
+          `,
         )
     }
     return m
   }, [timeUniform])
+
+  // Clean up imperatively allocated WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+      material.dispose()
+    }
+  }, [geometry, material])
 
   // Instance colors + tail phases are static per fish — set once.
   useLayoutEffect(() => {
@@ -265,7 +273,7 @@ function FishSchool({ spec }: { spec: SchoolSpec }) {
         const bank = THREE.MathUtils.clamp(
           (a.vel.x * T.prevDir.z - a.vel.z * T.prevDir.x) * 0.9,
           -0.5,
-          0.5
+          0.5,
         )
         T.q2.setFromAxisAngle(T.dir, -bank)
         T.q.multiply(T.q2)
@@ -292,13 +300,7 @@ function FishSchool({ spec }: { spec: SchoolSpec }) {
     mesh.instanceMatrix.needsUpdate = true
   })
 
-  return (
-    <instancedMesh
-      ref={ref}
-      args={[geometry, material, spec.count]}
-      frustumCulled={false}
-    />
-  )
+  return <instancedMesh ref={ref} args={[geometry, material, spec.count]} frustumCulled={false} />
 }
 
 export default function Fish({ visible = false }: FishProps) {

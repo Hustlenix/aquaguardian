@@ -1,0 +1,14 @@
+
+> aquaguardian_fullstack@1.0.0 dev /app
+> next dev
+
+   ▲ Next.js 15.5.23
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.2:3000
+
+ ✓ Starting...
+ ✓ Ready in 2s
+ ○ Compiling / ...
+ ✓ Compiled / in 27.1s (2846 modules)
+ GET / 200 in 29977ms
+ GET / 200 in 415ms

@@ -11,9 +11,7 @@ const loader = new GLTFLoader()
 loader.setMeshoptDecoder(MeshoptDecoder())
 const { readFile } = await import('fs/promises')
 const data = await readFile(join(root, 'public', 'models', 'animated-robot.glb'))
-const gltf = await new Promise((resolve, reject) =>
-  loader.parse(data.buffer, '', resolve, reject)
-)
+const gltf = await new Promise((resolve, reject) => loader.parse(data.buffer, '', resolve, reject))
 const scene = gltf.scene
 scene.updateMatrixWorld(true)
 

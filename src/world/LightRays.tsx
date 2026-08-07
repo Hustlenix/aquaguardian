@@ -1,10 +1,13 @@
 'use client'
 
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useStore } from '@/store/useStore'
-import { volumetricLightVertexShader, volumetricLightFragmentShader } from '@/shaders/volumetricLight'
+import {
+  volumetricLightVertexShader,
+  volumetricLightFragmentShader,
+} from '@/shaders/volumetricLight'
 
 interface LightRaysProps {
   color?: string
@@ -28,7 +31,7 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
   const groupRef = useRef<THREE.Group>(null)
   const rayColor = useMemo(
     () => new THREE.Color(color).lerp(new THREE.Color('#FFFFFF'), 0.25),
-    [color]
+    [color],
   )
 
   const radialSegments = useMemo(() => (quality > 0.75 ? 24 : 12), [quality])
@@ -46,7 +49,7 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
         phase: Math.random() * Math.PI * 2,
         speed: 0.15 + Math.random() * 0.2,
       })),
-    []
+    [],
   )
 
   // One material per ray so each shaft can pulse its own opacity.
@@ -71,8 +74,15 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
         })
         return m
       }),
-    [configs, rayColor, opacity]
+    [configs, rayColor, opacity],
   )
+
+  // Clean up imperatively allocated WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      materials.forEach((m) => m.dispose())
+    }
+  }, [materials])
 
   useFrame((state) => {
     if (!groupRef.current) return
@@ -89,7 +99,8 @@ export default function LightRays({ color = '#88CCFF', opacity = 0.12 }: LightRa
         cfg.yTop - cfg.height / 2 + Math.sin(t * cfg.speed * 0.4 + cfg.phase * 1.7) * 0.15
       const mat = mesh.material as THREE.ShaderMaterial
       mat.uniforms.uTime.value = t
-      mat.uniforms.uOpacity.value = opacity * (0.65 + Math.sin(t * cfg.speed * 0.8 + cfg.phase) * 0.3)
+      mat.uniforms.uOpacity.value =
+        opacity * (0.65 + Math.sin(t * cfg.speed * 0.8 + cfg.phase) * 0.3)
     }
   })
 

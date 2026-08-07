@@ -31,14 +31,35 @@ const RESPONSES: { keywords: string[]; response: string }[] = [
       'Impact is tracked the honest way: every collection event is logged with amount, location, and timestamp, and the dashboard renders the time series so progress is visible. The figures are illustrative concept targets, but they are grounded in real conservation math — every kilogram of debris removed protects habitat and reduces the burden on marine food webs.',
   },
   {
-    keywords: ['patrol', 'cycle', 'route', 'loop', 'autonomous', 'navigate', 'battery', 'charge', 'energy', 'solar', 'power'],
+    keywords: [
+      'patrol',
+      'cycle',
+      'route',
+      'loop',
+      'autonomous',
+      'navigate',
+      'battery',
+      'charge',
+      'energy',
+      'solar',
+      'power',
+    ],
     response:
       'Aegis runs on a continuous patrol cycle: it scans a programmed route, identifies debris targets, collects them one at a time, and returns them to a surface dock before resuming. The concept pairs solar-recharged batteries with low-drag hull design so the robot can stay on station for days — the patrol loop is deliberately simple, because reliability matters more than speed underwater.',
   },
   {
-    keywords: ['kelp', 'coral', 'fish', 'biodiversity', 'species', 'mangrove', 'seagrass', 'wildlife'],
+    keywords: [
+      'kelp',
+      'coral',
+      'fish',
+      'biodiversity',
+      'species',
+      'mangrove',
+      'seagrass',
+      'wildlife',
+    ],
     response:
-      'The habitats the mission protects — kelp forests, mangroves, seagrass beds, and coral reefs — are the ocean\'s most productive ecosystems. Kelp forests absorb carbon and shelter juvenile fish; mangroves buffer coastlines and filter runoff; reefs support a quarter of marine species. That is why the robot is designed for precision: it removes debris without dragging nets through living habitat.',
+      "The habitats the mission protects — kelp forests, mangroves, seagrass beds, and coral reefs — are the ocean's most productive ecosystems. Kelp forests absorb carbon and shelter juvenile fish; mangroves buffer coastlines and filter runoff; reefs support a quarter of marine species. That is why the robot is designed for precision: it removes debris without dragging nets through living habitat.",
   },
   {
     keywords: ['dashboard', 'telemetry', 'charts', 'time series', 'pipeline', 'metrics'],
@@ -46,7 +67,19 @@ const RESPONSES: { keywords: string[]; response: string }[] = [
       'The dashboard turns collection events into visible progress: a time series of logged pickups, per-zone totals, and the simulated pipeline metrics behind the scenes. It follows the same discipline as real ocean monitoring — repeated sampling, published timestamps, and honest labeling of what is simulated versus measured.',
   },
   {
-    keywords: ['missions', 'challenges', 'quiz', 'learn', 'education', 'leaderboard', 'community', 'volunteer', 'citizen', 'join', 'school'],
+    keywords: [
+      'missions',
+      'challenges',
+      'quiz',
+      'learn',
+      'education',
+      'leaderboard',
+      'community',
+      'volunteer',
+      'citizen',
+      'join',
+      'school',
+    ],
     response:
       'Beyond the robot, AquaGuardian is a participation layer: field missions you can tick off, community challenges with a leaderboard, and interactive learning modules with a knowledge check at the end of each one. The idea is that stewardship scales through people — every classroom session, cleanup day, and reef observation feeds the same open-data mission.',
   },

@@ -32,7 +32,7 @@ interface StatsState {
 function CollectionChart({ entries }: { entries: CollectionEntry[] }) {
   const bars = useMemo(() => {
     const sorted = [...entries].sort(
-      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
     )
     return sorted.slice(-12)
   }, [entries])
@@ -47,7 +47,10 @@ function CollectionChart({ entries }: { entries: CollectionEntry[] }) {
   const maxAmount = Math.max(...bars.map((b) => b.amount), 1)
   const barW = (W - PAD * 2) / bars.length
   const shortLocation = (loc: string) =>
-    loc.replace('Great Pacific Garbage Patch', 'GPGP').replace('North Atlantic Gyre', 'NA Gyre').split(' ')[0]
+    loc
+      .replace('Great Pacific Garbage Patch', 'GPGP')
+      .replace('North Atlantic Gyre', 'NA Gyre')
+      .split(' ')[0]
 
   return (
     <svg
@@ -106,9 +109,7 @@ function CollectionChart({ entries }: { entries: CollectionEntry[] }) {
  */
 function LocationBreakdown() {
   const zones = useMemo(() => {
-    const entries = Object.entries(oceanAnalysis.locationBreakdown).sort(
-      (a, b) => b[1] - a[1]
-    )
+    const entries = Object.entries(oceanAnalysis.locationBreakdown).sort((a, b) => b[1] - a[1])
     const total = entries.reduce((sum, [, amount]) => sum + amount, 0)
     return { entries, total }
   }, [])
@@ -119,7 +120,12 @@ function LocationBreakdown() {
   const MAX_BAR_W = W - LABEL_W - 60
 
   return (
-    <svg viewBox={`0 0 ${W} ${zones.entries.length * ROW_H}`} className="mt-6 w-full" role="img" aria-label="Bar chart of collected debris by ocean zone">
+    <svg
+      viewBox={`0 0 ${W} ${zones.entries.length * ROW_H}`}
+      className="mt-6 w-full"
+      role="img"
+      aria-label="Bar chart of collected debris by ocean zone"
+    >
       {zones.entries.map(([location, amount], i) => {
         const barW = (amount / zones.entries[0][1]) * MAX_BAR_W
         const y = i * ROW_H + 8
@@ -130,7 +136,14 @@ function LocationBreakdown() {
             <text x={0} y={y + 14} fontSize="11" fill="rgba(232,240,240,0.8)">
               {location}
             </text>
-            <rect x={LABEL_W} y={y} width={barW} height={16} rx={4} fill={isTop ? 'rgba(212,175,55,0.85)' : 'rgba(0,229,255,0.45)'}>
+            <rect
+              x={LABEL_W}
+              y={y}
+              width={barW}
+              height={16}
+              rx={4}
+              fill={isTop ? 'rgba(212,175,55,0.85)' : 'rgba(0,229,255,0.45)'}
+            >
               <title>{`${location}: ${amount} pieces (${share}%)`}</title>
             </rect>
             <text x={LABEL_W + barW + 8} y={y + 13} fontSize="11" fill="rgba(232,240,240,0.75)">
@@ -162,11 +175,10 @@ export default function DashboardPage() {
           collections: data.collections ?? [],
           totalPlastic: data.totalPlastic ?? 0,
           // Static mode: keep the pipeline caption from the build-time dataset.
-          pipeline:
-            (data as { pipeline?: PipelineMetrics }).pipeline ?? {
-              ...oceanAnalysis.metrics,
-              generatedAt: oceanAnalysis.generatedAt,
-            },
+          pipeline: (data as { pipeline?: PipelineMetrics }).pipeline ?? {
+            ...oceanAnalysis.metrics,
+            generatedAt: oceanAnalysis.generatedAt,
+          },
         })
         setLoading(false)
       })
@@ -202,31 +214,48 @@ export default function DashboardPage() {
       <div className="mx-auto flex max-w-7xl flex-col gap-10">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-gold-400/80">Ocean Impact Dashboard</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-gold-400/80">
+              Ocean Impact Dashboard
+            </p>
             <h1 className="mt-2 text-4xl font-semibold tracking-[0.08em] text-white sm:text-5xl">
               Live conservation context, grounded in real-world evidence.
             </h1>
           </div>
-          <Link href="/" className="rounded-full border border-gold-400/30 px-4 py-2 text-sm text-gold-400 transition hover:border-gold-400/60 hover:bg-gold-400/10">
+          <Link
+            href="/"
+            className="rounded-full border border-gold-400/30 px-4 py-2 text-sm text-gold-400 transition hover:border-gold-400/60 hover:bg-gold-400/10"
+          >
             Back to story
           </Link>
         </div>
 
         <section className="grid gap-4 md:grid-cols-3">
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-            <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">Tracked entries (simulated)</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">
+              Tracked entries (simulated)
+            </p>
             <p className="mt-3 text-3xl font-semibold">{loading ? '…' : trackedEntries}</p>
-            <p className="mt-2 text-sm text-text-muted">Demo pipeline output — not real collection records.</p>
+            <p className="mt-2 text-sm text-text-muted">
+              Demo pipeline output — not real collection records.
+            </p>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-            <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">Items collected (simulated)</p>
-            <p className="mt-3 text-3xl font-semibold">{loading ? '…' : `${totalCollected} pieces`}</p>
-            <p className="mt-2 text-sm text-text-muted">A generated demo dataset — not actual measurements.</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">
+              Items collected (simulated)
+            </p>
+            <p className="mt-3 text-3xl font-semibold">
+              {loading ? '…' : `${totalCollected} pieces`}
+            </p>
+            <p className="mt-2 text-sm text-text-muted">
+              A generated demo dataset — not actual measurements.
+            </p>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
             <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">Ocean context</p>
             <p className="mt-3 text-3xl font-semibold">Real data</p>
-            <p className="mt-2 text-sm text-text-muted">The facts below are anchored to published conservation and ocean assessments.</p>
+            <p className="mt-2 text-sm text-text-muted">
+              The facts below are anchored to published conservation and ocean assessments.
+            </p>
           </div>
         </section>
 
@@ -235,11 +264,14 @@ export default function DashboardPage() {
             <div>
               <h2 className="text-2xl font-semibold text-white">Collections — last 12 events</h2>
               <p className="mt-2 text-sm text-text-muted">
-                Each bar is one logged collection: amount of debris and zone. Gold marks the largest event.
+                Each bar is one logged collection: amount of debris and zone. Gold marks the largest
+                event.
               </p>
             </div>
             <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs uppercase tracking-[0.25em] text-cyan-400">
-              {stats.pipeline?.generatedAt ? `as of ${stats.pipeline.generatedAt.slice(0, 10)}` : 'live'}
+              {stats.pipeline?.generatedAt
+                ? `as of ${stats.pipeline.generatedAt.slice(0, 10)}`
+                : 'live'}
             </span>
           </div>
           <CollectionChart entries={stats.collections} />
@@ -247,8 +279,8 @@ export default function DashboardPage() {
 
         {stats.pipeline && (
           <p className="text-xs uppercase tracking-[0.25em] text-cyan-400/60">
-            Offline telemetry: native C → Python pipeline · generated {stats.pipeline.generatedAt} · top zone{' '}
-            {stats.pipeline.topCollectionZone} · est. {stats.pipeline.totalWeightKg} kg ·{' '}
+            Offline telemetry: native C → Python pipeline · generated {stats.pipeline.generatedAt} ·
+            top zone {stats.pipeline.topCollectionZone} · est. {stats.pipeline.totalWeightKg} kg ·{' '}
             {stats.pipeline.estimatedCo2SavedKg} kg CO₂ offset
           </p>
         )}
@@ -280,10 +312,14 @@ export default function DashboardPage() {
                 >
                   <div className="flex items-center justify-between gap-3">
                     <p className="text-lg font-medium text-white">{fact.title}</p>
-                    <span className="rounded-full bg-gold-400/10 px-3 py-1 text-sm text-gold-400">{fact.value}</span>
+                    <span className="rounded-full bg-gold-400/10 px-3 py-1 text-sm text-gold-400">
+                      {fact.value}
+                    </span>
                   </div>
                   <p className="mt-2 text-sm leading-6 text-text-muted">{fact.detail}</p>
-                  <p className="mt-2 text-xs uppercase tracking-[0.25em] text-cyan-400/70">Source: {fact.source}</p>
+                  <p className="mt-2 text-xs uppercase tracking-[0.25em] text-cyan-400/70">
+                    Source: {fact.source}
+                  </p>
                 </motion.div>
               ))}
             </div>
@@ -293,13 +329,20 @@ export default function DashboardPage() {
             <h2 className="text-2xl font-semibold text-white">Mission blueprints</h2>
             <div className="mt-6 space-y-4">
               {missionBlueprints.map((item) => (
-                <div key={item.name} className="rounded-2xl border border-white/10 bg-[#010B13]/70 p-4">
+                <div
+                  key={item.name}
+                  className="rounded-2xl border border-white/10 bg-[#010B13]/70 p-4"
+                >
                   <div className="flex items-center justify-between gap-3">
                     <p className="text-lg font-medium text-white">{item.name}</p>
-                    <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs uppercase tracking-[0.25em] text-cyan-400">{item.status}</span>
+                    <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs uppercase tracking-[0.25em] text-cyan-400">
+                      {item.status}
+                    </span>
                   </div>
                   <p className="mt-2 text-sm text-text-muted">{item.focus}</p>
-                  <p className="mt-2 text-xs uppercase tracking-[0.25em] text-gold-400/70">{item.evidence}</p>
+                  <p className="mt-2 text-xs uppercase tracking-[0.25em] text-gold-400/70">
+                    {item.evidence}
+                  </p>
                 </div>
               ))}
             </div>

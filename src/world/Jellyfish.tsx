@@ -35,7 +35,7 @@ function Jelly({ position, phase, color }: JellyProps) {
     g.position.set(
       position[0] + Math.sin(t * 0.15 + phase) * 0.8,
       position[1] + Math.sin(t * 0.4 + phase * 2) * 0.3,
-      position[2] + Math.cos(t * 0.12 + phase) * 0.6
+      position[2] + Math.cos(t * 0.12 + phase) * 0.6,
     )
 
     // Dome distortion breathes slowly.

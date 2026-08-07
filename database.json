@@ -1,30 +1,42 @@
 {
   "totalPlastic": 1804,
   "collections": [
-    {"amount": 106, "location": "Gulf of Mexico", "timestamp": "2026-07-05T19:08:00Z"},
-    {"amount": 102, "location": "Persian Gulf", "timestamp": "2026-07-20T02:07:00Z"},
-    {"amount": 88, "location": "Great Pacific Garbage Patch", "timestamp": "2026-07-19T18:34:00Z"},
-    {"amount": 20, "location": "Coral Triangle", "timestamp": "2026-07-28T16:43:00Z"},
-    {"amount": 72, "location": "Persian Gulf", "timestamp": "2026-07-07T13:25:00Z"},
-    {"amount": 46, "location": "Mediterranean Sea", "timestamp": "2026-07-26T07:52:00Z"},
-    {"amount": 41, "location": "Caribbean Sea", "timestamp": "2026-07-05T14:55:00Z"},
-    {"amount": 80, "location": "Coral Triangle", "timestamp": "2026-07-01T16:00:00Z"},
-    {"amount": 59, "location": "Coral Triangle", "timestamp": "2026-07-01T03:20:00Z"},
-    {"amount": 88, "location": "Great Pacific Garbage Patch", "timestamp": "2026-07-27T00:28:00Z"},
-    {"amount": 61, "location": "Persian Gulf", "timestamp": "2026-07-14T16:48:00Z"},
-    {"amount": 83, "location": "North Atlantic Gyre", "timestamp": "2026-07-28T22:23:00Z"},
-    {"amount": 95, "location": "Caribbean Sea", "timestamp": "2026-07-25T09:13:00Z"},
-    {"amount": 108, "location": "South China Sea", "timestamp": "2026-07-06T08:11:00Z"},
-    {"amount": 57, "location": "Caribbean Sea", "timestamp": "2026-07-26T08:57:00Z"},
-    {"amount": 73, "location": "Coral Triangle", "timestamp": "2026-07-23T23:43:00Z"},
-    {"amount": 46, "location": "Great Pacific Garbage Patch", "timestamp": "2026-07-22T19:25:00Z"},
-    {"amount": 99, "location": "Baltic Sea", "timestamp": "2026-07-23T13:04:00Z"},
-    {"amount": 82, "location": "Persian Gulf", "timestamp": "2026-07-23T07:57:00Z"},
-    {"amount": 97, "location": "South China Sea", "timestamp": "2026-07-08T16:35:00Z"},
-    {"amount": 55, "location": "North Atlantic Gyre", "timestamp": "2026-07-27T23:39:00Z"},
-    {"amount": 46, "location": "Persian Gulf", "timestamp": "2026-07-23T11:24:00Z"},
-    {"amount": 101, "location": "Coral Triangle", "timestamp": "2026-07-04T01:07:00Z"},
-    {"amount": 99, "location": "Mediterranean Sea", "timestamp": "2026-07-03T15:31:00Z"}
+    { "amount": 106, "location": "Gulf of Mexico", "timestamp": "2026-07-05T19:08:00Z" },
+    { "amount": 102, "location": "Persian Gulf", "timestamp": "2026-07-20T02:07:00Z" },
+    {
+      "amount": 88,
+      "location": "Great Pacific Garbage Patch",
+      "timestamp": "2026-07-19T18:34:00Z"
+    },
+    { "amount": 20, "location": "Coral Triangle", "timestamp": "2026-07-28T16:43:00Z" },
+    { "amount": 72, "location": "Persian Gulf", "timestamp": "2026-07-07T13:25:00Z" },
+    { "amount": 46, "location": "Mediterranean Sea", "timestamp": "2026-07-26T07:52:00Z" },
+    { "amount": 41, "location": "Caribbean Sea", "timestamp": "2026-07-05T14:55:00Z" },
+    { "amount": 80, "location": "Coral Triangle", "timestamp": "2026-07-01T16:00:00Z" },
+    { "amount": 59, "location": "Coral Triangle", "timestamp": "2026-07-01T03:20:00Z" },
+    {
+      "amount": 88,
+      "location": "Great Pacific Garbage Patch",
+      "timestamp": "2026-07-27T00:28:00Z"
+    },
+    { "amount": 61, "location": "Persian Gulf", "timestamp": "2026-07-14T16:48:00Z" },
+    { "amount": 83, "location": "North Atlantic Gyre", "timestamp": "2026-07-28T22:23:00Z" },
+    { "amount": 95, "location": "Caribbean Sea", "timestamp": "2026-07-25T09:13:00Z" },
+    { "amount": 108, "location": "South China Sea", "timestamp": "2026-07-06T08:11:00Z" },
+    { "amount": 57, "location": "Caribbean Sea", "timestamp": "2026-07-26T08:57:00Z" },
+    { "amount": 73, "location": "Coral Triangle", "timestamp": "2026-07-23T23:43:00Z" },
+    {
+      "amount": 46,
+      "location": "Great Pacific Garbage Patch",
+      "timestamp": "2026-07-22T19:25:00Z"
+    },
+    { "amount": 99, "location": "Baltic Sea", "timestamp": "2026-07-23T13:04:00Z" },
+    { "amount": 82, "location": "Persian Gulf", "timestamp": "2026-07-23T07:57:00Z" },
+    { "amount": 97, "location": "South China Sea", "timestamp": "2026-07-08T16:35:00Z" },
+    { "amount": 55, "location": "North Atlantic Gyre", "timestamp": "2026-07-27T23:39:00Z" },
+    { "amount": 46, "location": "Persian Gulf", "timestamp": "2026-07-23T11:24:00Z" },
+    { "amount": 101, "location": "Coral Triangle", "timestamp": "2026-07-04T01:07:00Z" },
+    { "amount": 99, "location": "Mediterranean Sea", "timestamp": "2026-07-03T15:31:00Z" }
   ],
   "missions": [
     {
@@ -168,7 +180,12 @@
           },
           {
             "question": "What is the direct trigger of coral bleaching?",
-            "options": ["Ocean acidification alone", "Sustained warm temperatures that stress corals", "Plastic debris on the reef", "Predatory fish"],
+            "options": [
+              "Ocean acidification alone",
+              "Sustained warm temperatures that stress corals",
+              "Plastic debris on the reef",
+              "Predatory fish"
+            ],
             "answer": 1
           }
         ]
@@ -195,12 +212,22 @@
         "quiz": [
           {
             "question": "How much plastic is estimated to enter the ocean every year?",
-            "options": ["8 to 12 million tonnes", "1 to 2 million tonnes", "50 million tonnes", "Less than 100,000 tonnes"],
+            "options": [
+              "8 to 12 million tonnes",
+              "1 to 2 million tonnes",
+              "50 million tonnes",
+              "Less than 100,000 tonnes"
+            ],
             "answer": 0
           },
           {
             "question": "Why does plastic persist in the ocean for centuries?",
-            "options": ["It biodegrades extremely slowly", "It photodegrades into smaller fragments instead of breaking down", "Marine bacteria cannot attach to it", "It sinks below the reach of decomposers"],
+            "options": [
+              "It biodegrades extremely slowly",
+              "It photodegrades into smaller fragments instead of breaking down",
+              "Marine bacteria cannot attach to it",
+              "It sinks below the reach of decomposers"
+            ],
             "answer": 1
           }
         ]
@@ -227,12 +254,22 @@
         "quiz": [
           {
             "question": "What is the key difference between an ROV and an AUV?",
-            "options": ["ROVs are tethered and human-controlled; AUVs run autonomous missions", "ROVs fly above the water", "AUVs are always larger than ROVs", "There is no practical difference"],
+            "options": [
+              "ROVs are tethered and human-controlled; AUVs run autonomous missions",
+              "ROVs fly above the water",
+              "AUVs are always larger than ROVs",
+              "There is no practical difference"
+            ],
             "answer": 0
           },
           {
             "question": "Why do underwater robots rely on acoustic sensors for navigation?",
-            "options": ["Radio waves do not travel well through water", "Sonar is cheaper than cameras", "Cameras always fail underwater", "Sound waves travel slower in air"],
+            "options": [
+              "Radio waves do not travel well through water",
+              "Sonar is cheaper than cameras",
+              "Cameras always fail underwater",
+              "Sound waves travel slower in air"
+            ],
             "answer": 0
           }
         ]
@@ -264,7 +301,12 @@
           },
           {
             "question": "What does eutrophication cause in coastal waters?",
-            "options": ["Higher oxygen levels", "Algal blooms that collapse oxygen levels", "Cleared, transparent water", "Faster coral growth"],
+            "options": [
+              "Higher oxygen levels",
+              "Algal blooms that collapse oxygen levels",
+              "Cleared, transparent water",
+              "Faster coral growth"
+            ],
             "answer": 1
           }
         ]
@@ -291,12 +333,22 @@
         "quiz": [
           {
             "question": "Why do monitoring programs combine buoys, robotic surveys, and citizen samples?",
-            "options": ["It is cheaper than any single method", "Repeated sampling separates real trends from natural variation", "Robots alone are unreliable", "Buoys are the only instruments that collect plastic"],
+            "options": [
+              "It is cheaper than any single method",
+              "Repeated sampling separates real trends from natural variation",
+              "Robots alone are unreliable",
+              "Buoys are the only instruments that collect plastic"
+            ],
             "answer": 1
           },
           {
             "question": "What makes citizen science useful at ocean scale?",
-            "options": ["Volunteers replace all research instruments", "Consistent protocols turn many observers into reliable sensors", "No training or tools are needed", "It only works for fish counts"],
+            "options": [
+              "Volunteers replace all research instruments",
+              "Consistent protocols turn many observers into reliable sensors",
+              "No training or tools are needed",
+              "It only works for fish counts"
+            ],
             "answer": 1
           }
         ]
@@ -323,12 +375,22 @@
         "quiz": [
           {
             "question": "What do coral nurseries do before outplanting fragments onto degraded reefs?",
-            "options": ["Grow fragments on underwater frames", "Build artificial islands", "Remove all fish from the area", "Drain the surrounding water"],
+            "options": [
+              "Grow fragments on underwater frames",
+              "Build artificial islands",
+              "Remove all fish from the area",
+              "Drain the surrounding water"
+            ],
             "answer": 0
           },
           {
             "question": "Why does prevention beat restoration in marine conservation?",
-            "options": ["Restoration is slow, expensive, and uncertain", "Prevention is more visible to the public", "Restoration never succeeds", "Prevention costs more than cleanup"],
+            "options": [
+              "Restoration is slow, expensive, and uncertain",
+              "Prevention is more visible to the public",
+              "Restoration never succeeds",
+              "Prevention costs more than cleanup"
+            ],
             "answer": 0
           }
         ]

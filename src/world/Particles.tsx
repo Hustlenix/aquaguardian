@@ -69,11 +69,7 @@ interface LayerConfig {
   wobble: number
 }
 
-function ParticleLayer({
-  config,
-}: {
-  config: LayerConfig
-}) {
+function ParticleLayer({ config }: { config: LayerConfig }) {
   const ref = useRef<THREE.Points>(null)
   const safeCount = Math.max(1, config.count)
 
@@ -123,7 +119,7 @@ function ParticleLayer({
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),
-    [config.color, config.opacity]
+    [config.color, config.opacity],
   )
 
   useEffect(() => {
@@ -133,6 +129,14 @@ function ParticleLayer({
   useEffect(() => {
     material.uniforms.uOpacity.value = config.opacity
   }, [material, config.opacity])
+
+  // Clean up imperatively allocated WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+      material.dispose()
+    }
+  }, [geometry, material])
 
   useFrame((state, delta) => {
     material.uniforms.uTime.value = state.clock.elapsedTime
@@ -146,8 +150,10 @@ function ParticleLayer({
     for (let i = 0; i < safeCount; i++) {
       // Velocity drift + sinusoidal wobble.
       pos[i * 3] += v[i * 3] * dt + Math.sin(t * 0.4 + ph[i]) * config.wobble * dt
-      pos[i * 3 + 1] += v[i * 3 + 1] * dt + Math.sin(t * 0.55 + ph[i] * 1.7) * config.wobble * 0.5 * dt
-      pos[i * 3 + 2] += v[i * 3 + 2] * dt + Math.cos(t * 0.3 + ph[i] * 0.9) * config.wobble * 0.7 * dt
+      pos[i * 3 + 1] +=
+        v[i * 3 + 1] * dt + Math.sin(t * 0.55 + ph[i] * 1.7) * config.wobble * 0.5 * dt
+      pos[i * 3 + 2] +=
+        v[i * 3 + 2] * dt + Math.cos(t * 0.3 + ph[i] * 0.9) * config.wobble * 0.7 * dt
 
       // Seamless wrap.
       const x = pos[i * 3]
@@ -216,7 +222,7 @@ export default function Particles(props: ParticlesProps) {
         wobble: 0.045 * speed,
       },
     ],
-    [baseCount, sizeMul, speed, props.color, props.opacity]
+    [baseCount, sizeMul, speed, props.color, props.opacity],
   )
 
   return (

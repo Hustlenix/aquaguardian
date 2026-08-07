@@ -63,12 +63,7 @@ export default function Effects() {
             distanceFalloff={0.4}
           />
           {/* Very light DoF — focus on the mid-field, background dissolves */}
-          <DepthOfField
-            focusDistance={0.38}
-            focalLength={0.1}
-            bokehScale={1.4}
-            height={480}
-          />
+          <DepthOfField focusDistance={0.38} focalLength={0.1} bokehScale={1.4} height={480} />
           <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
           {/* Final grade — a whisper of contrast deepens the abyss, a slight
               desaturation sinks the blues while the golds stay warm */}

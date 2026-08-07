@@ -75,13 +75,43 @@ export function RobotModel({
     <group ref={group} {...props} dispose={null}>
       <group name="Root_Scene">
         <primitive object={nodes.Bone} />
-        <group name="HandR" position={[-0.003, 2.37, -0.021]} rotation={[-Math.PI / 2, 0, 0]} scale={100}>
-          <skinnedMesh name="HandR_1" geometry={nodes.HandR_1.geometry} material={materials.Main} skeleton={nodes.HandR_1.skeleton} />
-          <skinnedMesh name="HandR_2" geometry={nodes.HandR_2.geometry} material={materials.Grey} skeleton={nodes.HandR_2.skeleton} />
+        <group
+          name="HandR"
+          position={[-0.003, 2.37, -0.021]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          scale={100}
+        >
+          <skinnedMesh
+            name="HandR_1"
+            geometry={nodes.HandR_1.geometry}
+            material={materials.Main}
+            skeleton={nodes.HandR_1.skeleton}
+          />
+          <skinnedMesh
+            name="HandR_2"
+            geometry={nodes.HandR_2.geometry}
+            material={materials.Grey}
+            skeleton={nodes.HandR_2.skeleton}
+          />
         </group>
-        <group name="HandL" position={[-0.003, 2.37, -0.021]} rotation={[-Math.PI / 2, 0, 0]} scale={100}>
-          <skinnedMesh name="HandL_1" geometry={nodes.HandL_1.geometry} material={materials.Main} skeleton={nodes.HandL_1.skeleton} />
-          <skinnedMesh name="HandL_2" geometry={nodes.HandL_2.geometry} material={materials.Grey} skeleton={nodes.HandL_2.skeleton} />
+        <group
+          name="HandL"
+          position={[-0.003, 2.37, -0.021]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          scale={100}
+        >
+          <skinnedMesh
+            name="HandL_1"
+            geometry={nodes.HandL_1.geometry}
+            material={materials.Main}
+            skeleton={nodes.HandL_1.skeleton}
+          />
+          <skinnedMesh
+            name="HandL_2"
+            geometry={nodes.HandL_2.geometry}
+            material={materials.Grey}
+            skeleton={nodes.HandL_2.skeleton}
+          />
         </group>
         {/* Named group so Robot.tsx can scan the head procedurally (neck pivot). */}
         <group ref={headRef} name="Head" position={[0, HEAD_PIVOT_Y, 0]}>

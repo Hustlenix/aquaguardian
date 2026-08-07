@@ -55,8 +55,14 @@ export default function CameraRig() {
       const dx = e.touches[0].clientX - lastTouch.current.x
       const dy = e.touches[0].clientY - lastTouch.current.y
       lastTouch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
-      touchGoal.current.x = Math.max(-TOUCH_MAX, Math.min(TOUCH_MAX, touchGoal.current.x + dx * 0.003))
-      touchGoal.current.y = Math.max(-TOUCH_MAX, Math.min(TOUCH_MAX, touchGoal.current.y + dy * 0.003))
+      touchGoal.current.x = Math.max(
+        -TOUCH_MAX,
+        Math.min(TOUCH_MAX, touchGoal.current.x + dx * 0.003),
+      )
+      touchGoal.current.y = Math.max(
+        -TOUCH_MAX,
+        Math.min(TOUCH_MAX, touchGoal.current.y + dy * 0.003),
+      )
     }
     const onEnd = () => {
       lastTouch.current = null

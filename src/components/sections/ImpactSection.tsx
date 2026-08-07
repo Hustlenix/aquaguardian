@@ -66,7 +66,9 @@ export default function ImpactSection() {
         {stats.map((stat, i) => (
           <MotionLink
             key={stat.label}
-            href={i === 0 ? '/dashboard' : i === 1 ? '/missions' : i === 2 ? '/learn' : '/assistant'}
+            href={
+              i === 0 ? '/dashboard' : i === 1 ? '/missions' : i === 2 ? '/learn' : '/assistant'
+            }
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -86,9 +88,7 @@ export default function ImpactSection() {
             <div className="text-sm font-medium tracking-wide text-text uppercase mb-1">
               {stat.label}
             </div>
-            <div className="text-xs text-text-muted">
-              {stat.sub}
-            </div>
+            <div className="text-xs text-text-muted">{stat.sub}</div>
           </MotionLink>
         ))}
       </div>
