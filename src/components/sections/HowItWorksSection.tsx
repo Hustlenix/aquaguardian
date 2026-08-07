@@ -35,8 +35,8 @@ export default function HowItWorksSection() {
       <h2 className="heading-lg text-gold-400 text-center mb-4">HOW IT WORKS</h2>
 
       <p className="text-elegant text-center text-white/70 max-w-3xl mx-auto mb-16">
-        From monitoring to restoration — the three-phase concept the story imagines for
-        protecting our oceans.
+        From monitoring to restoration — the three-phase concept the story imagines for protecting
+        our oceans.
       </p>
 
       {/* Steps with connecting line */}

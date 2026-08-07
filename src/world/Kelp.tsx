@@ -1,6 +1,6 @@
 'use client'
 
-import { useLayoutEffect, useMemo, useRef } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -48,10 +48,18 @@ function KelpField({ density }: { density: number }) {
       const y = -0.5 + t
       const halfW = 0.045 - t * (0.045 - 0.012) // 0.045 base → 0.012 tip
       positions.push(
-        -halfW, y, halfDepth,
-        halfW, y, halfDepth,
-        halfW, y, -halfDepth,
-        -halfW, y, -halfDepth
+        -halfW,
+        y,
+        halfDepth,
+        halfW,
+        y,
+        halfDepth,
+        halfW,
+        y,
+        -halfDepth,
+        -halfW,
+        y,
+        -halfDepth,
       )
     }
     for (let i = 0; i < rings; i++) {
@@ -83,7 +91,7 @@ function KelpField({ density }: { density: number }) {
         rotY: Math.random() * Math.PI,
         color: new THREE.Color(KELP_COLORS[Math.floor(Math.random() * KELP_COLORS.length)]),
       })),
-    [count]
+    [count],
   )
 
   const material = useMemo(() => {
@@ -109,11 +117,19 @@ function KelpField({ density }: { density: number }) {
           float sway = sin(uTime * 0.85 + aPhase) * (0.10 + 0.42 * k * k);
           transformed.x += sway * k;
           transformed.z += cos(uTime * 0.65 + aPhase * 1.3) * 0.07 * k * k;
-          `
+          `,
         )
     }
     return m
   }, [timeUniform])
+
+  // Clean up imperatively allocated WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+      material.dispose()
+    }
+  }, [geometry, material])
 
   // Per-stalk color set once.
   useLayoutEffect(() => {
@@ -142,7 +158,12 @@ function KelpField({ density }: { density: number }) {
   })
 
   return (
-    <instancedMesh ref={ref} args={[geometry, material, MAX_STALKS]} count={count} frustumCulled={false} />
+    <instancedMesh
+      ref={ref}
+      args={[geometry, material, MAX_STALKS]}
+      count={count}
+      frustumCulled={false}
+    />
   )
 }
 

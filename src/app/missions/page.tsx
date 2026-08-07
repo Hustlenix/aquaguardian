@@ -4,12 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Check, RotateCcw, Trophy } from 'lucide-react'
-import {
-  getMissions,
-  toggleMission,
-  resetMissionProgress,
-  type Mission,
-} from '@/lib/api'
+import { getMissions, toggleMission, resetMissionProgress, type Mission } from '@/lib/api'
 
 const DIFFICULTY_STYLES: Record<Mission['difficulty'], string> = {
   Easy: 'bg-emerald-400/15 text-emerald-300',
@@ -43,15 +38,12 @@ export default function MissionsPage() {
   const total = missions.length
   const pct = total > 0 ? Math.round((completedCount / total) * 100) : 0
 
-  const filtered =
-    filter === 'All' ? missions : missions.filter((m) => m.category === filter)
+  const filtered = filter === 'All' ? missions : missions.filter((m) => m.category === filter)
 
   const handleToggle = async (id: string) => {
     setToggling(id)
     // Optimistic update — flip immediately, reconcile with the API result.
-    setMissions((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, completed: !m.completed } : m))
-    )
+    setMissions((prev) => prev.map((m) => (m.id === id ? { ...m, completed: !m.completed } : m)))
     try {
       const updated = await toggleMission(id)
       setMissions((prev) => prev.map((m) => (m.id === id ? updated : m)))
@@ -77,7 +69,10 @@ export default function MissionsPage() {
               Track conservation missions with clear stages and evidence.
             </h1>
           </div>
-          <Link href="/" className="rounded-full border border-gold-400/30 px-4 py-2 text-sm text-gold-400 transition hover:border-gold-400/60 hover:bg-gold-400/10">
+          <Link
+            href="/"
+            className="rounded-full border border-gold-400/30 px-4 py-2 text-sm text-gold-400 transition hover:border-gold-400/60 hover:bg-gold-400/10"
+          >
             Back to story
           </Link>
         </div>
@@ -85,7 +80,9 @@ export default function MissionsPage() {
         <section className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/70">Mission progress</p>
+              <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/70">
+                Mission progress
+              </p>
               <p className="mt-2 text-3xl font-semibold text-white">
                 {loading ? '…' : `${completedCount} / ${total} complete`}
               </p>
@@ -134,13 +131,13 @@ export default function MissionsPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: index * 0.08 }}
               className={`flex flex-col rounded-3xl border p-6 backdrop-blur-xl transition-colors ${
-                item.completed
-                  ? 'border-cyan-400/30 bg-cyan-400/5'
-                  : 'border-white/10 bg-white/5'
+                item.completed ? 'border-cyan-400/30 bg-cyan-400/5' : 'border-white/10 bg-white/5'
               }`}
             >
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/70">{item.category}</p>
+                <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/70">
+                  {item.category}
+                </p>
                 <span
                   className={`rounded-full px-3 py-1 text-xs ${DIFFICULTY_STYLES[item.difficulty]}`}
                 >
@@ -150,9 +147,7 @@ export default function MissionsPage() {
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 <span
                   className={`rounded-full px-3 py-1 text-xs ${
-                    item.completed
-                      ? 'bg-cyan-400/15 text-cyan-300'
-                      : 'bg-gold-400/10 text-gold-400'
+                    item.completed ? 'bg-cyan-400/15 text-cyan-300' : 'bg-gold-400/10 text-gold-400'
                   }`}
                 >
                   {item.completed ? 'Completed' : `+${item.impact} kg impact`}

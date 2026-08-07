@@ -34,8 +34,8 @@ export default function TeamSection() {
       <h2 className="heading-lg text-gold-400 text-center mb-4">ABOUT THIS PROJECT</h2>
 
       <p className="text-elegant text-center text-white/70 max-w-3xl mx-auto mb-12">
-        A concept built to make ocean-restoration ideas visible — and to show what modern
-        frontend engineering can do.
+        A concept built to make ocean-restoration ideas visible — and to show what modern frontend
+        engineering can do.
       </p>
 
       <motion.div

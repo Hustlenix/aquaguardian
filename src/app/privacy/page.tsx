@@ -29,9 +29,9 @@ export default function PrivacyPage() {
             <section>
               <h2 className="heading-md text-white mb-3">1. Information We Collect</h2>
               <p className="text-text-muted">
-                When you subscribe to our newsletter, we collect your email address. That&apos;s
-                all — this site runs no analytics, no advertising trackers, and no third-party
-                tracking scripts. There is nothing to configure or opt out of.
+                When you subscribe to our newsletter, we collect your email address. That&apos;s all
+                — this site runs no analytics, no advertising trackers, and no third-party tracking
+                scripts. There is nothing to configure or opt out of.
               </p>
             </section>
 

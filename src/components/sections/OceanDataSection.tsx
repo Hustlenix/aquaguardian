@@ -73,8 +73,8 @@ export default function OceanDataSection() {
       <div className="text-center mb-12">
         <h2 className="heading-lg text-gold-400">REAL OCEAN DATA</h2>
         <p className="text-elegant text-white/70 max-w-2xl mx-auto mt-4">
-          Cited figures on the state of the ocean — the evidence that inspires the concept story
-          and the mission ideas it imagines.
+          Cited figures on the state of the ocean — the evidence that inspires the concept story and
+          the mission ideas it imagines.
         </p>
       </div>
 
@@ -182,8 +182,8 @@ export default function OceanDataSection() {
                 {sources.join(' · ')}
               </p>
               <p className="text-body text-xs leading-relaxed mt-3 text-text-muted/70">
-                The dashboard pipeline numbers are simulated demo data (generated with a fixed
-                seed) — these figures are cited research, not outputs from any real device.
+                The dashboard pipeline numbers are simulated demo data (generated with a fixed seed)
+                — these figures are cited research, not outputs from any real device.
               </p>
             </div>
           </div>

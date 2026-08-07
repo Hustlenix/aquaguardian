@@ -38,8 +38,7 @@ export default function LearnPage() {
   const completedCount = modules.filter((m) => m.completed).length
   const total = modules.length
 
-  const getQuiz = (module: LearnModule): QuizState =>
-    quizState[module.id] ?? emptyQuizState(module)
+  const getQuiz = (module: LearnModule): QuizState => quizState[module.id] ?? emptyQuizState(module)
 
   const selectOption = (module: LearnModule, questionIndex: number, optionIndex: number) => {
     const state = getQuiz(module)
@@ -85,12 +84,17 @@ export default function LearnPage() {
       <div className="mx-auto flex max-w-7xl flex-col gap-10">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-gold-400/80">Interactive educational mode</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-gold-400/80">
+              Interactive educational mode
+            </p>
             <h1 className="mt-2 text-4xl font-semibold tracking-[0.08em] text-white sm:text-5xl">
               Teach ocean stewardship through guided, interactive learning.
             </h1>
           </div>
-          <Link href="/" className="rounded-full border border-gold-400/30 px-4 py-2 text-sm text-gold-400 transition hover:border-gold-400/60 hover:bg-gold-400/10">
+          <Link
+            href="/"
+            className="rounded-full border border-gold-400/30 px-4 py-2 text-sm text-gold-400 transition hover:border-gold-400/60 hover:bg-gold-400/10"
+          >
             Back to story
           </Link>
         </div>
@@ -99,7 +103,9 @@ export default function LearnPage() {
           <div className="flex items-center gap-4">
             <BookOpen className="h-8 w-8 text-cyan-400" strokeWidth={1.5} />
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/70">Learning progress</p>
+              <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/70">
+                Learning progress
+              </p>
               <p className="mt-1 text-2xl font-semibold text-white">
                 {loading ? '…' : `${completedCount} / ${total} modules completed`}
               </p>
@@ -218,8 +224,7 @@ export default function LearnPage() {
                                         className =
                                           'border-emerald-400/50 bg-emerald-400/10 text-emerald-300'
                                       } else if (showFeedback && selected) {
-                                        className =
-                                          'border-red-400/50 bg-red-400/10 text-red-300'
+                                        className = 'border-red-400/50 bg-red-400/10 text-red-300'
                                       } else if (showFeedback) {
                                         className =
                                           'border-white/5 bg-white/[0.02] text-text-muted opacity-50'
@@ -257,7 +262,10 @@ export default function LearnPage() {
                               <div className="mt-4 space-y-3">
                                 {quiz.passed ? (
                                   <div className="flex items-center gap-3 rounded-xl border border-cyan-400/25 bg-cyan-400/10 px-4 py-3">
-                                    <Trophy className="h-5 w-5 shrink-0 text-gold-400" strokeWidth={1.5} />
+                                    <Trophy
+                                      className="h-5 w-5 shrink-0 text-gold-400"
+                                      strokeWidth={1.5}
+                                    />
                                     <p className="text-sm text-cyan-100">
                                       Quiz passed — completion unlocked. Complete the module to
                                       record your progress.

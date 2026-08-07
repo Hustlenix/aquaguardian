@@ -12,7 +12,9 @@ export default function GlobalError({
       <body className="bg-[#010B13]">
         <main className="flex min-h-screen items-center justify-center px-6 py-16 text-white">
           <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">Deep system failure</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-cyan-400/80">
+              Deep system failure
+            </p>
             <h1 className="text-6xl font-semibold tracking-[0.08em] text-gold-400 sm:text-7xl">
               {error.digest ?? '500'}
             </h1>

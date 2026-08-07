@@ -39,6 +39,7 @@ The scene is a fully procedural R3F world (16 files in `src/world/`, 3 custom sh
 **Asset (user-approved):** Quaternius **Animated Robot** — CC0 (Public Domain), humanoid robot matching the AUV identity. Download source: Poly Pizza `https://poly.pizza/m/QCm7qe9uNJ` (Animated Robot by Quaternius, GLTF format, Public Domain CC0). Fallback (also CC0): three.js `RobotExpressive.glb` by Tomás Laulhé / mods Don McCurdy — `https://threejs.org/examples/models/gltf/RobotExpressive/RobotExpressive.glb` (CC0 verified in three.js repo/examples). Exact download URL for the Poly Pizza file is fetched from the model page at execution time; license badge re-verified on that page before committing.
 
 **Work:**
+
 1. Download the Quaternius Animated Robot GLB (from Poly Pizza page; fallback RobotExpressive.glb).
 2. Optimize: `npx @gltf-transform/cli optimize in.glb out.glb --compress meshopt` (or gltfjsx `--transform --compress`) to get well under the 1 MB target.
 3. Generate JSX with `npx @pmndrs/gltfjsx out.glb --types --shadows=false` → `src/world/RobotModel.tsx` (new file next to the other scene files in `src/world/`, which is the established pattern).
@@ -119,12 +120,12 @@ WebGPU/FFT water, drei Water/Water2, raymarched water shaders, transmission-mate
 
 ## Risk & Effort
 
-| Phase | Risk | Effort | Mitigation |
-|---|---|---|---|
-| 1 Robot swap | Low–Med (asset pipeline, bone mapping) | Med | gltfjsx one-time; keep procedural fallback; verify CC0 on download page |
-| 2 Ocean life | Low (new component, primitive swaps) | Med | tier counts; no sim changes |
-| 3 Water/caustics | Low (shader-only) | Low–Med | keep fragment grade intact; visual gate |
-| 4 Lighting/post | Low | Low | mobile path untouched; 9→7 lights |
+| Phase            | Risk                                   | Effort  | Mitigation                                                              |
+| ---------------- | -------------------------------------- | ------- | ----------------------------------------------------------------------- |
+| 1 Robot swap     | Low–Med (asset pipeline, bone mapping) | Med     | gltfjsx one-time; keep procedural fallback; verify CC0 on download page |
+| 2 Ocean life     | Low (new component, primitive swaps)   | Med     | tier counts; no sim changes                                             |
+| 3 Water/caustics | Low (shader-only)                      | Low–Med | keep fragment grade intact; visual gate                                 |
+| 4 Lighting/post  | Low                                    | Low     | mobile path untouched; 9→7 lights                                       |
 
 ## Verification Plan
 

@@ -62,8 +62,8 @@ export default function TimelineSection() {
           FROM CONCEPT TO REALITY
         </motion.h2>
         <p className="text-elegant text-center text-white/70 max-w-2xl mx-auto mb-16">
-          The development path this concept would need to follow — no dates are claimed because
-          no hardware exists, and no deployment has taken place.
+          The development path this concept would need to follow — no dates are claimed because no
+          hardware exists, and no deployment has taken place.
         </p>
 
         <div className="relative max-w-3xl mx-auto">

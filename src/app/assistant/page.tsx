@@ -51,12 +51,17 @@ export default function AssistantPage() {
       <div className="mx-auto flex max-w-4xl flex-col gap-10">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-gold-400/80">AI assistant companion</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-gold-400/80">
+              AI assistant companion
+            </p>
             <h1 className="mt-2 text-4xl font-semibold tracking-[0.08em] text-white sm:text-5xl">
               Give visitors a guided explanation layer for the mission and technology.
             </h1>
           </div>
-          <Link href="/" className="rounded-full border border-gold-400/30 px-4 py-2 text-sm text-gold-400 transition hover:border-gold-400/60 hover:bg-gold-400/10">
+          <Link
+            href="/"
+            className="rounded-full border border-gold-400/30 px-4 py-2 text-sm text-gold-400 transition hover:border-gold-400/60 hover:bg-gold-400/10"
+          >
             Back to story
           </Link>
         </div>
@@ -67,9 +72,12 @@ export default function AssistantPage() {
               <div className="flex h-full flex-col items-center justify-center gap-6 text-center">
                 <Sparkles className="h-10 w-10 text-cyan-400/70" strokeWidth={1} />
                 <div>
-                  <p className="text-lg font-medium text-white">Ask me anything about the mission.</p>
+                  <p className="text-lg font-medium text-white">
+                    Ask me anything about the mission.
+                  </p>
                   <p className="mt-2 text-sm text-text-muted">
-                    I can explain the ocean crisis, the Aegis robot, the technology, or the impact we track.
+                    I can explain the ocean crisis, the Aegis robot, the technology, or the impact
+                    we track.
                   </p>
                 </div>
                 <div className="flex flex-wrap justify-center gap-3">

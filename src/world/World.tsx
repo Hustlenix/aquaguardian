@@ -107,7 +107,7 @@ export default function World() {
   // dpr cap: [1, 1.5] on mobile/low, [1, 2] on desktop/high.
   const dpr = useMemo<[number, number]>(
     () => (deviceTier === 'low' || quality < 0.75 ? [1, 1.5] : [1, 2]),
-    [deviceTier, quality]
+    [deviceTier, quality],
   )
 
   const canvasWrapperStyle = useMemo(
@@ -119,7 +119,7 @@ export default function World() {
       pointerEvents: 'none' as const,
       zIndex: 0,
     }),
-    []
+    [],
   )
 
   return (

@@ -4,10 +4,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useStore } from '@/store/useStore'
-import {
-  waterCausticsVertexShader,
-  waterCausticsFragmentShader,
-} from '@/shaders/waterCaustics'
+import { waterCausticsVertexShader, waterCausticsFragmentShader } from '@/shaders/waterCaustics'
 
 interface CausticsProps {
   color?: string
@@ -28,10 +25,7 @@ export default function Caustics({ color = '#7FD4E8', opacity = 0.22 }: Caustics
   // High segment count only at high quality; lower on mobile/medium.
   const segments = useMemo(() => (quality > 0.75 ? 96 : 32), [quality])
 
-  const geometry = useMemo(
-    () => new THREE.PlaneGeometry(60, 48, segments, segments),
-    [segments]
-  )
+  const geometry = useMemo(() => new THREE.PlaneGeometry(60, 48, segments, segments), [segments])
 
   const material = useMemo(() => {
     const m = new THREE.ShaderMaterial({
@@ -60,6 +54,14 @@ export default function Caustics({ color = '#7FD4E8', opacity = 0.22 }: Caustics
   useEffect(() => {
     material.uniforms.uOpacity.value = opacity
   }, [material, opacity])
+
+  // Clean up imperatively allocated WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+      material.dispose()
+    }
+  }, [geometry, material])
 
   useFrame((state) => {
     const t = state.clock.elapsedTime

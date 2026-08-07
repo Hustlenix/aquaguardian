@@ -61,15 +61,7 @@ interface BlinkClock {
   current: number
 }
 
-function Eye({
-  xOff,
-  glow,
-  blink,
-}: {
-  xOff: number
-  glow: boolean
-  blink: BlinkClock
-}) {
+function Eye({ xOff, glow, blink }: { xOff: number; glow: boolean; blink: BlinkClock }) {
   const matRef = useRef<THREE.MeshStandardMaterial>(null)
   const discRef = useRef<THREE.MeshBasicMaterial>(null)
 
@@ -198,7 +190,7 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
       groupRef.current.position.set(
         posX + Math.sin(t * 1.3) * 0.05,
         posY + Math.sin(t * 2.1) * 0.03,
-        posZ + Math.cos(t * 1.1) * 0.05
+        posZ + Math.cos(t * 1.1) * 0.05,
       )
     } else {
       groupRef.current.position.set(posX, posY, posZ)
@@ -281,13 +273,16 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
     // --- Lights: smooth damped intensities -----------------------------------
     const damp = 1 - Math.exp(-3 * delta)
     if (cyanLightRef.current) {
-      cyanLightRef.current.intensity += ((activated ? 1.1 : 0.3) - cyanLightRef.current.intensity) * damp
+      cyanLightRef.current.intensity +=
+        ((activated ? 1.1 : 0.3) - cyanLightRef.current.intensity) * damp
     }
     if (goldLightRef.current) {
-      goldLightRef.current.intensity += ((activated ? 0.9 : 0.2) - goldLightRef.current.intensity) * damp
+      goldLightRef.current.intensity +=
+        ((activated ? 0.9 : 0.2) - goldLightRef.current.intensity) * damp
     }
     if (rimLightRef.current) {
-      rimLightRef.current.intensity += ((activated ? 0.6 : 0.22) - rimLightRef.current.intensity) * damp
+      rimLightRef.current.intensity +=
+        ((activated ? 0.6 : 0.22) - rimLightRef.current.intensity) * damp
     }
   })
 
@@ -327,7 +322,7 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
           s.offsetTarget.set(
             d.x - basePos.current.x,
             d.y + HOVER_LIFT - basePos.current.y,
-            d.z - basePos.current.z
+            d.z - basePos.current.z,
           )
           s.phase = 'seek'
         }
@@ -372,8 +367,20 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
 
   return (
     <group ref={groupRef} position={position} scale={scale}>
-      <pointLight ref={cyanLightRef} position={[0, 0, 0]} intensity={0.3} color="#00E5FF" distance={5} />
-      <pointLight ref={goldLightRef} position={[0, 0.5, 0]} intensity={0.2} color="#D4AF37" distance={4} />
+      <pointLight
+        ref={cyanLightRef}
+        position={[0, 0, 0]}
+        intensity={0.3}
+        color="#00E5FF"
+        distance={5}
+      />
+      <pointLight
+        ref={goldLightRef}
+        position={[0, 0.5, 0]}
+        intensity={0.2}
+        color="#D4AF37"
+        distance={4}
+      />
       {/* Rim light — separates the robot from the dark seabed */}
       <pointLight
         ref={rimLightRef}

@@ -76,7 +76,9 @@ export default function Lighting({
 
       // Warm/cool tint driven by the current section, with a very slow drift
       // so the grade never feels locked in.
-      scratch.copy(dColor).lerp(warmth >= 0 ? gold : cool, Math.abs(warmth) + Math.sin(t * 0.2) * 0.02)
+      scratch
+        .copy(dColor)
+        .lerp(warmth >= 0 ? gold : cool, Math.abs(warmth) + Math.sin(t * 0.2) * 0.02)
       dirRef.current.color.copy(scratch)
     }
 
@@ -152,7 +154,14 @@ export default function Lighting({
         distance={14}
         decay={1.5}
       />
-      <pointLight ref={rimRef} position={[-2, 2, 10]} intensity={0.45} color="#6AB8D8" distance={18} decay={1.2} />
+      <pointLight
+        ref={rimRef}
+        position={[-2, 2, 10]}
+        intensity={0.45}
+        color="#6AB8D8"
+        distance={18}
+        decay={1.2}
+      />
     </>
   )
 }

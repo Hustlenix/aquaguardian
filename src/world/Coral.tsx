@@ -1,6 +1,6 @@
 'use client'
 
-import { useLayoutEffect, useMemo, useRef } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useStore } from '@/store/useStore'
@@ -127,12 +127,12 @@ function InstancedCoral({
       dummy.rotation.set(
         inst.rot[0] + Math.sin(t * swaySpeed * 0.8 + inst.phase * 1.3) * 0.012,
         inst.rot[1] + sway * 0.035,
-        inst.rot[2] + Math.sin(t * swaySpeed * 0.6 + inst.phase) * 0.02
+        inst.rot[2] + Math.sin(t * swaySpeed * 0.6 + inst.phase) * 0.02,
       )
       dummy.scale.set(
         inst.scale[0] * intactScale,
         inst.scale[1] * intactScale,
-        inst.scale[2] * intactScale
+        inst.scale[2] * intactScale,
       )
       dummy.updateMatrix()
       mesh.setMatrixAt(i, dummy.matrix)
@@ -207,7 +207,7 @@ export default function Coral({ intact = 1 }: CoralProps) {
       high
         ? { branch: 14, plate: 8, stalk: 16, fern: 12 }
         : { branch: 8, plate: 5, stalk: 9, fern: 6 },
-    [high]
+    [high],
   )
 
   const instances = useMemo(() => {
@@ -218,7 +218,7 @@ export default function Coral({ intact = 1 }: CoralProps) {
       sMin: number,
       sMax: number,
       yMin: number,
-      yMax: number
+      yMax: number,
     ): CoralInstance[] =>
       Array.from({ length: n }, () => {
         const { x, z } = randomPlacement(rand)
@@ -247,8 +247,18 @@ export default function Coral({ intact = 1 }: CoralProps) {
       stalk: makeStalkGeometry(),
       fern: makeFernGeometry(),
     }),
-    []
+    [],
   )
+
+  // Clean up imperatively allocated WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometries.branch.dispose()
+      geometries.plate.dispose()
+      geometries.stalk.dispose()
+      geometries.fern.dispose()
+    }
+  }, [geometries])
 
   return (
     <group>
