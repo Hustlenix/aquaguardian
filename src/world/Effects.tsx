@@ -11,6 +11,8 @@ import {
   SSAO,
   DepthOfField,
   ToneMapping,
+  HueSaturation,
+  BrightnessContrast,
 } from '@react-three/postprocessing'
 import { ToneMappingMode } from 'postprocessing'
 
@@ -68,6 +70,10 @@ export default function Effects() {
             height={480}
           />
           <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+          {/* Final grade — a whisper of contrast deepens the abyss, a slight
+              desaturation sinks the blues while the golds stay warm */}
+          <HueSaturation hue={-0.02} saturation={-0.1} />
+          <BrightnessContrast brightness={-0.02} contrast={0.12} />
           <Vignette eskil={false} offset={0.25} darkness={0.55} />
           <Noise premultiply opacity={0.018} />
           <ChromaticAberration offset={[0.0012, 0.0008]} />

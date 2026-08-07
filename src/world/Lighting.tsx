@@ -134,8 +134,6 @@ export default function Lighting({
         distance={20}
         decay={1.5}
       />
-      <pointLight position={[-3, 0, 2]} intensity={0.3} color="#00E5FF" distance={12} decay={1} />
-
       {/* Under-bounce from the seabed — the floor catches and returns cyan light */}
       <pointLight
         ref={bounceRef}
@@ -154,9 +152,6 @@ export default function Lighting({
         distance={14}
         decay={1.5}
       />
-      <pointLight position={[-8, -2, -12]} intensity={0.5} color="#4A8AAA" distance={15} decay={1} />
-      <pointLight position={[8, -1, -10]} intensity={0.3} color="#6AA0B0" distance={12} decay={1} />
-
       <pointLight ref={rimRef} position={[-2, 2, 10]} intensity={0.45} color="#6AB8D8" distance={18} decay={1.2} />
     </>
   )

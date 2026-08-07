@@ -20,6 +20,7 @@ import Jellyfish from './Jellyfish'
 import Ruins from './Ruins'
 import Effects from './Effects'
 import Environment from './Environment'
+import EnvReflections from './EnvReflections'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import { useStore } from '@/store/useStore'
 
@@ -42,6 +43,7 @@ import { useStore } from '@/store/useStore'
  */
 function SceneContent() {
   const sceneState = useStore((s) => s.sceneState)
+  const quality = useStore((s) => s.quality)
   const { lighting, water, environment, particles: particleCfg } = sceneState
 
   const fogColor = useMemo(() => new THREE.Color(lighting.fogColor), [lighting.fogColor])
@@ -66,6 +68,7 @@ function SceneContent() {
         <Kelp density={kelpDensity} />
         <LightRays color={environment.lightRayColor} opacity={environment.lightRayOpacity} />
         <Environment />
+        {quality > 0.75 && <EnvReflections />}
         <Particles
           count={particleCfg.count}
           color={particleCfg.color}
