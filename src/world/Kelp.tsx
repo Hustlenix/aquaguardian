@@ -36,7 +36,37 @@ function KelpField({ density }: { density: number }) {
   const count = Math.min(MAX_STALKS, Math.round(8 + density * 12))
 
   const geometry = useMemo(() => {
-    const g = new THREE.BoxGeometry(0.05, 1, 0.05, 1, 3, 1)
+    // Tapered blade: a thin prism, wide at the base, narrowing to the tip.
+    // Spans y -0.5..0.5 so the sway shader's "k = position.y*0.5+0.5" keeps
+    // working unchanged (0 at the root, 1 at the tip).
+    const rings = 4
+    const halfDepth = 0.02
+    const positions: number[] = []
+    const indices: number[] = []
+    for (let i = 0; i <= rings; i++) {
+      const t = i / rings
+      const y = -0.5 + t
+      const halfW = 0.045 - t * (0.045 - 0.012) // 0.045 base → 0.012 tip
+      positions.push(
+        -halfW, y, halfDepth,
+        halfW, y, halfDepth,
+        halfW, y, -halfDepth,
+        -halfW, y, -halfDepth
+      )
+    }
+    for (let i = 0; i < rings; i++) {
+      const a = i * 4
+      const b = a + 4
+      // front, right, back, left faces
+      indices.push(a, b, b + 1, a, b + 1, a + 1)
+      indices.push(a + 1, b + 1, b + 2, a + 1, b + 2, a + 2)
+      indices.push(a + 2, b + 2, b + 3, a + 2, b + 3, a + 3)
+      indices.push(a + 3, b + 3, b, a + 3, b, a)
+    }
+    const g = new THREE.BufferGeometry()
+    g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3))
+    g.setIndex(indices)
+    g.computeVertexNormals()
     const phases = new Float32Array(MAX_STALKS)
     for (let i = 0; i < MAX_STALKS; i++) phases[i] = Math.random() * Math.PI * 2
     g.setAttribute('aPhase', new THREE.InstancedBufferAttribute(phases, 1))
@@ -62,6 +92,7 @@ function KelpField({ density }: { density: number }) {
       roughness: 0.85,
       metalness: 0,
       flatShading: true,
+      side: THREE.DoubleSide,
       emissive: '#04120A',
       emissiveIntensity: 0.3,
     })

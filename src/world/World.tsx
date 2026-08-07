@@ -16,6 +16,7 @@ import LightRays from './LightRays'
 import Robot from './Robot'
 import Kelp from './Kelp'
 import Fish from './Fish'
+import Jellyfish from './Jellyfish'
 import Ruins from './Ruins'
 import Effects from './Effects'
 import Environment from './Environment'
@@ -72,6 +73,7 @@ function SceneContent() {
           speed={particleCfg.speed}
         />
         <Bubbles />
+        <Jellyfish />
         <Fish visible={environment.fishVisible} />
         <Robot
           visible={sceneState.robot.visible}

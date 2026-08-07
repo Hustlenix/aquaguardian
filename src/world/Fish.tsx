@@ -3,6 +3,7 @@
 import { useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 import { useStore } from '@/store/useStore'
 
 interface FishProps {
@@ -100,21 +101,79 @@ function FishSchool({ spec }: { spec: SchoolSpec }) {
     return arr
   }, [spec])
 
+  // Geometry is shared by every fish: one draw call for the whole school.
   const geometry = useMemo(() => {
-    // Bake the cone so the nose points +Z (canonical heading).
-    const g = new THREE.ConeGeometry(0.07, 0.3, 5)
-    g.rotateX(Math.PI / 2)
-    return g
-  }, [])
+    // Sleeker fish body: flattened, elongated ellipsoid (nose +Z).
+    const body = new THREE.SphereGeometry(0.07, 12, 8)
+    body.scale(1, 0.55, 1.6)
+    // Tail fin: vertical plane at the rear (root near z=-0.08).
+    const fin = new THREE.PlaneGeometry(0.1, 0.12)
+    fin.rotateY(Math.PI / 2)
+    fin.translate(0, 0, -0.1)
+    // Merge so the whole fish is ONE instanced geometry (single draw call).
+    const merged = mergeGeometries([body, fin])!
+    // Flag fin vertices so the vertex shader can swish the tail.
+    const bodyCount = body.attributes.position.count
+    const aFin = new Float32Array(merged.attributes.position.count)
+    aFin.fill(1, bodyCount)
+    merged.setAttribute('aFin', new THREE.BufferAttribute(aFin, 1))
+    // Per-instance phase so tails swish out of sync.
+    merged.setAttribute(
+      'aPhase',
+      new THREE.InstancedBufferAttribute(new Float32Array(spec.count), 1)
+    )
+    return merged
+  }, [spec])
 
-  // Instance colors are static per fish — set once.
+  const timeUniform = useMemo(() => ({ value: 0 }), [])
+
+  const material = useMemo(() => {
+    const m = new THREE.MeshStandardMaterial({
+      color: '#FFFFFF',
+      roughness: 0.45,
+      metalness: 0.25,
+      side: THREE.DoubleSide, // tail fin plane is visible from both sides
+      emissive: '#0A1620',
+      emissiveIntensity: 0.6,
+    })
+    m.onBeforeCompile = (shader) => {
+      shader.uniforms.uTime = timeUniform
+      shader.vertexShader = shader.vertexShader
+        .replace(
+          '#include <common>',
+          '#include <common>\nattribute float aFin;\nattribute float aPhase;'
+        )
+        .replace(
+          '#include <begin_vertex>',
+          `
+          #include <begin_vertex>
+          // Tail swish: fin vertices rotate around the local Y axis at the tail
+          // root. Body vertices (aFin = 0) are left untouched.
+          float sw = aFin * sin(uTime * 9.0 + aPhase) * 0.35;
+          vec3 tp = vec3(0.0, 0.0, -0.08);
+          vec3 p = transformed - tp;
+          float c = cos(sw);
+          float s = sin(sw);
+          transformed = vec3(p.x * c + p.z * s, p.y, -p.x * s + p.z * c) + tp;
+          `
+        )
+    }
+    return m
+  }, [timeUniform])
+
+  // Instance colors + tail phases are static per fish — set once.
   useLayoutEffect(() => {
     if (!ref.current) return
     for (let i = 0; i < agents.length; i++) {
       ref.current.setColorAt(i, agents[i].color)
     }
     if (ref.current.instanceColor) ref.current.instanceColor.needsUpdate = true
-  }, [agents])
+    const aPhase = geometry.getAttribute('aPhase') as THREE.InstancedBufferAttribute
+    for (let i = 0; i < agents.length; i++) {
+      aPhase.setX(i, agents[i].phase)
+    }
+    aPhase.needsUpdate = true
+  }, [agents, geometry])
 
   useFrame((state, delta) => {
     const mesh = ref.current
@@ -236,17 +295,9 @@ function FishSchool({ spec }: { spec: SchoolSpec }) {
   return (
     <instancedMesh
       ref={ref}
-      args={[geometry, undefined, spec.count]}
+      args={[geometry, material, spec.count]}
       frustumCulled={false}
-    >
-      <meshStandardMaterial
-        color="#FFFFFF"
-        roughness={0.45}
-        metalness={0.25}
-        emissive="#0A1620"
-        emissiveIntensity={0.6}
-      />
-    </instancedMesh>
+    />
   )
 }
 
