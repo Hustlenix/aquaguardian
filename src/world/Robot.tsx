@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { debrisPositions, debrisRegistry } from './Seabed'
+import { RobotModel } from './RobotModel'
 
 interface RobotProps {
   visible: boolean
@@ -22,6 +23,33 @@ const DEBRIS_RESPAWN = 12
 /** Pause between collection runs (seconds). */
 const CYCLE_COOLDOWN = 8
 
+/**
+ * The Quaternius model is 4.6 units tall (feet at y=0, dome top at y=4.61).
+ * 0.326 makes it exactly 1.5 units tall so it occupies the same footprint as
+ * the old procedural robot (base at -0.7, head centre at 0.8).
+ */
+const MODEL_SCALE = 0.326
+const MODEL_OFFSET_Y = -0.7
+
+/** Neck pivot of the model's head group (model units). */
+const HEAD_PIVOT_Y = 2.9
+/** Faceplate front / centre (model units, relative to the neck pivot). */
+const EYE_Y = 0.85
+const EYE_Z = 0.9
+
+/**
+ * Model-unit sizes for the glow rig. The model group is scaled 0.326 inside a
+ * store-scaled group (0.3), so model units must be ~3× the old group units to
+ * keep the same on-screen size as the procedural robot's effects.
+ */
+const EYE_SPHERE_R = 0.25
+const EYE_DISC_R = 0.28
+const EYE_CORE_R = 0.12
+const EYE_DISC_Z = 0.21
+const EYE_CORE_Z = 0.28
+/** Eye separation on the faceplate (model units). */
+const EYE_X_OFF = 0.85
+
 type CyclePhase = 'idle' | 'seek' | 'hover' | 'return'
 
 /** Wrap an angle to (-PI, PI]. */
@@ -33,7 +61,15 @@ interface BlinkClock {
   current: number
 }
 
-function Eye({ xOff, glow, blink }: { xOff: number; glow: boolean; blink: BlinkClock }) {
+function Eye({
+  xOff,
+  glow,
+  blink,
+}: {
+  xOff: number
+  glow: boolean
+  blink: BlinkClock
+}) {
   const matRef = useRef<THREE.MeshStandardMaterial>(null)
   const discRef = useRef<THREE.MeshBasicMaterial>(null)
 
@@ -54,14 +90,14 @@ function Eye({ xOff, glow, blink }: { xOff: number; glow: boolean; blink: BlinkC
   })
 
   return (
-    <group position={[xOff, 0.1, 0.34]}>
+    <group position={[xOff, EYE_Y, EYE_Z]}>
       <mesh>
-        <sphereGeometry args={[0.08, 12, 12]} />
+        <sphereGeometry args={[EYE_SPHERE_R, 12, 12]} />
         <meshStandardMaterial color="#0A0F12" roughness={0.2} metalness={0.9} />
       </mesh>
       {/* Glow disc — billboarded soft halo for the bloom to pick up */}
-      <mesh position={[0, 0, 0.07]} rotation={[0, 0, 0]}>
-        <circleGeometry args={[0.09, 16]} />
+      <mesh position={[0, 0, EYE_DISC_Z]}>
+        <circleGeometry args={[EYE_DISC_R, 16]} />
         <meshBasicMaterial
           ref={discRef}
           color={glow ? '#00E5FF' : '#1A4455'}
@@ -72,8 +108,8 @@ function Eye({ xOff, glow, blink }: { xOff: number; glow: boolean; blink: BlinkC
           side={THREE.DoubleSide}
         />
       </mesh>
-      <mesh position={[0, 0, 0.09]}>
-        <sphereGeometry args={[0.038, 8, 8]} />
+      <mesh position={[0, 0, EYE_CORE_Z]}>
+        <sphereGeometry args={[EYE_CORE_R, 8, 8]} />
         <meshStandardMaterial
           ref={matRef}
           color="#0A1A22"
@@ -87,37 +123,11 @@ function Eye({ xOff, glow, blink }: { xOff: number; glow: boolean; blink: BlinkC
   )
 }
 
-function Arm({ side }: { side: 'left' | 'right' }) {
-  const ref = useRef<THREE.Group>(null)
-  const sign = side === 'left' ? 1 : -1
-
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.z =
-        (side === 'left' ? -0.3 : 0.3) + Math.sin(state.clock.elapsedTime * 0.5 + sign) * 0.05
-    }
-  })
-
-  return (
-    <group ref={ref}>
-      <mesh position={[sign * 0.5, -0.6, 0]}>
-        <cylinderGeometry args={[0.06, 0.08, 1.2, 6]} />
-        <meshStandardMaterial color="#4A6A7A" roughness={0.4} metalness={0.5} />
-      </mesh>
-      <mesh position={[sign * 0.7, -1.3, 0]}>
-        <boxGeometry args={[0.12, 0.8, 0.12]} />
-        <meshStandardMaterial color="#3A5A6A" roughness={0.35} metalness={0.55} />
-      </mesh>
-    </group>
-  )
-}
-
 export default function Robot({ visible, activated, scale, position, scanBeam }: RobotProps) {
   const groupRef = useRef<THREE.Group>(null)
   const scanRef = useRef<THREE.Mesh>(null)
   const scanRef2 = useRef<THREE.Mesh>(null)
   const sweepRef = useRef<THREE.Mesh>(null)
-  const antennaRef = useRef<THREE.Group>(null)
   const headRef = useRef<THREE.Group>(null)
   const coreRef = useRef<THREE.Mesh>(null)
   const coreMatRef = useRef<THREE.MeshStandardMaterial>(null)
@@ -212,18 +222,10 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
     }
     groupRef.current.rotation.y = yawCurrent.current
 
-    // --- Head: subtle scanning yaw when activated --------------------------
+    // --- Head: subtle scanning yaw when activated (model Head group) -------
     if (headRef.current) {
       const amp = activated ? 0.14 : 0.05
       headRef.current.rotation.y = Math.sin(t * 0.35) * amp + (moving ? deltaYaw * 0.25 : 0)
-    }
-
-    // --- Antenna sway -------------------------------------------------------
-    if (antennaRef.current) {
-      const amp = activated ? 1 : 0.55
-      antennaRef.current.rotation.z =
-        (Math.sin(t * 0.9) * 0.12 + Math.sin(t * 2.1) * 0.03) * amp
-      antennaRef.current.rotation.x = Math.sin(t * 1.3 + 1) * 0.08 * amp
     }
 
     // --- Chest-core pulse + light -------------------------------------------
@@ -245,7 +247,7 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
       sweepRef.current.rotation.y = Math.sin(t * 1.4) * 0.6
     }
 
-    // --- Ping ring from the antenna tip --------------------------------------
+    // --- Ping ring from the head dome top ------------------------------------
     if (pingRef.current && pingMatRef.current) {
       if (activated && pingLife.current < 0 && now >= nextPing.current) {
         pingLife.current = 0
@@ -382,101 +384,55 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
         decay={1.5}
       />
 
-      {/* Body */}
-      <mesh position={[0, 0, 0]}>
-        <cylinderGeometry args={[0.5, 0.7, 1.2, 8]} />
-        <meshStandardMaterial
-          color="#3A5A6A"
-          roughness={0.35}
-          metalness={0.55}
-          emissive="#081218"
-          emissiveIntensity={0.3}
-          flatShading
-        />
-      </mesh>
+      {/* Hero mesh — Quaternius Animated Robot (CC0), procedural motion only */}
+      <group position={[0, MODEL_OFFSET_Y, 0]} scale={MODEL_SCALE}>
+        {/* Eye glow discs ride on the model's Head group so they scan with it. */}
+        <RobotModel headRef={headRef}>
+          <Eye xOff={-EYE_X_OFF} glow={activated} blink={blink} />
+          <Eye xOff={EYE_X_OFF} glow={activated} blink={blink} />
+          {/* Ping ring — dormant mesh animated by the frame loop, dome top.
+              Dome radius is ~1.4 model units, so the ring starts just
+              outside it and expands. */}
+          <mesh
+            ref={pingRef}
+            position={[0, 4.55 - HEAD_PIVOT_Y, 0]}
+            rotation={[Math.PI / 2, 0, 0]}
+            visible={false}
+          >
+            <ringGeometry args={[1.6, 1.8, 24]} />
+            <meshBasicMaterial
+              ref={pingMatRef}
+              color="#00E5FF"
+              transparent
+              opacity={0.3}
+              side={THREE.DoubleSide}
+              depthWrite={false}
+              blending={THREE.AdditiveBlending}
+            />
+          </mesh>
+        </RobotModel>
 
-      {/* Chest core — emissive heart + inner light */}
-      <mesh ref={coreRef} position={[0, 0.1, 0.5]}>
-        <sphereGeometry args={[0.15, 12, 12]} />
-        <meshStandardMaterial
-          ref={coreMatRef}
-          color="#0A1A22"
-          emissive={activated ? '#00E5FF' : '#1A3A4A'}
-          emissiveIntensity={0.5}
-          roughness={0.2}
-          metalness={0.1}
-        />
-      </mesh>
-      <pointLight
-        ref={coreLightRef}
-        position={[0, 0.1, 0.55]}
-        intensity={0.08}
-        color="#00E5FF"
-        distance={3}
-      />
-
-      {/* Head (group so it can scan) */}
-      <group ref={headRef} position={[0, 0.8, 0]}>
-        <mesh>
-          <octahedronGeometry args={[0.35, 0]} />
+        {/* Chest core — emissive heart + inner light, on the model's torso
+            (model units: torso centre y≈2.1, front z≈0.66) */}
+        <mesh ref={coreRef} position={[0, 2.1, 0.7]}>
+          <sphereGeometry args={[0.46, 12, 12]} />
           <meshStandardMaterial
-            color="#4A7A8A"
-            roughness={0.25}
-            metalness={0.65}
-            emissive="#081218"
-            emissiveIntensity={0.3}
-            flatShading
-          />
-        </mesh>
-        <Eye xOff={-0.3} glow={activated} blink={blink} />
-        <Eye xOff={0.3} glow={activated} blink={blink} />
-      </group>
-
-      {/* Antenna (group so it can sway) */}
-      <group ref={antennaRef}>
-        <mesh position={[0, 1.2, 0]}>
-          <cylinderGeometry args={[0.02, 0.03, 0.4, 6]} />
-          <meshBasicMaterial color={activated ? '#D4AF37' : '#3A3A3A'} />
-        </mesh>
-        <mesh position={[0, 1.45, 0]}>
-          <sphereGeometry args={[0.05, 8, 8]} />
-          <meshStandardMaterial
+            ref={coreMatRef}
             color="#0A1A22"
-            emissive={activated ? '#00E5FF' : '#224455'}
-            emissiveIntensity={activated ? 2 : 0.5}
+            emissive={activated ? '#00E5FF' : '#1A3A4A'}
+            emissiveIntensity={0.5}
             roughness={0.2}
+            metalness={0.1}
           />
         </mesh>
-        {/* Ping ring — dormant mesh animated by the frame loop */}
-        <mesh ref={pingRef} position={[0, 1.45, 0]} rotation={[Math.PI / 2, 0, 0]} visible={false}>
-          <ringGeometry args={[0.55, 0.7, 24]} />
-          <meshBasicMaterial
-            ref={pingMatRef}
-            color="#00E5FF"
-            transparent
-            opacity={0.3}
-            side={THREE.DoubleSide}
-            depthWrite={false}
-            blending={THREE.AdditiveBlending}
-          />
-        </mesh>
-      </group>
-
-      <Arm side="left" />
-      <Arm side="right" />
-
-      {/* Base */}
-      <mesh position={[0, -0.7, 0]}>
-        <cylinderGeometry args={[0.4, 0.5, 0.2, 8]} />
-        <meshStandardMaterial
-          color="#2A4A5A"
-          roughness={0.5}
-          metalness={0.4}
-          emissive="#060E14"
-          emissiveIntensity={0.25}
-          flatShading
+        <pointLight
+          ref={coreLightRef}
+          position={[0, 2.1, 0.85]}
+          intensity={0.08}
+          color="#00E5FF"
+          distance={3}
         />
-      </mesh>
+      </group>
 
       {/* Pickup beam — cyan cone under the robot, visible during collection */}
       <mesh ref={beamRef} position={[0, -0.75, 0]} rotation={[Math.PI, 0, 0]} visible={false}>
@@ -492,11 +448,11 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
         />
       </mesh>
 
-      {/* Scan beam rings — counter-rotating pair + vertical sweep bar */}
+      {/* Scan beam rings — counter-rotating pair + vertical sweep bar, around the head */}
       {scanBeam && (
-        <group position={[0, 0.8, 0.5]}>
+        <group position={[0, 0.49, 0.45]} scale={1.15}>
           <mesh ref={scanRef} rotation={[Math.PI / 2, 0, 0]}>
-            <ringGeometry args={[0.2, 1.2, 32]} />
+            <ringGeometry args={[0.55, 1.3, 32]} />
             <meshBasicMaterial
               color="#00E5FF"
               transparent
@@ -506,7 +462,7 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
             />
           </mesh>
           <mesh ref={scanRef2} rotation={[Math.PI / 2, 0, 0]}>
-            <ringGeometry args={[0.35, 0.48, 24]} />
+            <ringGeometry args={[0.72, 0.9, 24]} />
             <meshBasicMaterial
               color="#D4AF37"
               transparent
