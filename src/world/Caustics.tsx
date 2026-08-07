@@ -64,8 +64,9 @@ export default function Caustics({ color = '#7FD4E8', opacity = 0.22 }: Caustics
   useFrame((state) => {
     const t = state.clock.elapsedTime
     material.uniforms.uTime.value = t
-    // Cell scale breathes slowly — the water lens above is never still.
-    material.uniforms.uScale.value = 0.85 + Math.sin(t * 0.12) * 0.18
+    // Cell scale breathes only slightly — the sun-angle drift in the shader
+    // now carries the motion, so heavy breathing would fight it.
+    material.uniforms.uScale.value = 0.95 + Math.sin(t * 0.12) * 0.05
     if (meshRef.current) {
       // Imperceptible drift + rotation — living light, not a static decal.
       meshRef.current.rotation.z = Math.sin(t * 0.05) * 0.015

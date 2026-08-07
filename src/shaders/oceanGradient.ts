@@ -6,9 +6,14 @@ export const oceanGradientVertexShader = `
   varying vec3 vNormal;
   varying vec2 vUv;
 
-  float waveY(vec2 p, float t, vec2 dir, float a, float f, float s, float ph, inout vec2 grad) {
+  // Gerstner-style wave: displaces Y and (by disp) the XZ plane so crests
+  // lean and slide instead of just bobbing; accumulates the surface gradient
+  // for normal perturbation in the fragment pass.
+  float gerstner(vec2 p, float t, vec2 dir, float a, float f, float s, float ph, float disp, inout vec2 grad, inout vec2 xz) {
     float c = dot(dir, p) * f + t * s + ph;
+    float w = a * cos(c);
     grad += dir * (a * f * cos(c));
+    xz += dir * w * disp;
     return a * sin(c);
   }
 
@@ -16,24 +21,30 @@ export const oceanGradientVertexShader = `
     vUv = uv;
 
     float t = uTime * 0.45;
+    // Slow wind rotation — the whole sea drifts as one coherent body instead
+    // of five independent scrolling layers.
+    float wind = t * 0.02;
+    mat2 rot = mat2(cos(wind), -sin(wind), sin(wind), cos(wind));
     vec2 p = position.xz;
 
     vec2 grad = vec2(0.0);
+    vec2 xz = vec2(0.0);
     float y = 0.0;
 
     // Octave 1 — broad primary swell
-    y += waveY(p, t, normalize(vec2(1.0, 0.35)), 0.30, 0.30, 1.1, 0.0, grad);
+    y += gerstner(p, t, rot * normalize(vec2(1.0, 0.35)), 0.30, 0.30, 1.1, 0.0, 0.35, grad, xz);
     // Octave 2 — secondary diagonal swell
-    y += waveY(p, t, normalize(vec2(-0.6, 0.8)), 0.19, 0.52, 1.6, 1.9, grad);
+    y += gerstner(p, t, rot * normalize(vec2(-0.6, 0.8)), 0.19, 0.52, 1.6, 1.9, 0.30, grad, xz);
     // Octave 3 — fine chop detail
-    y += waveY(p, t, normalize(vec2(0.25, -0.9)), 0.10, 0.92, 2.3, 4.1, grad);
+    y += gerstner(p, t, rot * normalize(vec2(0.25, -0.9)), 0.10, 0.92, 2.3, 4.1, 0.25, grad, xz);
     // Octave 4 — high-frequency glint ripple (reads as sun shimmer on the surface)
-    y += waveY(p, t, normalize(vec2(0.8, 0.55)), 0.05, 1.5, 2.9, 5.7, grad);
+    y += gerstner(p, t, rot * normalize(vec2(0.8, 0.55)), 0.05, 1.5, 2.9, 5.7, 0.15, grad, xz);
     // Octave 5 — micro ripple, adds crest texture at any distance
-    y += waveY(p, t, normalize(vec2(0.35, 0.9)), 0.022, 2.6, 3.6, 8.2, grad);
+    y += gerstner(p, t, rot * normalize(vec2(0.35, 0.9)), 0.022, 2.6, 3.6, 8.2, 0.10, grad, xz);
 
     vec3 pos = position;
     pos.y += y * uAmplitude;
+    pos.xz += xz * uAmplitude * 0.6;
 
     vec3 normal = normalize(vec3(-grad.x, 1.0, -grad.y));
     vNormal = normalize(mat3(modelMatrix) * normal);
