@@ -127,6 +127,14 @@ export default function Bubbles({ count = 80 }: { count?: number }) {
     material.uniforms.uOpacity.value = 0.3
   }, [material])
 
+  // Clean up WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+      material.dispose()
+    }
+  }, [geometry, material])
+
   useFrame((stateFrame, delta) => {
     if (!ref.current) return
     const dt = Math.min(delta, 0.05)

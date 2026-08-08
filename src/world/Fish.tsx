@@ -1,6 +1,6 @@
 'use client'
 
-import { useLayoutEffect, useMemo, useRef } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
@@ -174,6 +174,14 @@ function FishSchool({ spec }: { spec: SchoolSpec }) {
     }
     aPhase.needsUpdate = true
   }, [agents, geometry])
+
+  // Clean up WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+      material.dispose()
+    }
+  }, [geometry, material])
 
   useFrame((state, delta) => {
     const mesh = ref.current

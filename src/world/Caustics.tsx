@@ -61,6 +61,14 @@ export default function Caustics({ color = '#7FD4E8', opacity = 0.22 }: Caustics
     material.uniforms.uOpacity.value = opacity
   }, [material, opacity])
 
+  // Clean up WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+      material.dispose()
+    }
+  }, [geometry, material])
+
   useFrame((state) => {
     const t = state.clock.elapsedTime
     material.uniforms.uTime.value = t

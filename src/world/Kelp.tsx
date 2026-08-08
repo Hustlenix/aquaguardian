@@ -1,6 +1,6 @@
 'use client'
 
-import { useLayoutEffect, useMemo, useRef } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -123,6 +123,14 @@ function KelpField({ density }: { density: number }) {
     }
     if (ref.current.instanceColor) ref.current.instanceColor.needsUpdate = true
   }, [stalks])
+
+  // Clean up WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+      material.dispose()
+    }
+  }, [geometry, material])
 
   useFrame((state) => {
     const mesh = ref.current
