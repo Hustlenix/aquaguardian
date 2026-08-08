@@ -1,6 +1,6 @@
 'use client'
 
-import { useLayoutEffect, useMemo, useRef } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useStore } from '@/store/useStore'
@@ -249,6 +249,16 @@ export default function Coral({ intact = 1 }: CoralProps) {
     }),
     []
   )
+
+  // Clean up WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometries.branch.dispose()
+      geometries.plate.dispose()
+      geometries.stalk.dispose()
+      geometries.fern.dispose()
+    }
+  }, [geometries])
 
   return (
     <group>

@@ -76,6 +76,14 @@ export default function OceanSurface({ topColor = '#1A6B8A', clarity = 0.8 }: Oc
     ;(material.uniforms.uHazeColor.value as THREE.Color).copy(derived.haze)
   }, [material, derived])
 
+  // Clean up WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+      material.dispose()
+    }
+  }, [geometry, material])
+
   useFrame((state) => {
     const t = state.clock.elapsedTime
     material.uniforms.uTime.value = t

@@ -134,6 +134,14 @@ function ParticleLayer({
     material.uniforms.uOpacity.value = config.opacity
   }, [material, config.opacity])
 
+  // Clean up WebGL resources to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+      material.dispose()
+    }
+  }, [geometry, material])
+
   useFrame((state, delta) => {
     material.uniforms.uTime.value = state.clock.elapsedTime
     if (!ref.current) return
