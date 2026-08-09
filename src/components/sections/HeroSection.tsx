@@ -8,10 +8,10 @@ import TextReveal from '@/components/animations/TextReveal'
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center section-padding overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,229,255,0.16),transparent_40%),linear-gradient(180deg,rgba(4,21,37,0.2),transparent_35%,rgba(1,11,19,0.55))]" />
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#010B13] via-[#010B13]/80 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,229,255,0.16),transparent_40%),linear-gradient(180deg,rgba(4,21,37,0.2),transparent_35%,rgba(1,11,19,0.55))]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#010B13] via-[#010B13]/80 to-transparent" />
 
-      <div className="section-inner relative z-10 flex flex-col items-center text-center px-4">
+      <div className="section-inner relative z-10 flex flex-col items-center text-center px-4 pointer-events-none">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
@@ -53,7 +53,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
-          className="flex flex-col sm:flex-row items-center gap-3 sm:gap-5"
+          className="flex flex-col sm:flex-row items-center gap-3 sm:gap-5 pointer-events-auto"
         >
           <Button variant="primary" href="#mission">
             Explore the Depths
@@ -68,6 +68,7 @@ export default function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 1.5 }}
+        className="pointer-events-none"
       >
         <ScrollIndicator />
       </motion.div>

@@ -19,6 +19,8 @@ import TeamSection from '@/components/sections/TeamSection'
 import ContactSection from '@/components/sections/ContactSection'
 import Footer from '@/components/ui/Footer'
 import ScrollToTop from '@/components/ui/ScrollToTop'
+import SceneHUD from '@/components/ui/SceneHUD'
+import SceneLoader from '@/components/ui/SceneLoader'
 
 const World = dynamic(() => import('@/world/World'), { ssr: false })
 
@@ -29,6 +31,8 @@ export default function Home() {
       <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
         <World />
       </div>
+      <SceneHUD />
+      <SceneLoader />
       <div className="content-z">
         <Navigation />
         <main>
