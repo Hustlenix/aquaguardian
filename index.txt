@@ -1,149 +1,23 @@
 1:"$Sreact.fragment"
-2:I[46058,["592","static/chunks/c15bf2b0-52e8419f34af26ab.js","432","static/chunks/432-991ec76e983b78e0.js","177","static/chunks/app/layout-485d75befd5a611d.js"],"default"]
-3:I[9766,[],""]
-4:I[50960,["619","static/chunks/619-f072ac750404f9da.js","39","static/chunks/app/error-cfc4d373e6528166.js"],"default"]
-5:I[1212,["50","static/chunks/50-cf8350e93be1c19b.js","397","static/chunks/app/template-15882e8b77b02cb4.js"],"default"]
-6:I[98924,[],""]
-7:I[52619,["619","static/chunks/619-f072ac750404f9da.js","345","static/chunks/app/not-found-4275e2a97b753a41.js"],""]
-8:I[81959,[],"ClientPageRoot"]
-9:I[58507,["367","static/chunks/b536a0f1-ffb7a6c46124f13f.js","831","static/chunks/bd904a5c-3be417009b16e92e.js","682","static/chunks/b79b7286-acaf1097d3e6813e.js","619","static/chunks/619-f072ac750404f9da.js","50","static/chunks/50-cf8350e93be1c19b.js","798","static/chunks/798-256d38f968c488ca.js","852","static/chunks/852-d9dcd6e44cc1c471.js","974","static/chunks/app/page-84b4a0419c265e6d.js"],"default"]
-c:I[24431,[],"OutletBoundary"]
-e:I[15278,[],"AsyncMetadataOutlet"]
-12:I[54062,["219","static/chunks/app/global-error-71f07c13d32b9f09.js"],"default"]
-:HL["/aquaguardian/_next/static/media/36966cca54120369-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/aquaguardian/_next/static/media/7b89a4fd5e90ede0-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/aquaguardian/_next/static/media/a273567b21a7c318-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/aquaguardian/_next/static/media/e4af272ccee01ff0-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/aquaguardian/_next/static/css/c5aa59cf44d560c9.css","style"]
-:HL["/aquaguardian/_next/static/css/23a2d41132ce1054.css","style"]
-10:Tdfc,
-        .aq-loader {
-          position: fixed;
-          inset: 0;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          gap: 1.25rem;
-          background: radial-gradient(circle at 50% 38%, #041525 0%, #010B13 55%, #000508 100%);
-          color: #F8FAFC;
-          overflow: hidden;
-        }
-
-        .aq-loader__signal {
-          position: relative;
-          width: 112px;
-          height: 112px;
-        }
-
-        .aq-loader__ping {
-          position: absolute;
-          inset: 0;
-          border-radius: 999px;
-          border: 1px solid rgba(0, 229, 255, 0.5);
-          opacity: 0;
-          animation: aqPing 2.8s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
-        }
-        .aq-loader__ping--2 { animation-delay: 0.93s; }
-        .aq-loader__ping--3 { animation-delay: 1.86s; }
-
-        @keyframes aqPing {
-          0%   { transform: scale(0.32); opacity: 0.9; }
-          70%  { opacity: 0.35; }
-          100% { transform: scale(1.55); opacity: 0; }
-        }
-
-        .aq-loader__ring {
-          position: absolute;
-          inset: 0;
-          border-radius: 999px;
-          border: 1px dashed rgba(0, 229, 255, 0.18);
-          animation: aqSpin 14s linear infinite;
-        }
-
-        .aq-loader__sweep {
-          position: absolute;
-          inset: 0;
-          border-radius: 999px;
-          background: conic-gradient(
-            from 0deg,
-            rgba(0, 229, 255, 0) 0deg,
-            rgba(0, 229, 255, 0.55) 28deg,
-            rgba(0, 229, 255, 0) 64deg
-          );
-          -webkit-mask: radial-gradient(circle, transparent 66%, black 69%, black 95%, transparent 98%);
-          mask: radial-gradient(circle, transparent 66%, black 69%, black 95%, transparent 98%);
-          animation: aqSpin 3.2s linear infinite;
-        }
-
-        @keyframes aqSpin {
-          to { transform: rotate(360deg); }
-        }
-
-        .aq-loader__core {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 52px;
-          height: 52px;
-          transform: translate(-50%, -50%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 999px;
-          background: radial-gradient(circle at 50% 35%, rgba(0, 229, 255, 0.14), rgba(1, 11, 19, 0) 70%);
-          filter: drop-shadow(0 0 14px rgba(212, 175, 55, 0.35));
-        }
-
-        .aq-loader__trident {
-          width: 44px;
-          height: 44px;
-          animation: aqBreathe 2.8s ease-in-out infinite;
-        }
-
-        @keyframes aqBreathe {
-          0%, 100% { transform: scale(1); opacity: 0.95; }
-          50%      { transform: scale(1.06); opacity: 1; }
-        }
-
-        .aq-loader__title {
-          margin: 0;
-          font-family: var(--font-display);
-          font-size: 1.05rem;
-          font-weight: 700;
-          letter-spacing: 0.3em;
-          text-transform: uppercase;
-          color: #D4AF37;
-          text-shadow: 0 0 24px rgba(212, 175, 55, 0.45);
-        }
-
-        .aq-loader__subtitle {
-          margin: 0;
-          font-family: var(--font-numeric);
-          font-size: 0.68rem;
-          letter-spacing: 0.22em;
-          text-transform: uppercase;
-          color: rgba(138, 154, 160, 0.85);
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .aq-loader__ping,
-          .aq-loader__ring,
-          .aq-loader__sweep,
-          .aq-loader__trident {
-            animation: none;
-          }
-          .aq-loader__ping { opacity: 0.35; }
-        }
-      0:{"P":null,"b":"RQ7l4GyTcCwtNdRxCz6ye","p":"/aquaguardian","c":["",""],"i":false,"f":[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/aquaguardian/_next/static/css/c5aa59cf44d560c9.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","1",{"rel":"stylesheet","href":"/aquaguardian/_next/static/css/23a2d41132ce1054.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"__variable_eff1ea __variable_d32835 __variable_7d1941 __variable_9f03ab","children":["$","body",null,{"children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"WebSite\",\"name\":\"AquaGuardian\",\"url\":\"https://hustlenix.github.io/aquaguardian\",\"description\":\"An interactive 3D concept experience exploring autonomous ocean restoration — a fictional narrative paired with real, cited ocean science.\",\"about\":[\"Ocean Conservation\",\"Autonomous Underwater Vehicles\",\"Artificial Intelligence\",\"Marine Biology\"],\"inLanguage\":\"en\"}"}}],["$","$L2",null,{"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$4","errorStyles":[],"errorScripts":[],"template":["$","$L5",null,{"children":["$","$L6",null,{}]}],"templateStyles":[],"templateScripts":[],"notFound":[["$","main",null,{"className":"min-h-screen bg-[radial-gradient(circle_at_top,_rgba(0,229,255,0.14),_transparent_35%),_#010B13] px-6 py-16 text-white","children":["$","div",null,{"className":"mx-auto flex min-h-[60vh] max-w-3xl flex-col items-center justify-center gap-6 text-center","children":[["$","p",null,{"className":"text-sm uppercase tracking-[0.3em] text-cyan-400/80","children":"Lost in the abyss"}],["$","h1",null,{"className":"text-6xl font-semibold tracking-[0.08em] text-gold-400 sm:text-7xl","children":"404"}],["$","h2",null,{"className":"text-2xl font-semibold tracking-[0.08em] text-white sm:text-3xl","children":"Page not found"}],["$","p",null,{"className":"max-w-md text-sm leading-7 text-text-muted","children":"This depth of the ocean is uncharted — the page you're looking for doesn't exist or has drifted away. Head back to the surface to continue the mission."}],["$","$L7",null,{"href":"/","className":"rounded-full border border-gold-400/30 px-6 py-3 text-sm text-gold-400 transition hover:border-gold-400/60 hover:bg-gold-400/10","children":"Back to home"}]]}]}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]]}]}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[["$","$L8",null,{"Component":"$9","searchParams":{},"params":{},"promises":["$@a","$@b"]}],null,["$","$Lc",null,{"children":["$Ld",["$","$Le",null,{"promise":"$@f"}]]}]]}],{},null,false]},[["$","div","l",{"className":"aq-loader","role":"status","aria-label":"Loading AquaGuardian","children":[["$","div",null,{"className":"aq-loader__signal","aria-hidden":"true","children":[["$","span",null,{"className":"aq-loader__ping aq-loader__ping--1"}],["$","span",null,{"className":"aq-loader__ping aq-loader__ping--2"}],["$","span",null,{"className":"aq-loader__ping aq-loader__ping--3"}],["$","span",null,{"className":"aq-loader__ring"}],["$","span",null,{"className":"aq-loader__sweep"}],["$","span",null,{"className":"aq-loader__core","children":["$","svg",null,{"viewBox":"0 0 64 64","className":"aq-loader__trident","children":[["$","path",null,{"d":"M32 6 L27.6 40 L29.8 51.5 L32 54.4 L34.2 51.5 L36.4 40 Z","fill":"url(#aqGold)"}],["$","path",null,{"d":"M23.2 24.5 L26.4 42 L29.2 30.6 Z","fill":"url(#aqGold)","opacity":"0.7"}],["$","path",null,{"d":"M40.8 24.5 L37.6 42 L34.8 30.6 Z","fill":"url(#aqGold)","opacity":"0.7"}],["$","circle",null,{"cx":"32","cy":"57","r":"2.2","fill":"url(#aqGold)"}],["$","circle",null,{"cx":"32","cy":"14","r":"1.6","fill":"#00E5FF"}],["$","defs",null,{"children":["$","linearGradient",null,{"id":"aqGold","x1":"0","y1":"0","x2":"1","y2":"1","children":[["$","stop",null,{"offset":"0%","stopColor":"#E8C84A"}],["$","stop",null,{"offset":"50%","stopColor":"#D4AF37"}],["$","stop",null,{"offset":"100%","stopColor":"#B8962A"}]]}]}]]}]}]]}],["$","p",null,{"className":"aq-loader__title","children":"AquaGuardian"}],["$","p",null,{"className":"aq-loader__subtitle","children":"Establishing sonar link…"}],["$","style",null,{"children":"$10"}]]}],[],[]],false],"$L11",false]],"m":"$undefined","G":["$12",[]],"s":false,"S":true}
-13:I[24431,[],"ViewportBoundary"]
-15:I[24431,[],"MetadataBoundary"]
-16:"$Sreact.suspense"
-11:["$","$1","h",{"children":[null,[["$","$L13",null,{"children":"$L14"}],["$","meta",null,{"name":"next-size-adjust","content":""}]],["$","$L15",null,{"children":["$","div",null,{"hidden":true,"children":["$","$16",null,{"fallback":null,"children":"$L17"}]}]}]]}]
-a:{}
-b:"$0:f:0:1:2:children:1:props:children:0:props:params"
-14:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#010B13"}],["$","meta","3",{"name":"color-scheme","content":"dark"}]]
-d:null
-18:I[80622,[],"IconMark"]
-f:{"metadata":[["$","title","0",{"children":"AquaGuardian | AI-Powered Ocean Restoration"}],["$","meta","1",{"name":"description","content":"A concept experience: a cinematic 3D story imagining an AI-powered autonomous guardian for ocean monitoring and restoration. Fictional narrative; real, cited ocean data."}],["$","meta","2",{"name":"author","content":"AquaGuardian"}],["$","link","3",{"rel":"manifest","href":"/aquaguardian/site.webmanifest","crossOrigin":"$undefined"}],["$","meta","4",{"name":"keywords","content":"ocean cleanup,autonomous underwater vehicle,AI marine conservation,ocean restoration,aquatic robot,underwater storytelling,3d web experience"}],["$","meta","5",{"name":"creator","content":"AquaGuardian"}],["$","meta","6",{"name":"publisher","content":"AquaGuardian"}],["$","meta","7",{"name":"robots","content":"index, follow"}],["$","meta","8",{"name":"category","content":"technology"}],["$","link","9",{"rel":"canonical","href":"https://hustlenix.github.io/aquaguardian/"}],["$","meta","10",{"property":"og:title","content":"AquaGuardian | AI-Powered Ocean Restoration"}],["$","meta","11",{"property":"og:description","content":"An immersive underwater storytelling experience where AI robotics and conservation meet cinematic web design."}],["$","meta","12",{"property":"og:url","content":"https://hustlenix.github.io/aquaguardian/"}],["$","meta","13",{"property":"og:site_name","content":"AquaGuardian"}],["$","meta","14",{"property":"og:locale","content":"en_US"}],["$","meta","15",{"property":"og:image","content":"https://hustlenix.github.io/aquaguardian/og-image.png"}],["$","meta","16",{"property":"og:image:width","content":"1200"}],["$","meta","17",{"property":"og:image:height","content":"630"}],["$","meta","18",{"property":"og:image:alt","content":"AquaGuardian — AI-Powered Ocean Restoration"}],["$","meta","19",{"property":"og:type","content":"website"}],["$","meta","20",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","21",{"name":"twitter:title","content":"AquaGuardian | AI-Powered Ocean Restoration"}],["$","meta","22",{"name":"twitter:description","content":"A concept experience imagining an AI-powered autonomous guardian for ocean monitoring and restoration."}],["$","meta","23",{"name":"twitter:image","content":"https://hustlenix.github.io/aquaguardian/og-image.png"}],["$","link","24",{"rel":"shortcut icon","href":"/aquaguardian/favicon.ico"}],["$","link","25",{"rel":"icon","href":"/aquaguardian/favicon.ico","sizes":"any"}],["$","link","26",{"rel":"icon","href":"/aquaguardian/favicon-32x32.png","sizes":"32x32","type":"image/png"}],["$","link","27",{"rel":"icon","href":"/aquaguardian/favicon-16x16.png","sizes":"16x16","type":"image/png"}],["$","link","28",{"rel":"icon","href":"/aquaguardian/favicon.svg","type":"image/svg+xml"}],["$","link","29",{"rel":"apple-touch-icon","href":"/aquaguardian/apple-touch-icon.png"}],["$","$L18","30",{}]],"error":null,"digest":"$undefined"}
-17:"$f:metadata"
+2:I[9766,[],""]
+3:I[8924,[],""]
+4:I[2619,["619","static/chunks/619-ba102abea3e3d0e4.js","974","static/chunks/app/page-891e078298cd9c00.js"],""]
+c:I[7150,[],""]
+:HL["/aquaguardian/_next/static/css/4b08ff4aca906bcd.css","style"]
+0:{"P":null,"b":"NVqioAxkegitJmfrWEVj6","p":"/aquaguardian","c":["",""],"i":false,"f":[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/aquaguardian/_next/static/css/4b08ff4aca906bcd.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","children":["$","body",null,{"children":["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[[["$","nav",null,{"className":"nav","children":["$","div",null,{"className":"nav-inner","children":[["$","$L4",null,{"href":"/","className":"brand","children":["Aqua",["$","span",null,{"children":"Guardian"}]]}],["$","ul",null,{"className":"nav-links","children":[["$","li",null,{"children":["$","a",null,{"href":"#mission","children":"Mission"}]}],["$","li",null,{"children":["$","a",null,{"href":"#technology","children":"Technology"}]}],["$","li",null,{"children":["$","a",null,{"href":"#impact","children":"Impact"}]}],["$","li",null,{"children":["$","$L4",null,{"href":"/dashboard","children":"Dashboard"}]}]]}]]}]}],["$","main",null,{"children":[["$","header",null,{"className":"hero","children":["$","div",null,{"className":"container","children":[["$","h1",null,{"children":"A machine that cleans the ocean, one dive at a time."}],["$","p",null,{"className":"lede","children":"AquaGuardian is a concept project: an autonomous underwater robot that finds debris, brings it to the surface, and logs every kilo it removes. No gimmicks — just a tool that puts the sea back the way it was."}],["$","a",null,{"className":"btn","href":"#mission","children":"Read the mission"}]]}]}],["$","section",null,{"className":"section","id":"mission","children":["$","div",null,{"className":"container","children":[["$","p",null,{"className":"section-label","children":"01 — Mission"}],["$","h2",null,{"children":"Why build a robot for this?"}],["$","p",null,{"children":"Most debris in the ocean never gets picked up. It sinks, it breaks into smaller pieces, and it stays there. Divers can reach shallow water; trawlers can reach deep water but damage the seabed while they are there. There is a gap between the two, and that gap is where AquaGuardian works."}],["$","p",null,{"children":"The robot patrols a defined area, uses cameras and sonar to spot plastic and fishing gear, picks it up, and carries it to a collection point on the surface. Every item is photographed and logged, so the work is visible and measurable — not just a floating platform making promises."}],["$","p",null,{"children":"This is a concept build. The numbers on this site are illustrative, but the engineering questions they point to are real: how a small robot stays underwater for weeks, how it tells debris from marine life, and how a fleet of them would coordinate without a human in the loop."}]]}]}],["$","section",null,{"className":"section","id":"technology","children":["$","div",null,{"className":"container","children":[["$","p",null,{"className":"section-label","children":"02 — Technology"}],["$","h2",null,{"children":"Three systems, one job"}],"$L5","$L6"]}]}],"$L7","$L8"]}],"$L9"],null,"$La"]}],{},null,false]},null,false],"$Lb",false]],"m":"$undefined","G":["$c",[]],"s":false,"S":true}
+d:I[4431,[],"OutletBoundary"]
+f:I[5278,[],"AsyncMetadataOutlet"]
+11:I[4431,[],"ViewportBoundary"]
+13:I[4431,[],"MetadataBoundary"]
+14:"$Sreact.suspense"
+5:["$","p",null,{"children":"The robot keeps the stack deliberately small. Every part earns its place or it gets cut."}]
+6:["$","div",null,{"className":"pillars","children":[["$","div",null,{"className":"pillar","data-num":"A","children":[["$","h3",null,{"children":"Seeing"}],["$","p",null,{"children":"A camera for the close work and sonar for the murk. The onboard classifier only has to answer one question — debris or not — and it is trained on the kinds of trash that actually end up in the water: nets, crates, packaging."}]]}],["$","div",null,{"className":"pillar","data-num":"B","children":[["$","h3",null,{"children":"Moving"}],["$","p",null,{"children":"Six thrusters and a control loop that holds position against the current. Power comes from a lithium pack topped up by a surface dock, so the robot never drags a tether or a charging cable through the reef."}]]}],["$","div",null,{"className":"pillar","data-num":"C","children":[["$","h3",null,{"children":"Reporting"}],["$","p",null,{"children":"Every pickup is a data point: what it was, where it was found, how deep. The dashboard on this site is the reporting side — the same record a real deployment would publish."}]]}]]}]
+7:["$","section",null,{"className":"section","id":"impact","children":["$","div",null,{"className":"container","children":[["$","p",null,{"className":"section-label","children":"03 — Impact"}],["$","h2",null,{"children":"What the log says"}],["$","p",null,{"children":"The robot keeps a public record of its own work. Concept numbers, real structure: every figure below is the kind of value a deployed unit would report after a season."}],["$","div",null,{"className":"numbers","children":[["$","div","kg of debris collected",{"className":"number","children":[["$","div",null,{"className":"num","children":"12,840"}],["$","div",null,{"className":"cap","children":"kg of debris collected"}]]}],["$","div","missions completed",{"className":"number","children":[["$","div",null,{"className":"num","children":"214"}],["$","div",null,{"className":"cap","children":"missions completed"}]]}],["$","div","hours underwater",{"className":"number","children":[["$","div",null,{"className":"num","children":"3,560"}],["$","div",null,{"className":"cap","children":"hours underwater"}]]}],["$","div","species sighted and logged",{"className":"number","children":[["$","div",null,{"className":"num","children":"46"}],["$","div",null,{"className":"cap","children":"species sighted and logged"}]]}]]}]]}]}]
+8:["$","section",null,{"className":"section","id":"contact","children":["$","div",null,{"className":"container","children":[["$","p",null,{"className":"section-label","children":"04 — Contact"}],["$","h2",null,{"children":"Talk to the team"}],["$","p",null,{"children":"AquaGuardian is a concept project. If you work on ocean cleanup, marine robotics, or coastal policy, we would like to hear from you."}],["$","ul",null,{"className":"contact-links","children":[["$","li",null,{"children":["$","a",null,{"href":"mailto:hello@aquaguardian.example","children":"hello@aquaguardian.example"}]}],["$","li",null,{"children":["$","a",null,{"href":"https://github.com/Hustlenix/aquaguardian","target":"_blank","rel":"noopener noreferrer","children":"GitHub"}]}]]}]]}]}]
+9:["$","footer",null,{"className":"footer","children":["$","div",null,{"className":"container","children":[["$","span",null,{"className":"brand","children":"AquaGuardian"}],["$","p",null,{"children":"A concept project — autonomous ocean cleanup."}],["$","p",null,{"children":"© 2026. All data on this site is illustrative."}]]}]}]
+a:["$","$Ld",null,{"children":["$Le",["$","$Lf",null,{"promise":"$@10"}]]}]
+b:["$","$1","h",{"children":[null,[["$","$L11",null,{"children":"$L12"}],null],["$","$L13",null,{"children":["$","div",null,{"hidden":true,"children":["$","$14",null,{"fallback":null,"children":"$L15"}]}]}]]}]
+12:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+e:null
+10:{"metadata":[["$","title","0",{"children":"AquaGuardian — autonomous ocean cleanup"}],["$","meta","1",{"name":"description","content":"Concept project: an autonomous robot that finds and removes debris from the ocean, with live mission data."}]],"error":null,"digest":"$undefined"}
+15:"$10:metadata"
