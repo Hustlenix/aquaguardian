@@ -3,15 +3,12 @@
 import Link from 'next/link'
 import {
   Bot,
-  Compass,
-  Cpu,
   GraduationCap,
   HelpCircle,
   LayoutDashboard,
   Lock,
   Smartphone,
   Target,
-  TrendingUp,
   Trophy,
   Waves,
 } from 'lucide-react'
@@ -23,11 +20,10 @@ interface QuickLink {
   icon: LucideIcon
 }
 
+// Mission, Technology and Impact are already linked in the homepage
+// navbar and hero CTA buttons — never duplicated here.
 const SECTION_LINKS: QuickLink[] = [
   { label: 'About', href: '#mission', icon: Waves },
-  { label: 'Mission', href: '#mission', icon: Compass },
-  { label: 'Technology', href: '#technology', icon: Cpu },
-  { label: 'Impact', href: '#impact', icon: TrendingUp },
   { label: 'FAQ', href: '#faq', icon: HelpCircle },
   { label: 'Privacy', href: '/privacy', icon: Lock },
 ]
