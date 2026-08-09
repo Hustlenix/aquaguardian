@@ -21,8 +21,11 @@ import Ruins from './Ruins'
 import Effects from './Effects'
 import Environment from './Environment'
 import EnvReflections from './EnvReflections'
+import Interaction from './Interaction'
+import PickupBursts from './PickupBursts'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import { useStore } from '@/store/useStore'
+import { useHud, selectCleanupRatio } from '@/store/useHud'
 
 /**
  * Quality matrix — how performance budgets are spent across devices.
@@ -46,7 +49,24 @@ function SceneContent() {
   const quality = useStore((s) => s.quality)
   const { lighting, water, environment, particles: particleCfg } = sceneState
 
+  // Ocean-clarity feedback: as debris is collected the water reads clearer.
+  const cleanupRatio = useHud(selectCleanupRatio)
+
   const fogColor = useMemo(() => new THREE.Color(lighting.fogColor), [lighting.fogColor])
+
+  // Fog recedes (near shrinks, far grows) as the cleanup progresses.
+  const fogNear = useMemo(
+    () => THREE.MathUtils.lerp(lighting.fogNear, lighting.fogNear * 0.7, cleanupRatio),
+    [lighting.fogNear, cleanupRatio]
+  )
+  const fogFar = useMemo(
+    () => THREE.MathUtils.lerp(lighting.fogFar, lighting.fogFar * 1.35, cleanupRatio),
+    [lighting.fogFar, cleanupRatio]
+  )
+  const clarity = useMemo(
+    () => THREE.MathUtils.lerp(water.clarity, 1, cleanupRatio),
+    [water.clarity, cleanupRatio]
+  )
 
   const kelpDensity = useMemo(() => environment.templeIntact * 0.8, [environment.templeIntact])
 
@@ -55,9 +75,9 @@ function SceneContent() {
   return (
     <>
       <color attach="background" args={[water.topColor]} />
-      <fog attach="fog" args={[fogColor, lighting.fogNear, lighting.fogFar]} />
+      <fog attach="fog" args={[fogColor, fogNear, fogFar]} />
       <Suspense fallback={null}>
-        <OceanSurface topColor={water.topColor} clarity={water.clarity} />
+        <OceanSurface topColor={water.topColor} clarity={clarity} />
         <Seabed debrisCount={environment.debrisCount} />
         <Caustics
           color={environment.lightRayColor}
@@ -78,6 +98,8 @@ function SceneContent() {
         <Bubbles />
         <Jellyfish />
         <Fish visible={environment.fishVisible} />
+        <PickupBursts />
+        <Interaction />
         <Robot
           visible={sceneState.robot.visible}
           activated={sceneState.robot.activated}
@@ -116,7 +138,9 @@ export default function World() {
       inset: 0,
       width: '100vw',
       height: '100vh',
-      pointerEvents: 'none' as const,
+      // Click-to-collect needs the canvas to receive pointer events; the
+      // DOM sections/HUD sit above it and stay interactive.
+      pointerEvents: 'auto' as const,
       zIndex: 0,
     }),
     []
@@ -131,6 +155,8 @@ export default function World() {
           gl={{ antialias: true, alpha: false }}
           onCreated={(state) => {
             state.gl.setClearColor('#010B13')
+            // Canvas + scene exist — let the preloader fade out.
+            useHud.getState().setSceneReady(true)
           }}
         >
           <AdaptiveDpr pixelated />

@@ -5,6 +5,10 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { debrisPositions, debrisRegistry } from './Seabed'
 import { RobotModel } from './RobotModel'
+import { useStore } from '@/store/useStore'
+import { useHud } from '@/store/useHud'
+import { playPickup, setPiloting as setPilotAudio } from '@/lib/audio'
+import { triggerBurst } from './PickupBursts'
 
 interface RobotProps {
   visible: boolean
@@ -22,6 +26,32 @@ const HOVER_DURATION = 2
 const DEBRIS_RESPAWN = 12
 /** Pause between collection runs (seconds). */
 const CYCLE_COOLDOWN = 8
+
+/** Pilot speed (world units / second) while WASD/arrows are held. */
+const PILOT_SPEED = 2.4
+/** Seconds of coasting after the last pilot key before the AI takes over. */
+const PILOT_TIMEOUT = 2.5
+
+/**
+ * Click-to-collect override — set by Interaction.tsx via the raycaster.
+ * The idle phase of the collection cycle prefers this target over the
+ * autonomous nearest-debris pick, then clears it.
+ */
+interface ForcedTarget {
+  index: number
+  x: number
+  y: number
+  z: number
+}
+let forcedTarget: ForcedTarget | null = null
+export function setForcedTarget(index: number, x: number, y: number, z: number): void {
+  forcedTarget = { index, x, y, z }
+}
+
+const PILOT_KEYS = new Set([
+  'w', 'a', 's', 'd',
+  'arrowup', 'arrowdown', 'arrowleft', 'arrowright',
+])
 
 /**
  * The Quaternius model is 4.6 units tall (feet at y=0, dome top at y=4.61).
@@ -148,6 +178,29 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
     basePos.current.set(position[0], position[1], position[2])
   }, [position])
 
+  // --- Direct piloting (WASD / arrows, hero section, high quality) --------
+  const quality = useStore((s) => s.quality)
+  const activeSection = useStore((s) => s.activeSection)
+  const keysRef = useRef<Set<string>>(new Set())
+  const pilotUntil = useRef(0)
+  const wasPiloting = useRef(false)
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      const k = e.key.toLowerCase()
+      if (!PILOT_KEYS.has(k)) return
+      keysRef.current.add(k)
+      if (k.startsWith('arrow')) e.preventDefault()
+    }
+    const up = (e: KeyboardEvent) => keysRef.current.delete(e.key.toLowerCase())
+    window.addEventListener('keydown', down)
+    window.addEventListener('keyup', up)
+    return () => {
+      window.removeEventListener('keydown', down)
+      window.removeEventListener('keyup', up)
+    }
+  }, [])
+
   // Collection mini-cycle state — all in refs, zero re-renders per frame.
   const cycle = useRef({
     phase: 'idle' as CyclePhase,
@@ -178,7 +231,66 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
       cycle.current.targetIndex = -1
       cycle.current.offsetTarget.set(0, 0, 0)
       cycle.current.cooldownUntil = now + CYCLE_COOLDOWN
-    } else {
+      keysRef.current.clear()
+      pilotUntil.current = 0
+      wasPiloting.current = false
+      useHud.getState().setPiloting(false)
+      setPilotAudio(false)
+    }
+
+    // --- Direct pilot mode ------------------------------------------------
+    // WASD/arrows give the visitor control in the hero section; the camera
+    // stays on its cinematic path, so input is mapped to the camera plane.
+    const canPilot = visible && quality > 0.75 && activeSection === 'hero'
+    const keys = keysRef.current
+    const hasInput =
+      canPilot &&
+      (keys.has('w') || keys.has('arrowup') || keys.has('s') || keys.has('arrowdown') ||
+        keys.has('a') || keys.has('arrowleft') || keys.has('d') || keys.has('arrowright'))
+    if (hasInput) pilotUntil.current = now + PILOT_TIMEOUT
+    const piloting = canPilot && (hasInput || now < pilotUntil.current)
+
+    if (piloting !== wasPiloting.current) {
+      wasPiloting.current = piloting
+      useHud.getState().setPiloting(piloting)
+      setPilotAudio(piloting)
+      if (!piloting) {
+        // Hand control back to the autonomous cycle.
+        cycle.current.phase = 'idle'
+        cycle.current.beamActive = false
+        cycle.current.targetIndex = -1
+        cycle.current.offset.set(0, 0, 0)
+        cycle.current.offsetTarget.set(0, 0, 0)
+        cycle.current.cooldownUntil = now + CYCLE_COOLDOWN
+      }
+    }
+
+    if (piloting) {
+      const fwd = new THREE.Vector3()
+      state.camera.getWorldDirection(fwd)
+      const dir = new THREE.Vector3(fwd.x, 0, fwd.z)
+      if (dir.lengthSq() < 0.0001) dir.set(0, 0, -1)
+      dir.normalize()
+      const right = new THREE.Vector3(-dir.z, 0, dir.x)
+      let mx = 0
+      let mz = 0
+      if (keys.has('w') || keys.has('arrowup')) { mx += dir.x; mz += dir.z }
+      if (keys.has('s') || keys.has('arrowdown')) { mx -= dir.x; mz -= dir.z }
+      if (keys.has('d') || keys.has('arrowright')) { mx += right.x; mz += right.z }
+      if (keys.has('a') || keys.has('arrowleft')) { mx -= right.x; mz -= right.z }
+      const len = Math.hypot(mx, mz)
+      if (len > 0.001) {
+        const inv = 1 / len
+        const v = PILOT_SPEED * delta
+        basePos.current.x += mx * inv * v
+        basePos.current.z += mz * inv * v
+        const targetYaw = Math.atan2(mx, mz)
+        const dy = wrapAngle(targetYaw - yawCurrent.current)
+        yawCurrent.current += dy * (1 - Math.exp(-4 * delta))
+        groupRef.current.rotation.y = yawCurrent.current
+        groupRef.current.rotation.z = -THREE.MathUtils.clamp(dy * 1.4, -0.18, 0.18)
+      }
+    } else if (visible) {
       runCollectionCycle(state, delta)
     }
 
@@ -187,14 +299,20 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
     const idleZ = Math.cos(t * 0.09) * 0.12
 
     const cycleOff = cycle.current.offset
-    const inCycle = cycle.current.phase !== 'idle'
+    const inCycle = !piloting && cycle.current.phase !== 'idle'
 
-    const posX = basePos.current.x + (inCycle ? cycleOff.x : idleX)
+    if (piloting) {
+      // While piloted the robot parks its own drift: clean offsets, no wobble.
+      cycle.current.offset.set(0, 0, 0)
+      cycle.current.offsetTarget.set(0, 0, 0)
+    }
+
+    const posX = basePos.current.x + (inCycle ? cycleOff.x : piloting ? 0 : idleX)
     const posY = basePos.current.y + Math.sin(t * 0.4) * 0.15 + (inCycle ? cycleOff.y : 0)
-    const posZ = basePos.current.z + (inCycle ? cycleOff.z : idleZ)
+    const posZ = basePos.current.z + (inCycle ? cycleOff.z : piloting ? 0 : idleZ)
 
     // Hover micro-sway above a debris item.
-    if (cycle.current.phase === 'hover') {
+    if (!piloting && cycle.current.phase === 'hover') {
       groupRef.current.position.set(
         posX + Math.sin(t * 1.3) * 0.05,
         posY + Math.sin(t * 2.1) * 0.03,
@@ -205,22 +323,23 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
     }
 
     // --- Heading: bank into the travel direction (angle-aware damp) -------
+    // Skipped while piloted — the pilot block already drives yaw/roll.
     const moving = inCycle && cycleOff.lengthSq() > 0.002
     let deltaYaw = 0
-    if (moving) {
+    if (!piloting && moving) {
       const targetYaw = Math.atan2(cycleOff.x, cycleOff.z)
       deltaYaw = wrapAngle(targetYaw - yawCurrent.current)
       const k = 1 - Math.exp(-3.2 * delta)
       yawCurrent.current += deltaYaw * k
       // Gentle roll into the turn.
       groupRef.current.rotation.z = -THREE.MathUtils.clamp(deltaYaw * 1.4, -0.18, 0.18)
-    } else {
+    } else if (!piloting) {
       // Idle drift + settle back to level after a run.
       settle.current += (0 - settle.current) * (1 - Math.exp(-2 * delta))
       yawCurrent.current = Math.sin(t * 0.1) * 0.15
       groupRef.current.rotation.z = settle.current
     }
-    groupRef.current.rotation.y = yawCurrent.current
+    if (!piloting) groupRef.current.rotation.y = yawCurrent.current
 
     // --- Head: subtle scanning yaw when activated (model Head group) -------
     if (headRef.current) {
@@ -308,6 +427,19 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
     switch (s.phase) {
       case 'idle': {
         if (now < s.cooldownUntil || debrisRegistry.length === 0) break
+        // A click on a debris item overrides the autonomous pick.
+        if (forcedTarget) {
+          const ft = forcedTarget
+          forcedTarget = null
+          s.targetIndex = ft.index
+          s.offsetTarget.set(
+            ft.x - basePos.current.x,
+            ft.y + HOVER_LIFT - basePos.current.y,
+            ft.z - basePos.current.z
+          )
+          s.phase = 'seek'
+          break
+        }
         // Pick the nearest visible debris item.
         let best = -1
         let bestDist = Infinity
@@ -350,6 +482,11 @@ export default function Robot({ visible, activated, scale, position, scanBeam }:
           if (handle && handle.mesh) {
             handle.mesh.visible = false
             handle.hiddenUntil = now + DEBRIS_RESPAWN
+            // Feedback: burst, HUD counter, pickup blip.
+            const d = debrisPositions[s.targetIndex]
+            if (d) triggerBurst(d.x, d.y + 0.15, d.z)
+            useHud.getState().collect()
+            playPickup()
           }
           s.targetIndex = -1
           s.offsetTarget.set(0, 0, 0)

@@ -1,8 +1,9 @@
 'use client'
 
-import { useLayoutEffect, useMemo, useRef } from 'react'
+import { useLayoutEffect, useMemo, useRef, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { useHud } from '@/store/useHud'
 
 interface SeabedProps {
   debrisCount?: number
@@ -118,6 +119,11 @@ function Debris({ count }: { count: number }) {
     return arr
   }, [count])
 
+  // Keep the HUD total in sync with the live debris set.
+  useEffect(() => {
+    useHud.getState().setTotal(count)
+  }, [count])
+
   // Respawn hidden debris once its cooldown (set by the robot) has elapsed.
   useFrame((state) => {
     const now = state.clock.elapsedTime
@@ -126,6 +132,8 @@ function Debris({ count }: { count: number }) {
       if (handle.mesh && handle.hiddenUntil > 0 && now >= handle.hiddenUntil) {
         handle.mesh.visible = true
         handle.hiddenUntil = 0
+        // The item is back in the water — ocean health dips back down.
+        useHud.getState().respawn()
       }
     }
   })
