@@ -1,13 +1,15 @@
 import stats from '@/data/stats.json'
 
-export default function Impact() {
-  const figures = [
-    { value: stats.debrisKg, label: 'kg of debris collected' },
-    { value: stats.missions, label: 'missions completed' },
-    { value: stats.hours, label: 'hours underwater' },
-    { value: stats.speciesSeen, label: 'species sighted and logged' },
-  ]
+// OPTIMIZATION: Moving figures array allocation outside of the component render loop
+// to avoid recreating the array and its object references on every render cycle.
+const figures = [
+  { value: stats.debrisKg, label: 'kg of debris collected' },
+  { value: stats.missions, label: 'missions completed' },
+  { value: stats.hours, label: 'hours underwater' },
+  { value: stats.speciesSeen, label: 'species sighted and logged' },
+]
 
+export default function Impact() {
   return (
     <section className="section" id="impact">
       <div className="container">
