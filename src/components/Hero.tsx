@@ -2,6 +2,7 @@ export default function Hero() {
   return (
     <header className="hero">
       <div className="container">
+        <span className="sticker">Concept build</span>
         <h1>A machine that cleans the ocean, one dive at a time.</h1>
         <p className="lede">
           AquaGuardian is a concept project: an autonomous underwater robot

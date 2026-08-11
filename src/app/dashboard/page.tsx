@@ -21,7 +21,8 @@ export default function DashboardPage() {
       </nav>
       <main>
         <div className="dash-head">
-          <div className="container">
+          <div className="container" style={{ position: 'relative' }}>
+            <span className="sticker">Illustrative data</span>
             <p className="section-label">Field report</p>
             <h1>AquaGuardian dashboard</h1>
             <p>
