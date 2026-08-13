@@ -390,13 +390,20 @@
         blips.forEach(function (blip) {
           var bx = cx + Math.cos(blip.angle) * blip.radius * maxRadius
           var by = cy + Math.sin(blip.angle) * blip.radius * maxRadius
+
+          // Performance Optimization (Bolt):
+          // Canvas shadowBlur and shadowColor are major CPU bottlenecks inside high-frequency 60 FPS animation loops.
+          // Replacing them with a hardware-accelerated radial gradient achieves a visually identical, highly performant glow.
+          var glowRadius = 15
+          var gradient = ctx.createRadialGradient(bx, by, 0, bx, by, glowRadius)
+          gradient.addColorStop(0, 'rgba(212, 175, 55, 1.0)')   // Inner solid gold center
+          gradient.addColorStop(0.3, 'rgba(212, 175, 55, 0.8)') // High-intensity gold core
+          gradient.addColorStop(1, 'rgba(212, 175, 55, 0.0)')   // Smoothly faded outer edge
+
           ctx.beginPath()
-          ctx.arc(bx, by, 5, 0, Math.PI * 2)
-          ctx.fillStyle = 'rgba(212, 175, 55, 0.9)'
-          ctx.shadowColor = '#d4af37'
-          ctx.shadowBlur = 12
+          ctx.arc(bx, by, glowRadius, 0, Math.PI * 2)
+          ctx.fillStyle = gradient
           ctx.fill()
-          ctx.shadowBlur = 0
         })
 
         // Rotating sweep with a fading trail.
