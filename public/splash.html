@@ -387,16 +387,20 @@
         ctx.stroke()
 
         // Detection blips — deterministic loops, drifting over time.
+        // OPTIMIZATION (Bolt ⚡): Replaced software shadowBlur/shadowColor (which incurs expensive CPU Gaussian blur rasterization
+        // on every frame) with a hardware-accelerated 2D radial gradient for blip glowing effects.
         blips.forEach(function (blip) {
           var bx = cx + Math.cos(blip.angle) * blip.radius * maxRadius
           var by = cy + Math.sin(blip.angle) * blip.radius * maxRadius
+          var blipGrad = ctx.createRadialGradient(bx, by, 0, bx, by, 12)
+          blipGrad.addColorStop(0, 'rgba(212, 175, 55, 1.0)')
+          blipGrad.addColorStop(0.3, 'rgba(212, 175, 55, 0.8)')
+          blipGrad.addColorStop(1, 'rgba(212, 175, 55, 0.0)')
+
           ctx.beginPath()
-          ctx.arc(bx, by, 5, 0, Math.PI * 2)
-          ctx.fillStyle = 'rgba(212, 175, 55, 0.9)'
-          ctx.shadowColor = '#d4af37'
-          ctx.shadowBlur = 12
+          ctx.arc(bx, by, 12, 0, Math.PI * 2)
+          ctx.fillStyle = blipGrad
           ctx.fill()
-          ctx.shadowBlur = 0
         })
 
         // Rotating sweep with a fading trail.
