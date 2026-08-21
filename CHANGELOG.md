@@ -5,22 +5,7 @@ All notable changes to this project are documented here. The format follows [Kee
 ## [Unreleased]
 
 ### Added
-- **Boids fish schooling.** Three schools (22/12/8 fish at high quality, 12/8 low) now flock with cohesion, alignment, separation, boundary-avoidance, seabed avoidance, and wander behavior — plus banked turns, tail-flick, and an exclusion zone that keeps the schools clear of the robot's base.
-- **Procedural instanced reef.** Four coral archetypes (branch, plate, stalk, fern) grown from a seeded PRNG for deterministic layout: ~50 colonies in four draw calls, per-instance sway, and a bleaching lerp when the reef's intact state drops.
-- **Ancient ruins composition.** A stepped temple platform with broken pillars, a fallen column glowing with cyan algae, a half-buried arch, and a toppled gold-hieroglyph obelisk whose tilt increases as `intact` falls; shared materials keep it to one geometry pass per element.
-- **Layered atmosphere.** A silhouette ridge silhouette, three gradient fog bands, and rising glow motes now frame the scene behind the seabed (`Environment.tsx`, previously a stub).
-- **Camera cinematography.** Section-path easing via `THREE.MathUtils.damp`, a sharpening impulse with ~10% overshoot on section change, handheld breathing, micro-roll, look drift, portrait FOV widening, and preserved touch parallax — with zero per-frame allocations.
-- **Robot presence.** Emissive eyes with blink clock and glow discs, pulsing chest core, antenna ping rings, dual counter-rotating scan rings with a sweep plane, pickup-beam pulse, and banking yaw/roll in turns; the debris collection cycle contract (idle → seek → hover → return, 12 s respawn, 8 s cooldown) is unchanged.
-- **Living particles and bubbles.** Particles now layer dust (warm, buoyant), plankton, and sinking marine snow with velocity drift and sinusoidal wobble; bubbles gain dual-harmonic wobble, surface hold, pop shrink/fade, and rare chains of up to five.
-- **Instanced kelp and rocks.** Kelp is a single instanced mesh with GPU sway via an `onBeforeCompile` phase attribute (was one mesh per stalk); seabed rocks are instanced, and the debris registry was refactored to be StrictMode-safe.
-
-### Changed
-- **Volumetric ocean grade.** The ocean gradient now blends mid-water and sun colors with depth haze (`uMidColor`/`uSunColor`/`uHazeColor`/`uHazeDensity`) synced to the store's fog color; waves gained a fifth octave and swell-breathing amplitude (±8%).
-- **Animated caustics.** Caustics now breathe (`uScale`), drift, and slowly rotate with an edge fade, replacing the static overlay.
-- **Bending light shafts.** Volumetric rays bend with 3D sway (`uTime`/`uHeight`), shimmer, and per-ray core-width/radius pulsing.
-- **Cinematic light rig.** Key light orbits and warms/cools per section, hemispherical + ambient split, a cyan under-bounce light, a robot spotlight with damped target, and a camera-following rim light.
-- **Quality-gated postprocessing.** High quality renders Bloom + SSAO (half resolution) + Depth of Field + ACES filmic tone mapping + vignette + film grain + chromatic aberration; low quality renders bloom only, with the normal pass disabled.
-- **Determinism and performance.** All animation loops use pre-allocated scratch vectors and refs — no per-frame allocations; coral, kelp, rocks, and silhouettes are instanced; low-tier counts scale down for mobile.
+- None pending.
 
 ## [1.0.0] - 2026-08-05
 

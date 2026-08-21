@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-08-01T11:05:51.683135Z",
+  "metrics": {
+    "totalItemsCollected": 1804,
+    "totalWeightKg": 45.1,
+    "estimatedCo2SavedKg": 67.65,
+    "totalCollectionEvents": 24,
+    "topCollectionZone": "Persian Gulf"
+  },
+  "locationBreakdown": {
+    "Gulf of Mexico": 106,
+    "Persian Gulf": 363,
+    "Great Pacific Garbage Patch": 222,
+    "Coral Triangle": 333,
+    "Mediterranean Sea": 145,
+    "Caribbean Sea": 193,
+    "North Atlantic Gyre": 138,
+    "South China Sea": 205,
+    "Baltic Sea": 99
+  },
+  "scientificReferences": [
+    {
+      "source": "UN Environment Programme (UNEP)",
+      "topic": "Global Marine Litter and Microplastics Assessment",
+      "link": "https://www.unep.org/resources/report/from-pollution-to-solution"
+    },
+    {
+      "source": "The Ocean Cleanup Scientific Studies",
+      "topic": "River Plastic Emissions & Ocean Accumulation Zones",
+      "link": "https://theoceancleanup.com/scientific-publications/"
+    },
+    {
+      "source": "National Oceanic and Atmospheric Administration (NOAA)",
+      "topic": "Marine Debris Program Data",
+      "link": "https://marinedebris.noaa.gov/"
+    }
+  ]
+}

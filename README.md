@@ -11,7 +11,6 @@ AquaGuardian is an interactive 3D ocean-restoration experience built with Next.j
 [![GSAP](https://img.shields.io/badge/GSAP-3-88CE02?style=flat-square&logo=greensock)](https://gsap.com/)
 [![Framer Motion](https://img.shields.io/badge/Framer%20Motion-12-0055FF?style=flat-square&logo=framer)](https://motion.dev/)
 [![Zustand](https://img.shields.io/badge/Zustand-5-764ABC?style=flat-square&logo=zustand)](https://zustand.docs.pmnd.rs/)
-[![License](https://img.shields.io/badge/License-MIT-D4AF37?style=flat-square)](LICENSE)
 
 ---
 
@@ -54,33 +53,6 @@ The homepage story is defined in [`src/data/chapters.ts`](src/data/chapters.ts) 
 | 6 | AI | | |
 
 Each chapter has its own visual state in the scene — lighting, fog, fish behavior, and robot activity are all driven by a single scroll-tracked store, so the world and the story stay in sync.
-
----
-
-## Interactive Experience
-
-The hero is not a passive render — it is a playable simulation with a live HUD:
-
-| Control | What happens |
-|---|---|
-| **WASD / arrow keys** (desktop, hero) | Directly pilot the guardian. Input is mapped onto the camera plane so the cinematic path keeps working; hold keys to fly, release and the AI resumes after a short coast. A "Piloting" badge appears and the thruster hum ramps up. |
-| **Click a debris item** (desktop, hero) | A `THREE.Raycaster` picks the item, a cyan ripple marks the click, and the robot's collection cycle (seek → hover → collect) takes over to retrieve it. |
-| **HUD (top-right)** | "Collected X / N" counter, "Ocean Health" percentage, and a mute toggle for the procedural audio. |
-| **Autonomous patrol** | Always on by default: the robot drifts, picks the nearest visible debris, hovers under a cyan pickup beam, collects, and returns — with or without you. |
-
-Every collection produces three feedback signals: a particle burst (additive points with buoyant drift), a synthesized pickup blip (Web Audio API — no audio files), and a **water-clarity state change**: as the ratio of collected-to-total debris rises, the exponential fog recedes and the ocean's clarity uniform brightens, so the sea visibly clears as you clean it. Debris respawns ~12 seconds later and ocean health eases back down — the feedback loop runs both ways.
-
----
-
-## Algorithmic Challenges
-
-- **Underwater light attenuation (fog).** Light decays exponentially with depth following Beer-Lambert extinction, I = I₀·e^(−μd), where I₀ is the surface irradiance, μ the water turbidity and d the depth. The scene approximates this with `THREE.Fog` (near/far) plus a custom depth-haze shader; the cleanup mechanic lerps the fog range toward clarity as debris is collected.
-- **Gerstner-style surface ripples.** The ocean ceiling displaces each vertex with a summed set of travelling sine waves (two octaves), perturbing normals so the light response rolls with the swell; a slow wind vector rotates the pattern so the surface never loops.
-- **Caustics.** The seabed overlay is a procedural sum-of-abs-sines pattern computed in the fragment shader with two frequency octaves and a coherent "sun angle" drift — refracted light that moves as one, for the cost of a single blended plane.
-- **Boids schooling.** Three fish schools each run the classic Reynolds rules — cohesion (steer toward the school centroid), alignment (match neighbour heading), separation (avoid crowding) — plus a wander term and an exclusion zone that keeps fish clear of the robot. All vectors are pre-allocated scratch objects; the loop allocates nothing per frame.
-- **Kinematic targeting.** The robot approaches debris by easing an offset toward a normalized displacement vector, v̂ = v/‖v‖, with angle-aware yaw damping (`atan2` + wrapped-angle interpolation) and a gentle roll into turns — no pathfinding, just smooth pursuit.
-- **Click-to-collect raycasting.** Pointer hits are unprojected through the camera to a ray (`Raycaster.setFromCamera`); the nearest visible debris mesh intersection drives the robot's next target.
-- **GPU memory discipline.** Everything disposable — geometries, materials, textures — is `.dispose()`d on unmount, and `useFrame` allocates nothing; the reef, kelp, rocks and debris are instanced, keeping total draw calls well under 50.
 
 ---
 
@@ -143,49 +115,11 @@ Every route wraps its work in try/catch and returns `{ error }` with a 500 on fa
 
 A few implementation details worth noting:
 
-- **Shaders instead of light sources.** Water caustics, volumetric light rays, and the layered atmosphere are computed procedurally on the GPU rather than rendered with expensive spotlights and geometry. The scene looks heavy but stays light.
-- **Instancing everywhere it matters.** The reef is one draw call per coral archetype, kelp is a single instanced mesh with GPU sway, and rocks, debris, and ridge silhouettes are all instanced — hundreds of objects collapsed into a handful of draw calls.
+- **Shaders instead of light sources.** Water caustics, volumetric light rays, and the gradient atmosphere are computed procedurally on the GPU rather than rendered with expensive spotlights and geometry. The scene looks heavy but stays light.
 - **Scene components subscribe narrowly to state.** Individual meshes (kelp, fish, particles, robot) subscribe only to the Zustand slices they read, which avoids full-canvas re-renders when the scroll position updates.
 - **Unidirectional narrative state.** Scroll position drives discrete scene properties (debris count, lighting, scan-beam activity) through a single store — one source of truth for both the story and the world.
-- **Deterministic worlds.** Coral placement uses a seeded PRNG, so every visit renders the same reef; fish schooling, bubbles, and particles use only pre-allocated scratch vectors and refs, so the animation loop allocates nothing per frame.
 - **Dual-mode data layer.** Server routes persist through `src/lib/dataStore.ts` into `database.json` (atomic writes, in-memory cache); pages read data exclusively through `src/lib/api.ts`, which falls back to bundled seeds + localStorage so the static export stays fully interactive.
 - **Deterministic data pipeline.** The dashboard dataset is generated by a native C tool and aggregated by a Python script (details below), so the numbers are reproducible on any machine.
-
----
-
-## Rendering Architecture
-
-The underwater scene lives in `src/world/` and is composed on a single R3F canvas. `World.tsx` mounts the subsystems; everything else is a leaf with narrow Zustand subscriptions.
-
-```text
-Canvas
-└── SceneContent
-    ├── Ocean            # gradient depth haze + 5-octave vertex waves + swell breathing
-    ├── LightRays        # volumetric shafts (GLSL bend + shimmer, uHeight uniform)
-    ├── Caustics         # animated caustic overlay, alpha-blended over the seabed
-    ├── Lighting         # key/warm rim/cyan bounce rig, robot spotlight (damped target)
-    ├── Environment      # silhouette ridge, fog bands, rising glow motes
-    ├── EnvReflections   # Lightformer rig — gold key + cyan rim sheen on the robot
-    ├── Seabed           # instanced rocks + debris registry (shared with Robot)
-    ├── Kelp             # one instanced mesh, GPU sway via onBeforeCompile phase attribute
-    ├── Coral            # 4 archetypes × 1 instanced mesh, seeded placement, bleaching
-    ├── Ruins            # platform, pillars, fallen column, obelisk, buried arch
-    ├── Fish             # 3 boids schools (cohesion/alignment/separation/wander)
-    ├── Jellyfish        # distorting dome + tentacle strands (drei MeshDistortMaterial)
-    ├── Robot            # debris cycle: idle → seek → hover → return + WASD pilot + click override
-    ├── Interaction      # raycaster click-to-collect + cyan click ripple
-    ├── PickupBursts     # additive particle burst on every collection
-    ├── Particles        # dust + plankton + marine snow layers
-    ├── Bubbles          # dual-harmonic wobble, chains, surface pop
-    ├── Camera           # damped path easing, section-change impulse, handheld breathing
-    └── Effects          # quality-gated postprocessing stack
-```
-
-**Quality tiers.** A single `quality` value (0–1) from the store gates detail: school sizes and fish count, coral archetype counts, kelp density, particle/bubble counts, and the postprocessing stack. High quality renders Bloom + SSAO (half resolution) + Depth of Field + ACES filmic tone mapping + vignette, noise, and chromatic aberration; low quality renders bloom alone, with `enableNormalPass` and heavy effects disabled — so the scene scales cleanly from laptops down to phones.
-
-**The robot's contract.** `Seabed.tsx` exports `debrisPositions`, `debrisRegistry`, and a `DebrisHandle { mesh, hiddenUntil }` used by `Robot.tsx` for its collect cycle. The cycle (idle → seek → hover → return, with 12 s respawn and 8 s cooldown) is the baseline; visitors can interrupt it with direct WASD piloting (which pauses the cycle and hands back control after a coast) or override its target by clicking a debris item (`setForcedTarget` feeds the cycle's idle phase). Every collection notifies the HUD store, plays the pickup blip, fires a particle burst, and brightens the water — one shared feedback path.
-
-**Camera.** `Camera.tsx` follows pre-authored section paths (`src/data/sectionCameraPaths.ts`) with exponential damping, adds a sharpening impulse with a 10% overshoot when the section changes, and layers in handheld breathing, look drift, micro-roll, portrait FOV widening, and touch parallax.
 
 ---
 

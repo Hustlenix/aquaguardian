@@ -8,15 +8,20 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout
@@ -43,12 +48,22 @@ jobs:
         env:
           STATIC_EXPORT: true
 
-      - name: Deploy to gh-pages branch
+      - name: Ensure Pages artifact exists
+        run: |
+          if [ ! -d out ]; then echo 'out directory missing'; exit 1; fi
+          find out -maxdepth 2 -type f | head
+
+      - name: Setup Pages
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        uses: peaceiris/actions-gh-pages@v4
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
-          publish_branch: gh-pages
-          # Jekyll would drop the `_next/` directory — serve the export as-is.
-          enable_jekyll: false
+          path: out
+
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        id: deployment
+        uses: actions/deploy-pages@v4
