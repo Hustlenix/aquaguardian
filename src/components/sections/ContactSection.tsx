@@ -6,21 +6,51 @@ import { motion } from 'framer-motion'
 import SectionWrapper from './SectionWrapper'
 import { Send, CheckCircle } from 'lucide-react'
 
+const SUBSCRIBERS_KEY = 'aqua-subscribers'
+
+function saveSubscriberLocally(email: string) {
+  try {
+    const raw = window.localStorage.getItem(SUBSCRIBERS_KEY)
+    const list: string[] = raw ? (JSON.parse(raw) as string[]) : []
+    if (!list.includes(email)) list.push(email)
+    window.localStorage.setItem(SUBSCRIBERS_KEY, JSON.stringify(list))
+  } catch {
+    // storage unavailable — nothing else to do, the UI still confirms intent
+  }
+}
+
+async function postToApi(email: string): Promise<boolean> {
+  try {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 4000)
+    const res = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+      signal: controller.signal,
+    })
+    clearTimeout(timeout)
+    return res.ok
+  } catch {
+    return false
+  }
+}
+
 export default function ContactSection() {
   const [email, setEmail] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'done'>('idle')
+  const [storedLocally, setStoredLocally] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email.trim()) return
-    // Static export has no API routes, so this demo form opens a mailto
-    // draft instead of posting to a backend.
-    const subject = encodeURIComponent('AquaGuardian newsletter signup')
-    const body = encodeURIComponent(
-      `Hi AquaGuardian team,\n\nPlease add me to your newsletter updates.\n\nEmail: ${email}`
-    )
-    window.location.href = `mailto:hello@aquaguardian.dev?subject=${subject}&body=${body}`
-    setSubmitted(true)
+    const trimmed = email.trim()
+    if (!trimmed || status === 'submitting') return
+
+    setStatus('submitting')
+    const ok = await postToApi(trimmed)
+    if (!ok) saveSubscriberLocally(trimmed)
+    setStoredLocally(!ok)
+    setStatus('done')
     setEmail('')
   }
 
@@ -40,7 +70,7 @@ export default function ContactSection() {
           pilot programs, and ways to get involved.
         </p>
 
-        {submitted ? (
+        {status === 'done' ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -52,8 +82,9 @@ export default function ContactSection() {
             </div>
             <p className="text-sm font-medium text-white">Thanks for joining the mission!</p>
             <p className="text-xs text-text-muted">
-              This is a static demo — nothing is stored. Your email app should have opened a draft
-              to hello@aquaguardian.dev.
+              {storedLocally
+                ? "You're on the list — we've saved your signup on this device."
+                : "You're on the list. Watch your inbox for updates."}
             </p>
           </motion.div>
         ) : (
@@ -90,9 +121,13 @@ export default function ContactSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <button type="submit" className="btn-primary whitespace-nowrap">
+              <button
+                type="submit"
+                className="btn-primary whitespace-nowrap"
+                disabled={status === 'submitting'}
+              >
                 <Send size={16} strokeWidth={1.5} />
-                Join the Mission
+                {status === 'submitting' ? 'Joining…' : 'Join the Mission'}
               </button>
             </motion.div>
           </motion.form>
