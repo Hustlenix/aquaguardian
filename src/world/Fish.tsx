@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useStore } from '@/store/useStore'
@@ -41,6 +41,19 @@ function FishSchool({ count = 20 }: { count?: number }) {
     return arr
   }, [count])
 
+  // Set instance colors once when colors change or on mount.
+  // Calling setColorAt and marking instanceColor.needsUpdate = true inside useFrame
+  // on every frame was redundant because fish colors are static.
+  useEffect(() => {
+    if (!ref.current) return
+    for (let i = 0; i < colors.length; i++) {
+      ref.current.setColorAt(i, colors[i])
+    }
+    if (ref.current.instanceColor) {
+      ref.current.instanceColor.needsUpdate = true
+    }
+  }, [colors])
+
   useFrame((state) => {
     if (!ref.current) return
     const t = state.clock.elapsedTime
@@ -61,10 +74,8 @@ function FishSchool({ count = 20 }: { count?: number }) {
 
       dummy.updateMatrix()
       ref.current.setMatrixAt(i, dummy.matrix)
-      ref.current.setColorAt(i, colors[i])
     }
     ref.current.instanceMatrix.needsUpdate = true
-    if (ref.current.instanceColor) ref.current.instanceColor.needsUpdate = true
   })
 
   return (
